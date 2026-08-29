@@ -1,0 +1,183 @@
+:root {
+  --black: #050706;
+  --deep: #07100d;
+  --green: #27d69a;
+  --green-soft: #76ffd0;
+  --teal: #19a985;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: var(--black);
+}
+
+.hisense-stage {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  min-height: 680px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 70% 30%, rgba(39, 214, 154, 0.18), transparent 28%),
+    radial-gradient(circle at 18% 78%, rgba(25, 169, 133, 0.13), transparent 32%),
+    linear-gradient(145deg, #030403 0%, var(--deep) 48%, #020302 100%);
+}
+
+.deep-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.16) 42%, rgba(0, 0, 0, 0.78) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.46), transparent 38%, rgba(0, 0, 0, 0.32));
+}
+
+.grid-field {
+  position: absolute;
+  inset: -20%;
+  opacity: 0.18;
+  background-image:
+    linear-gradient(rgba(118, 255, 208, 0.13) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(118, 255, 208, 0.13) 1px, transparent 1px);
+  background-size: 72px 72px;
+  transform: perspective(900px) rotateX(58deg) translateY(8%);
+  transform-origin: 50% 80%;
+}
+
+.green-beam {
+  position: absolute;
+  width: 66vw;
+  height: 18vh;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(39, 214, 154, 0.42), rgba(118, 255, 208, 0.26), transparent);
+  filter: blur(30px);
+  mix-blend-mode: screen;
+  opacity: 0.72;
+  animation: beam-flow 9s ease-in-out infinite alternate;
+}
+
+.beam-one {
+  top: 24%;
+  left: -14%;
+  transform: rotate(-14deg);
+}
+
+.beam-two {
+  right: -18%;
+  bottom: 22%;
+  height: 14vh;
+  opacity: 0.52;
+  transform: rotate(-18deg);
+  animation-delay: -3s;
+}
+
+.wave-field {
+  position: absolute;
+  left: 50%;
+  width: 120vw;
+  height: 42vh;
+  border-radius: 50%;
+  border: 1px solid rgba(118, 255, 208, 0.12);
+  background:
+    repeating-radial-gradient(ellipse at center, transparent 0 22px, rgba(118, 255, 208, 0.06) 23px 24px),
+    radial-gradient(ellipse at center, rgba(39, 214, 154, 0.12), transparent 58%);
+  filter: blur(0.2px);
+  opacity: 0.65;
+  transform: translateX(-50%) rotate(-6deg);
+  animation: wave-drift 13s ease-in-out infinite alternate;
+}
+
+.wave-one {
+  bottom: -10%;
+}
+
+.wave-two {
+  top: 42%;
+  opacity: 0.28;
+  transform: translateX(-50%) rotate(8deg) scale(0.92);
+  animation-delay: -4s;
+}
+
+.glass-orbit {
+  position: absolute;
+  border: 1px solid rgba(118, 255, 208, 0.1);
+  border-radius: 50%;
+  box-shadow: inset 0 0 40px rgba(39, 214, 154, 0.04);
+}
+
+.orbit-one {
+  top: 10%;
+  right: 12%;
+  width: 34vw;
+  height: 34vw;
+  opacity: 0.46;
+}
+
+.orbit-two {
+  left: -10%;
+  bottom: -18%;
+  width: 42vw;
+  height: 42vw;
+  opacity: 0.28;
+}
+
+.noise-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  opacity: 0.16;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.26) 1px, transparent 0);
+  background-size: 4px 4px;
+  mix-blend-mode: overlay;
+}
+
+@keyframes beam-flow {
+  from {
+    translate: -4vw -1vh;
+    scale: 1;
+  }
+  to {
+    translate: 8vw 3vh;
+    scale: 1.08;
+  }
+}
+
+@keyframes wave-drift {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -4vh;
+  }
+}
+
+@media (max-width: 720px) {
+  .hisense-stage {
+    min-height: 100vh;
+  }
+
+  .green-beam {
+    width: 120vw;
+  }
+
+  .wave-field {
+    width: 170vw;
+  }
+
+  .orbit-one {
+    width: 72vw;
+    height: 72vw;
+  }
+}
