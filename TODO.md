@@ -3,9 +3,9 @@
 ## 明天优先
 
 1. 在 GitHub 仓库中配置 `TENCENT_SECRET_ID` 和 `TENCENT_SECRET_KEY`。
-2. 手动运行一次 GitHub Actions 自动部署。
+2. 推送一次小改动，验证 GitHub Actions 自动部署。
 3. 确认线上地址 `https://www.zbxlab.cn` 正常访问。
-4. 修改一个很小的页面文本并 push，验证自动部署是否生效。
+4. 如果自动部署成功，以后更新网页只需要提交并推送代码。
 5. 如果自动部署失败，根据 Actions 日志补齐腾讯云密钥权限。
 
 ## 作品集内容

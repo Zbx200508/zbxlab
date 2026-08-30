@@ -360,7 +360,7 @@ PROJECT_HANDOFF_FROM_WORK_PC.md
 GitHub Actions 已配置：
 
 ```text
-触发：手动 workflow_dispatch
+触发：push 到 main，或手动 workflow_dispatch
 上传工具：COSCMD
 刷新工具：腾讯云 CLI
 同步目标：zbxlab-1476825963 / ap-hongkong

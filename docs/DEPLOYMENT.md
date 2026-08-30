@@ -200,8 +200,8 @@ https://www.zbxlab.cn/index.html
 触发方式：
 
 ```text
-当前先在 GitHub Actions 页面手动运行
-等 Secrets 配好并验证通过后，再开启 push main 自动部署
+推送 main 分支时自动部署
+也可以在 GitHub Actions 页面手动运行
 ```
 
 工作流会执行：
