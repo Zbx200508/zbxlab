@@ -189,6 +189,59 @@ https://www.zbxlab.cn/index.html
 
 后续不要长期依赖控制台一个文件一个文件上传，这只适合首次跑通链路。
 
+## GitHub Actions 自动部署
+
+已添加自动部署工作流：
+
+```text
+.github/workflows/deploy.yml
+```
+
+触发方式：
+
+```text
+当前先在 GitHub Actions 页面手动运行
+等 Secrets 配好并验证通过后，再开启 push main 自动部署
+```
+
+工作流会执行：
+
+```text
+1. 拉取仓库代码
+2. 生成临时 dist/ 目录
+3. 只复制线上需要的文件：index.html、assets/、cases/、css/、js/
+4. 使用 COSCMD 同步到腾讯云 COS
+5. 使用腾讯云 CLI 刷新 CDN 目录缓存
+```
+
+需要在 GitHub 仓库中配置 Secrets：
+
+```text
+TENCENT_SECRET_ID
+TENCENT_SECRET_KEY
+```
+
+腾讯云密钥权限建议最小化：
+
+```text
+COS：PutObject、DeleteObject、GetBucket、HeadObject、HeadBucket
+CDN：PurgePathCache、PurgeUrlsCache、DescribePurgeTasks
+```
+
+注意：
+
+```text
+不要把 SecretId / SecretKey 写入代码、文档或截图。
+```
+
+GitHub Actions 中使用的固定配置：
+
+```text
+COS_BUCKET：zbxlab-1476825963
+COS_REGION：ap-hongkong
+CDN_REFRESH_PATH：https://www.zbxlab.cn/
+```
+
 ## GitHub 仓库
 
 仓库名：

@@ -2,13 +2,11 @@
 
 ## 明天优先
 
-1. 在 GitHub 创建私有仓库 `zbxlab`。
-2. 将当前本地项目推送到 GitHub。
+1. 在 GitHub 仓库中配置 `TENCENT_SECRET_ID` 和 `TENCENT_SECRET_KEY`。
+2. 手动运行一次 GitHub Actions 自动部署。
 3. 确认线上地址 `https://www.zbxlab.cn` 正常访问。
-4. 补充 GitHub Actions 自动部署方案。
-5. 将腾讯云密钥放入 GitHub Secrets，不写进代码。
-6. 实现自动同步到 COS。
-7. 实现自动刷新 CDN 缓存。
+4. 修改一个很小的页面文本并 push，验证自动部署是否生效。
+5. 如果自动部署失败，根据 Actions 日志补齐腾讯云密钥权限。
 
 ## 作品集内容
 

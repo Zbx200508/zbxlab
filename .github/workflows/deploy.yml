@@ -1,0 +1,54 @@
+name: Deploy website to Tencent COS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      COS_BUCKET: zbxlab-1476825963
+      COS_REGION: ap-hongkong
+      CDN_REFRESH_PATH: https://www.zbxlab.cn/
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare static site files
+        run: |
+          rm -rf dist
+          mkdir -p dist
+          cp index.html dist/
+          cp -R assets cases css js dist/
+
+      - name: Install Tencent Cloud tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install coscmd tccli
+
+      - name: Configure COSCMD
+        run: |
+          coscmd config \
+            -a "${{ secrets.TENCENT_SECRET_ID }}" \
+            -s "${{ secrets.TENCENT_SECRET_KEY }}" \
+            -b "$COS_BUCKET" \
+            -r "$COS_REGION"
+
+      - name: Upload files to COS
+        run: |
+          coscmd upload -rs --delete ./dist/ /
+
+      - name: Configure Tencent Cloud CLI
+        run: |
+          tccli configure set secretId "${{ secrets.TENCENT_SECRET_ID }}"
+          tccli configure set secretKey "${{ secrets.TENCENT_SECRET_KEY }}"
+          tccli configure set region "$COS_REGION"
+
+      - name: Refresh CDN directory cache
+        run: |
+          tccli cdn PurgePathCache \
+            --Paths "[\"$CDN_REFRESH_PATH\"]" \
+            --FlushType flush \
+            --Area overseas

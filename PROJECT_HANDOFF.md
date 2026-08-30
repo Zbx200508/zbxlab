@@ -59,6 +59,8 @@ https://www.zbxlab.cn
 - HTTP 自动跳转 HTTPS 已开启。
 - 根路径 `/` 已通过 CDN 回源 URL 重写到 `/index.html`。
 - 当前网站已经可通过 `https://www.zbxlab.cn` 访问。
+- GitHub 仓库已创建并推送初始代码：`https://github.com/Zbx200508/zbxlab`
+- 已添加 GitHub Actions 自动部署工作流：`.github/workflows/deploy.yml`
 
 当前本地核心文件：
 
@@ -246,7 +248,7 @@ add resume page
 add yadea voc case
 ```
 
-明天创建 GitHub 仓库后，第一步应先把当前本地项目推上去。之后再接 GitHub Actions 自动部署。
+GitHub 仓库已创建并推送当前项目。下一步是配置 GitHub Secrets，并手动运行一次 GitHub Actions 验证自动部署链路。
 
 ## 9. 部署路线：方案 B，偏国内稳定访问
 
@@ -348,16 +350,29 @@ PROJECT_HANDOFF_FROM_WORK_PC.md
 
 明天优先做：
 
-1. 在 GitHub 新建私有仓库 `zbxlab`。
-2. 将当前本地项目推送到 GitHub。
+1. 在 GitHub 仓库中配置 `TENCENT_SECRET_ID` 和 `TENCENT_SECRET_KEY`。
+2. 手动运行一次 GitHub Actions，验证自动部署链路。
 3. 检查线上站点 `https://www.zbxlab.cn` 是否仍可访问。
-4. 补充 `TODO.md`。
-5. 设计并实现简历页面。
-6. 准备 GitHub Actions 自动部署到腾讯云 COS。
-7. 将腾讯云密钥放入 GitHub Secrets，不写进代码。
-8. 增加自动刷新 CDN 缓存。
-9. 开始完善海信 Case 页面内容。
-10. 收集海信 Demo 的脱敏截图、操作 GIF、PRD 片段。
+4. 设计并实现简历页面。
+5. 开始完善海信 Case 页面内容。
+6. 收集海信 Demo 的脱敏截图、操作 GIF、PRD 片段。
+
+GitHub Actions 已配置：
+
+```text
+触发：手动 workflow_dispatch
+上传工具：COSCMD
+刷新工具：腾讯云 CLI
+同步目标：zbxlab-1476825963 / ap-hongkong
+刷新路径：https://www.zbxlab.cn/
+```
+
+需要配置的 GitHub Secrets：
+
+```text
+TENCENT_SECRET_ID
+TENCENT_SECRET_KEY
+```
 
 中期待办：
 
