@@ -61,6 +61,20 @@ https://www.zbxlab.cn
 - 当前网站已经可通过 `https://www.zbxlab.cn` 访问。
 - GitHub 仓库已创建并推送初始代码：`https://github.com/Zbx200508/zbxlab`
 - 已添加 GitHub Actions 自动部署工作流：`.github/workflows/deploy.yml`
+- 已新增在线简历第一版：`resume/index.html`。
+- 已新增简历页样式：`css/resume.css`。
+- 首页“查看简历”和“在线查看 HTML 简历”已指向 `/resume/`。
+- 已接入 PDF 简历下载：`assets/resume/zhang-beixuan-resume.pdf`。
+- 首页 GitHub 联系入口已指向 `https://github.com/Zbx200508/zbxlab`。
+- GitHub Actions 部署清单已加入 `resume/` 目录。
+- 首页雅迪、香港迪士尼项目卡片已改为真实占位 Case 页面，避免空链接。
+- 已新增 `assets/favicon.svg` 并接入首页、简历页和 Case 页面。
+- 在线简历已根据用户提供的 PDF 版本同步为 HTML，包含教育背景、实习经历、项目经历、技能荣誉和个人优势。
+- 已从 PDF 提取证件照并放入在线简历：`assets/resume/portrait.jpg`。
+- 海信 Case 已从背景原型扩展为项目页骨架，包含业务问题、角色、核心链路、Demo 展示区、PRD 展示结构和数据打标链路验证延展判断。
+- 用户确认海信页改为“展览空间”方向：背景保留氛围感，原型作为整页缩略展品出现，点击展品进入具体原型页。
+- 已接入占位原型文件：`demos/hisense-weekly-config.html`。该文件只作为占位展示素材，不是最终上线 Demo。
+- 雅迪和香港迪士尼占位页已重新设计不同背景方向，不再沿用海信深色绿光视觉。
 
 当前本地核心文件：
 
@@ -68,9 +82,18 @@ https://www.zbxlab.cn
 index.html
 css/styles.css
 js/main.js
+resume/index.html
+css/resume.css
 cases/hisense.html
+demos/hisense-weekly-config.html
+cases/yadea-voc.html
+cases/disney.html
 css/hisense.css
+css/case-placeholder.css
 assets/paper-texture.png
+assets/favicon.svg
+assets/resume/zhang-beixuan-resume.pdf
+assets/resume/portrait.jpg
 assets/logos/hisense.svg
 assets/logos/yadea.svg
 assets/logos/hong-kong-disneyland.svg

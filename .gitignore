@@ -3,3 +3,4 @@ assets/backgrounds/
 *.tmp
 work-*.html
 dist/
+tmp/

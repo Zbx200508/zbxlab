@@ -299,7 +299,8 @@ h3 {
   gap: 12px;
 }
 
-.resume-actions a {
+.resume-actions a,
+.resume-pending {
   display: inline-flex;
   align-items: center;
   min-height: 42px;
@@ -310,6 +311,12 @@ h3 {
   color: var(--ink);
   font-size: 14px;
   font-weight: 800;
+}
+
+.resume-pending {
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.54);
+  cursor: not-allowed;
 }
 
 .resume-actions a:hover {

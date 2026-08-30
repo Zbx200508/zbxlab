@@ -3,12 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="海信自动化报告工作台项目背景视觉原型。" />
+    <meta name="description" content="海信自动化报告工作台项目展示页。" />
     <title>海信自动化报告工作台 | ZBX Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="../css/hisense.css" />
   </head>
   <body>
-    <main class="hisense-stage" aria-label="海信自动化报告工作台背景视觉原型">
+    <header class="case-header">
+      <a class="back-arrow" href="../index.html" aria-label="返回作品集">←</a>
+    </header>
+
+    <main class="gallery-stage">
       <div class="deep-mask"></div>
       <div class="grid-field"></div>
       <div class="green-beam beam-one"></div>
@@ -18,6 +29,37 @@
       <div class="glass-orbit orbit-one"></div>
       <div class="glass-orbit orbit-two"></div>
       <div class="noise-layer"></div>
+
+      <section class="exhibit" aria-labelledby="case-title">
+        <div class="gallery-left">
+          <h1 id="case-title">海信自动化报告工作台</h1>
+          <article class="gallery-piece prototype-piece">
+            <a class="piece-link" href="../demos/hisense-weekly-config.html" aria-label="打开海信周报中心配置占位原型"></a>
+            <div class="prototype-viewport" aria-hidden="true">
+              <iframe
+                src="../demos/hisense-weekly-config.html"
+                title="海信周报中心配置占位原型缩略图"
+                scrolling="no"
+                tabindex="-1"
+                onload="this.contentDocument.documentElement.style.overflow='hidden';this.contentDocument.body.style.overflow='hidden';"
+              ></iframe>
+            </div>
+          </article>
+        </div>
+
+        <aside class="gallery-side" aria-label="PRD 展示位">
+          <article class="gallery-piece prd-piece">
+            <h2>PRD</h2>
+            <p>后续放需求结构、字段口径、页面流程和验收标准。这里先作为文档展品位，不把 PRD 整面铺开。</p>
+            <div class="prd-outline" aria-hidden="true">
+              <span>需求结构</span>
+              <span>字段口径</span>
+              <span>页面流程</span>
+              <span>验收标准</span>
+            </div>
+          </article>
+        </aside>
+      </section>
     </main>
   </body>
 </html>

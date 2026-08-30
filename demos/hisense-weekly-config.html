@@ -1,0 +1,3416 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>海信品牌监听系统 - 海信周报中心配置7.17版本</title>
+  <style>
+    :root {
+      --teal: #08aaa5;
+      --teal-dark: #078f8b;
+      --teal-soft: #e9f8f7;
+      --bg: #f5f6f8;
+      --card: #fff;
+      --line: #e5e8ed;
+      --line-strong: #d5dae2;
+      --text: #2c3038;
+      --muted: #79818d;
+      --subtle: #9aa2ad;
+      --orange: #f4a82d;
+      --red: #e85d64;
+      --green: #18a875;
+      --shadow: 0 6px 18px rgba(30, 36, 44, 0.06);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      font-size: 14px;
+    }
+
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    [hidden] { display: none !important; }
+
+    .topbar {
+      height: 52px;
+      background: #eeeeef;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      padding: 0 28px;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .logo {
+      width: 205px;
+      color: #2aa7a0;
+      font-size: 33px;
+      line-height: 1;
+      font-weight: 800;
+      font-style: italic;
+      letter-spacing: -1px;
+    }
+
+    .nav {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      color: #6f737b;
+      font-size: 17px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .nav-item {
+      height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 3px solid transparent;
+    }
+
+    .nav-item.active {
+      color: var(--teal);
+      border-bottom-color: var(--teal);
+    }
+
+    .nav-icon {
+      width: 19px;
+      height: 19px;
+      border: 2px solid currentColor;
+      border-radius: 4px;
+      display: inline-block;
+      position: relative;
+      opacity: 0.86;
+    }
+
+    .nav-icon.chart::before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      bottom: 3px;
+      width: 3px;
+      height: 8px;
+      background: currentColor;
+      box-shadow: 5px -4px 0 currentColor, 10px -1px 0 currentColor;
+    }
+
+    .nav-icon.weekly { border-radius: 50%; }
+
+    .nav-icon.weekly::before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      width: 8px;
+      height: 8px;
+      border-left: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(-45deg);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: #777d86;
+      white-space: nowrap;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--teal);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      text-transform: lowercase;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 216px minmax(0, 1fr);
+      min-height: calc(100vh - 52px);
+    }
+
+    .sidebar {
+      background: #fff;
+      border-right: 1px solid var(--line);
+      padding: 20px 14px;
+      position: sticky;
+      top: 52px;
+      height: calc(100vh - 52px);
+    }
+
+    .side-title {
+      color: #8a9099;
+      font-weight: 700;
+      margin: 0 10px 12px;
+    }
+
+    .side-btn {
+      width: 100%;
+      height: 42px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: #59616c;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
+      margin-bottom: 6px;
+      font-weight: 700;
+      text-align: left;
+    }
+
+    .side-btn.active {
+      background: var(--teal-soft);
+      color: var(--teal);
+    }
+
+    .side-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.85;
+    }
+
+    .main {
+      padding: 24px;
+      padding-bottom: 78px;
+      min-width: 0;
+    }
+
+    .page-view { display: none; }
+    .page-view.active { display: block; }
+
+    .page-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .page-title h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      line-height: 1.2;
+      color: #242932;
+    }
+
+    .page-title p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .primary-btn, .ghost-btn, .plain-btn, .icon-btn {
+      height: 36px;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    .primary-btn {
+      background: var(--teal);
+      color: #fff;
+      padding: 0 16px;
+      box-shadow: 0 4px 10px rgba(8, 170, 165, 0.16);
+    }
+
+    .primary-btn:hover { background: var(--teal-dark); }
+
+    .ghost-btn {
+      background: #fff;
+      border-color: #d9dde4;
+      color: #4d535d;
+      padding: 0 14px;
+    }
+
+    .plain-btn {
+      height: 30px;
+      background: #f4f5f7;
+      border-color: #edf0f2;
+      color: #68707b;
+      padding: 0 10px;
+      font-weight: 600;
+    }
+
+    .plain-btn.active {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #fff;
+    }
+
+    .icon-btn {
+      width: 34px;
+      background: #fff;
+      border-color: #d9dde4;
+      color: #8a9099;
+      padding: 0;
+    }
+
+    .wizard-layout {
+      display: grid;
+      grid-template-columns: 238px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .step-nav {
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid rgba(226, 230, 235, 0.8);
+      box-shadow: var(--shadow);
+      padding: 12px;
+      position: sticky;
+      top: 76px;
+    }
+
+    .step-btn {
+      width: 100%;
+      min-height: 58px;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      background: transparent;
+      display: grid;
+      grid-template-columns: 28px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      color: #68707b;
+      text-align: left;
+      margin-bottom: 6px;
+    }
+
+    .step-btn.active {
+      background: var(--teal-soft);
+      border-color: #bde9e7;
+      color: var(--teal);
+    }
+
+    .step-index {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #eef1f4;
+      color: #77808b;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+    }
+
+    .step-btn.active .step-index {
+      background: var(--teal);
+      color: #fff;
+    }
+
+    .step-title {
+      display: block;
+      font-weight: 800;
+      margin-bottom: 3px;
+      color: inherit;
+    }
+
+    .step-desc {
+      display: block;
+      font-size: 12px;
+      color: #8a9099;
+      line-height: 1.35;
+    }
+
+    .panel {
+      background: var(--card);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(226, 230, 235, 0.7);
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .panel-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #252a33;
+    }
+
+    .panel-subtitle {
+      margin-top: 6px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .step-panel { display: none; }
+    .step-panel.active { display: block; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .form-item label {
+      display: block;
+      margin-bottom: 8px;
+      color: #66707c;
+      font-weight: 700;
+    }
+
+    .required-mark {
+      margin-left: 4px;
+      color: #e5484d;
+      font-weight: 800;
+    }
+
+    .required-mark.is-inline {
+      display: inline;
+      flex: 0 0 auto;
+    }
+
+    .control, .form-item input, .form-item select, .form-item textarea {
+      width: 100%;
+      min-height: 38px;
+      border: 1px solid #d9dde4;
+      border-radius: 4px;
+      padding: 0 12px;
+      color: #3b414b;
+      background: #fff;
+      outline: none;
+    }
+
+    .form-item.is-invalid input,
+    .form-item.is-invalid select,
+    .form-item.is-invalid textarea,
+    .control.is-invalid,
+    .date-range.is-invalid input,
+    .brand-select-shell.is-invalid,
+    .platform-list.is-invalid,
+    .insight-multi-select.is-invalid .insight-multi-trigger,
+    .benchmark-single-select.is-invalid .benchmark-single-trigger {
+      border-color: #e5484d;
+      background: #fff7f7;
+      box-shadow: 0 0 0 3px rgba(229, 72, 77, 0.08);
+    }
+
+    .form-item input:focus, .form-item select:focus, .form-item textarea:focus, .control:focus-within {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(8, 170, 165, 0.08);
+    }
+
+    .form-item.is-invalid input:focus,
+    .form-item.is-invalid select:focus,
+    .form-item.is-invalid textarea:focus {
+      border-color: #e5484d;
+      box-shadow: 0 0 0 3px rgba(229, 72, 77, 0.12);
+    }
+
+    .form-item textarea {
+      height: 132px;
+      padding: 10px 12px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    .date-range {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 18px minmax(0, 1fr);
+      gap: 8px;
+      align-items: center;
+    }
+
+    .date-range span {
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .check-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .period-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .period-option {
+      height: 38px;
+      min-width: 112px;
+      border: 1px solid #d9dde4;
+      border-radius: 4px;
+      background: #fff;
+      color: #58606b;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 12px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .period-option::before {
+      content: "";
+      width: 16px;
+      height: 16px;
+      border: 1px solid #cbd2da;
+      border-radius: 3px;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .period-option.active {
+      border-color: #c8dde1;
+      color: #3f4853;
+      background: #fff;
+    }
+
+    .period-option.active::before {
+      content: "✓";
+      background: var(--teal);
+      border-color: var(--teal);
+    }
+
+    .check-card {
+      height: 38px;
+      min-width: 112px;
+      border: 1px solid #d9dde4;
+      border-radius: 4px;
+      background: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 12px;
+      font-weight: 700;
+      color: #58606b;
+      line-height: 1;
+      position: relative;
+    }
+
+    .check-card::before {
+      content: "✓";
+      width: 16px;
+      height: 16px;
+      border: 1px solid #cbd2da;
+      border-radius: 3px;
+      background: #fff;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      color: transparent;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .check-card.is-checked::before,
+    .check-card:has(input:checked)::before {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #fff;
+    }
+
+    .check-card input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .platform-item input,
+    .brand-menu-simple input,
+    .line-dropdown-panel input {
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 1px solid #cbd2da;
+      border-radius: 3px;
+      background: #fff;
+      margin: 0;
+      flex: 0 0 auto;
+      display: inline-grid;
+      place-items: center;
+      position: relative;
+    }
+
+    .platform-item input:checked,
+    .brand-menu-simple input:checked,
+    .line-dropdown-panel input:checked {
+      background: var(--teal);
+      border-color: var(--teal);
+    }
+
+    .platform-item input:checked::after,
+    .brand-menu-simple input:checked::after,
+    .line-dropdown-panel input:checked::after {
+      content: "";
+      width: 8px;
+      height: 4px;
+      border-left: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      transform: rotate(-45deg);
+      margin-top: -2px;
+    }
+
+    .hint {
+      margin-top: 8px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .section-split {
+      border-top: 1px solid var(--line);
+      margin-top: 18px;
+      padding-top: 18px;
+    }
+
+    .select-layout {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .dropdown-like {
+      border: 1px solid #d9dde4;
+      border-radius: 6px;
+      background: #fff;
+      min-height: 122px;
+      padding: 12px;
+    }
+
+    .dropdown-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      color: #66707c;
+      font-weight: 700;
+    }
+
+    .selected-tags {
+      min-height: 38px;
+      border: 1px solid #e1e5eb;
+      border-radius: 4px;
+      padding: 6px 8px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+      background: #fafbfc;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 4px;
+      background: var(--teal-soft);
+      color: var(--teal);
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .tag.gray {
+      background: #f0f2f5;
+      color: #777f8a;
+    }
+
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .option-pill {
+      min-height: 34px;
+      border: 1px solid #e1e5eb;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 10px;
+      color: #4b535e;
+      background: #fff;
+    }
+
+    .site-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .site-chip {
+      height: 38px;
+      border: 1px solid #dfe3e8;
+      border-radius: 4px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #59616c;
+      font-weight: 700;
+    }
+
+    .platform-list {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(116px, 1fr));
+      gap: 10px 18px;
+      align-items: center;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      padding: 8px 10px;
+    }
+
+    .platform-item {
+      min-height: 34px;
+      color: #59616c;
+      font-size: 13px;
+      font-weight: 400;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .platform-item input {
+      width: 14px;
+      height: 14px;
+    }
+
+    .brand-select-shell {
+      border: 1px solid #d9dde4;
+      border-radius: 6px;
+      background: #fff;
+      padding: 12px;
+      position: relative;
+    }
+
+    .fake-select {
+      height: 38px;
+      border: 1px solid #d9dde4;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      color: #3b414b;
+      background: #fff;
+      margin-bottom: 0;
+      cursor: pointer;
+    }
+
+    .brand-menu-simple {
+      display: none;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      border: 1px solid #e1e5eb;
+      border-radius: 4px;
+      padding: 10px;
+      background: #fff;
+      box-shadow: 0 12px 28px rgba(30, 36, 44, 0.14);
+      left: 12px;
+      max-height: 260px;
+      overflow: auto;
+      position: absolute;
+      right: 12px;
+      top: 70px;
+      z-index: 12;
+    }
+
+    .brand-select-shell.open .brand-menu-simple {
+      display: grid;
+    }
+
+    .brand-menu-simple label {
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      color: #59616c;
+      gap: 8px;
+      border: 1px solid #edf0f2;
+      border-radius: 4px;
+    }
+
+    .brand-menu-simple input {
+      width: 15px;
+      height: 15px;
+      accent-color: var(--teal);
+      margin: 0;
+    }
+
+    .line-select-box {
+      border: 1px solid #d9dde4;
+      border-radius: 6px;
+      padding: 12px;
+      background: #fff;
+      margin-bottom: 16px;
+    }
+
+    .line-dropdown-panel {
+      border: 1px solid #e1e5eb;
+      border-radius: 4px;
+      background: #fff;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+    }
+
+    .line-dropdown-left {
+      background: #f7f8fa;
+      border-right: 1px solid #e1e5eb;
+    }
+
+    .line-dropdown-left div {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      color: #59616c;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .line-dropdown-left .active {
+      background: #fff;
+      color: var(--teal);
+    }
+
+    .line-dropdown-right {
+      max-height: 300px;
+      overflow: auto;
+      padding: 8px 12px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 4px 12px;
+      align-content: start;
+    }
+
+    .line-dropdown-right[hidden] { display: none !important; }
+
+    .line-dropdown-right label {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #59616c;
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    .cascade-dropdown {
+      grid-template-columns: 150px minmax(0, 1fr);
+    }
+
+    .cascade-dropdown .line-dropdown-right {
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 0;
+      padding: 0;
+      max-height: 320px;
+    }
+
+    .cascade-parent {
+      border-right: 1px solid #e1e5eb;
+      background: #fafbfc;
+      padding: 8px;
+      display: grid;
+      align-content: start;
+      gap: 4px;
+    }
+
+    .cascade-parent div {
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      border-radius: 4px;
+      color: #59616c;
+      font-weight: 700;
+    }
+
+    .cascade-parent .active {
+      background: #fff;
+      color: var(--teal);
+      box-shadow: inset 0 0 0 1px #dcefed;
+    }
+
+    .cascade-children {
+      padding: 8px 12px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 4px 12px;
+      align-content: start;
+    }
+
+    .insight-checks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      color: #59616c;
+    }
+
+    .insight-checks label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #edf0f2;
+      text-align: left;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    th {
+      background: #fafbfc;
+      color: #8a9099;
+      font-weight: 700;
+    }
+
+    td { color: #444b55; }
+
+    .line-table select, .line-table input {
+      width: 100%;
+      height: 34px;
+      border: 1px solid #d9dde4;
+      border-radius: 4px;
+      padding: 0 10px;
+      color: #3b414b;
+      background: #fff;
+    }
+
+    .line-table select:focus, .line-table input:focus {
+      border-color: var(--teal);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(8, 170, 165, 0.08);
+    }
+
+    .line-table select.is-invalid,
+    .line-table input.is-invalid {
+      border-color: #e5484d;
+      background: #fff7f7;
+      box-shadow: 0 0 0 3px rgba(229, 72, 77, 0.08);
+    }
+
+    .line-table select.is-invalid option,
+    .line-table select.is-invalid optgroup {
+      background: #fff;
+      color: #3b414b;
+    }
+
+    .insight-multi-select,
+    .benchmark-single-select {
+      position: relative;
+    }
+
+    .insight-multi-trigger,
+    .benchmark-single-trigger {
+      width: 100%;
+      height: 34px;
+      border: 1px solid #d9dde4;
+      border-radius: 4px;
+      padding: 0 10px;
+      color: #3b414b;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .insight-multi-trigger span:first-child,
+    .benchmark-single-trigger span:first-child {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .insight-multi-panel,
+    .benchmark-single-panel {
+      display: none;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      border: 1px solid #e1e5eb;
+      border-radius: 4px;
+      padding: 10px;
+      background: #fff;
+      box-shadow: 0 12px 28px rgba(30, 36, 44, 0.14);
+      left: 0;
+      max-height: 220px;
+      overflow: auto;
+      position: absolute;
+      right: 0;
+      top: 40px;
+      z-index: 14;
+    }
+
+    .insight-multi-select.open .insight-multi-panel,
+    .benchmark-single-select.open .benchmark-single-panel {
+      display: grid;
+    }
+
+    .insight-multi-select.is-invalid .insight-multi-panel,
+    .benchmark-single-select.is-invalid .benchmark-single-panel {
+      background: #fff;
+      border-color: #e1e5eb;
+      box-shadow: 0 12px 28px rgba(30, 36, 44, 0.14);
+    }
+
+    .insight-multi-panel .empty-option,
+    .benchmark-single-panel .empty-option {
+      grid-column: 1 / -1;
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      color: #8a9099;
+      border: 1px dashed #edf0f2;
+      border-radius: 4px;
+      background: #fff;
+    }
+
+    .insight-multi-panel label,
+    .benchmark-single-panel button {
+      min-height: 34px;
+      width: 100%;
+      height: auto;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      color: #59616c;
+      gap: 8px;
+      border: 1px solid #edf0f2;
+      border-radius: 4px;
+      background: #fff;
+      text-align: left;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .insight-multi-panel input {
+      width: 15px;
+      height: 15px;
+      accent-color: var(--teal);
+      margin: 0;
+    }
+
+    .table-toolbar {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 4px 0 10px;
+      color: #66707c;
+    }
+
+    .table-toolbar strong {
+      color: var(--teal);
+    }
+
+    .line-path {
+      color: #66707c;
+      white-space: normal;
+      line-height: 1.45;
+    }
+
+    .inline-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .module-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .module-row {
+      display: grid;
+      grid-template-columns: 34px 170px minmax(0, 1fr);
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #e1e5eb;
+      border-radius: 6px;
+      min-height: 62px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .order {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--teal-soft);
+      color: var(--teal);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+    }
+
+    .module-name {
+      font-weight: 800;
+      color: #303640;
+    }
+
+    .module-desc {
+      color: #7a828d;
+      line-height: 1.48;
+    }
+
+    .preview-cta {
+      min-height: 116px;
+      border: 1px dashed #b8deda;
+      border-radius: 8px;
+      background: #fbfefe;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 20px;
+    }
+
+    .preview-cta strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .preview-cta span {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .action-bar {
+      position: fixed;
+      left: calc(216px + 24px + 238px + 18px);
+      right: 24px;
+      bottom: 0;
+      background: rgba(245, 246, 248, 0.94);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--line);
+      padding: 12px 0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      z-index: 18;
+    }
+
+    .history-filters {
+      display: grid;
+      grid-template-columns: 220px 220px 220px minmax(280px, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .filter-control {
+      height: 38px;
+      border: 1px solid #d9dde4;
+      border-radius: 4px;
+      background: #fff;
+      color: #717883;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .report-name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 24px;
+      padding: 0 9px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .status.success {
+      background: #e8f7f1;
+      color: #0b9d68;
+    }
+
+    .status.pending {
+      background: #eef2f7;
+      color: #65717e;
+    }
+
+    .status.running {
+      background: #fff5dc;
+      color: #b57800;
+    }
+
+    .status.running::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 2px solid #e2a51d;
+      border-top-color: transparent;
+      animation: spin 0.9s linear infinite;
+    }
+
+    .status.fail {
+      background: #ffecec;
+      color: #d84646;
+    }
+
+    .fail-info {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #d84646;
+      color: #fff;
+      display: inline-grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 800;
+      position: relative;
+      cursor: help;
+    }
+
+    .fail-info::after {
+      content: attr(data-tip);
+      position: absolute;
+      left: 50%;
+      bottom: calc(100% + 8px);
+      transform: translateX(-50%);
+      width: 260px;
+      padding: 8px 10px;
+      border-radius: 4px;
+      background: #27313d;
+      color: #fff;
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 400;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.16s ease;
+      z-index: 5;
+      white-space: normal;
+    }
+
+    .fail-info:hover::after {
+      opacity: 1;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .modal-mask {
+      position: fixed;
+      inset: 0;
+      background: rgba(28, 33, 40, 0.34);
+      z-index: 60;
+      display: none;
+    }
+
+    .modal-mask.open { display: block; }
+
+    .modal {
+      width: min(1120px, 94vw);
+      max-height: 86vh;
+      overflow: auto;
+      background: #fff;
+      border-radius: 8px;
+      margin: 7vh auto 0;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.18);
+    }
+
+    .modal-head {
+      padding: 22px 26px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 1;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .modal-subtitle {
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .modal-body {
+      padding: 24px 28px 32px;
+    }
+
+    .report-preview {
+      color: #1f2933;
+      line-height: 1.65;
+    }
+
+    .report-preview h1 {
+      font-size: 24px;
+      margin: 0 0 6px;
+    }
+
+    .report-preview h2 {
+      margin: 24px 0 12px;
+      font-size: 18px;
+    }
+
+    .preview-table th, .preview-table td {
+      border: 1px solid #dfe3e8;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .preview-table th { background: #f5f7f9; }
+
+    .report-preview .report-header {
+      margin-bottom: 24px;
+    }
+
+    .report-preview .report-period {
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .report-preview .report-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      background: #fff;
+      margin-bottom: 18px;
+      border: 1px solid #d9dee7;
+    }
+
+    .report-preview .report-table th,
+    .report-preview .report-table td {
+      border: 1px solid #d9dee7;
+      padding: 10px 9px;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 13px;
+      line-height: 1.42;
+      white-space: normal;
+      word-break: keep-all;
+    }
+
+    .report-preview .report-table th {
+      background: #f3f5f8;
+      font-weight: 700;
+    }
+
+    .report-preview .line-cell {
+      font-weight: 600;
+      line-height: 1.65;
+      width: 110px;
+    }
+
+    .report-preview .insight-box {
+      background: #fff8e6;
+      border: 1px solid #f1d28a;
+      border-radius: 6px;
+      padding: 16px 18px;
+      line-height: 1.75;
+      color: #1f2937;
+      margin: 10px 0 22px;
+    }
+
+    .report-preview .insight-box p {
+      margin: 8px 0;
+    }
+
+    .report-preview .insight-box strong {
+      font-weight: 700;
+    }
+
+    .sub {
+      display: inline-block;
+      margin-top: 4px;
+      color: #8b949f;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .insight {
+      background: #fff8e8;
+      border: 1px solid #f3d898;
+      border-radius: 6px;
+      padding: 14px 16px;
+      line-height: 1.75;
+      color: #38404c;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      width: 360px;
+      background: #fff;
+      border: 1px solid #e5e9ef;
+      border-radius: 8px;
+      box-shadow: 0 14px 34px rgba(18, 29, 43, 0.16);
+      padding: 14px 16px;
+      z-index: 70;
+      transform: translate(-50%, calc(-50% + 12px));
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .toast.show {
+      transform: translate(-50%, -50%);
+      opacity: 1;
+    }
+
+    .toast strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #1f2937;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .toast span {
+      color: #717883;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 1180px) {
+      .wizard-layout { grid-template-columns: 1fr; }
+      .step-nav {
+        position: static;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .select-layout { grid-template-columns: 1fr; }
+      .option-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .brand-menu-simple, .line-dropdown-right, .platform-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .action-bar { left: calc(216px + 24px); }
+    }
+
+    @media (max-width: 980px) {
+      .topbar { padding: 0 16px; gap: 16px; }
+      .logo { width: 140px; font-size: 26px; }
+      .nav { gap: 16px; font-size: 14px; }
+      .layout { grid-template-columns: 1fr; }
+      .sidebar {
+        position: static;
+        height: auto;
+        display: flex;
+        gap: 8px;
+        overflow: auto;
+      }
+      .side-title { display: none; }
+      .side-btn { width: auto; min-width: 128px; }
+      .form-grid, .site-grid, .history-filters { grid-template-columns: 1fr; }
+      .brand-menu-simple, .line-dropdown-right, .platform-list { grid-template-columns: 1fr; }
+      .module-row { grid-template-columns: 34px minmax(0, 1fr); }
+      .module-desc { grid-column: 2; }
+      .preview-cta { align-items: flex-start; flex-direction: column; }
+      .action-bar { left: 16px; right: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="logo">Hisense</div>
+    <nav class="nav" aria-label="主导航">
+      <div class="nav-item"><span class="nav-icon"></span>品牌总览</div>
+      <div class="nav-item"><span class="nav-icon chart"></span>品牌剖析</div>
+      <div class="nav-item"><span class="nav-icon"></span>热门话题</div>
+      <div class="nav-item"><span class="nav-icon chart"></span>品牌对标</div>
+      <div class="nav-item"><span class="nav-icon weekly"></span>聚焦度分析</div>
+      <div class="nav-item"><span class="nav-icon"></span>KPI报表</div>
+      <div class="nav-item active"><span class="nav-icon weekly"></span>周报中心</div>
+      <div class="nav-item">更多⌄</div>
+    </nav>
+    <div class="top-actions">
+      <span>中文⌄</span>
+      <span>⚙</span>
+      <span>?</span>
+      <span class="avatar">st</span>
+      <span>欢迎！<b style="color: var(--teal);">海信开发test</b>⌄</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="周报中心菜单">
+      <div class="side-title">周报中心</div>
+      <button type="button" class="side-btn active" data-page="create"><span class="side-dot"></span>生成报告</button>
+      <button type="button" class="side-btn" data-page="history"><span class="side-dot"></span>历史报告</button>
+    </aside>
+
+    <main class="main">
+      <section class="page-view active" id="page-create">
+        <div class="page-head">
+          <div class="page-title">
+            <h1>生成周报</h1>
+          </div>
+        </div>
+
+        <div class="wizard-layout">
+          <nav class="step-nav" aria-label="配置步骤">
+            <button type="button" class="step-btn active" data-step="0">
+              <span class="step-index">1</span>
+              <span><span class="step-title">基础信息</span><span class="step-desc">名称、模板、日期、排除词</span></span>
+            </button>
+            <button type="button" class="step-btn" data-step="1">
+              <span class="step-index">2</span>
+              <span><span class="step-title">品牌整体表现与分平台表现</span><span class="step-desc">本品、竞品、控比对象</span></span>
+            </button>
+            <button type="button" class="step-btn" data-step="2">
+              <span class="step-index">3</span>
+              <span><span class="step-title">各品线重点媒介表现-1</span><span class="step-desc">站点、本品、控比对象</span></span>
+            </button>
+            <button type="button" class="step-btn" data-step="3">
+              <span class="step-index">4</span>
+              <span><span class="step-title">各品线重点媒介表现-2</span><span class="step-desc">站点、级联多选品线</span></span>
+            </button>
+            <button type="button" class="step-btn" data-step="4">
+              <span class="step-index">5</span>
+              <span><span class="step-title">品线ai洞察</span><span class="step-desc">品线与竞品洞察配置</span></span>
+            </button>
+          </nav>
+
+          <div>
+            <section class="panel step-panel active" data-panel="0">
+              <div class="panel-head">
+                <div>
+                  <div class="panel-title">基础信息</div>
+                </div>
+              </div>
+              <div class="form-grid">
+                <div class="form-item" data-required-field="reportName">
+                  <label>报告名称<span class="required-mark">*</span></label>
+                  <input value="海信集团品牌周报">
+                </div>
+                <div class="form-item">
+                  <label>报告模板</label>
+                  <select>
+                    <option>周报</option>
+                    <option disabled>其他（未开通）</option>
+                  </select>
+                </div>
+                <div class="form-item" data-required-field="reportDateRange">
+                  <label>报告时间范围<span class="required-mark">*</span></label>
+                  <div class="date-range">
+                    <input type="date" value="2026-06-20">
+                    <span>至</span>
+                    <input type="date" value="2026-06-26">
+                  </div>
+                </div>
+                <div class="form-item">
+                  <label>对比周期</label>
+                  <div class="period-group" aria-label="对比周期">
+                    <button type="button" class="period-option" data-period-option>同比</button>
+                    <button type="button" class="period-option active" data-period-option>环比</button>
+                  </div>
+                </div>
+              </div>
+              <div class="section-split">
+                <div class="form-grid">
+                  <div class="form-item">
+                    <label>全部数据统计：内容包含关键词</label>
+                    <textarea placeholder="可输入必须包含的关键词；留空则不限制。"></textarea>
+                    <div class="hint">用于限定全部数据统计模块的纳入范围。</div>
+                  </div>
+                  <div class="form-item">
+                    <label>全部数据统计：内容不包含关键词</label>
+                    <textarea>林更新|(美的+(净水机|饮水机|净水器|净饮一体机|茶吧机|吸尘器|扫地机|取暖器|吸扫拖一体|净化器|加湿器|拖地机|风扇|洗鞋机|烘干盒|消毒柜|电饭锅|电饭煲|压力锅|高压锅|电水壶|养生壶|咖啡壶|煮茶器|破壁机|豆浆机|料理机|果汁机|榨汁机|绞肉机|搅拌机|电饼铛|早餐机|空气炸锅|电火锅|微波炉|落地扇|塔扇|循环扇|挂烫机|熨斗|除湿机|干衣机|暖被机|除螨仪|冲牙器|吹风机|电动牙刷|美容仪|健康秤|面条机))</textarea>
+                    <div class="hint">用于排除全部数据统计模块中的无关内容。</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel step-panel" data-panel="1">
+              <div class="panel-head">
+                <div>
+                  <div class="panel-title">品牌整体表现与分平台表现</div>
+                </div>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-item">
+                  <label>本品品牌</label>
+                  <select id="ownBrand">
+                    <option>海信</option>
+                    <option>容声</option>
+                    <option>Vidda</option>
+                    <option>东芝</option>
+                    <option>ASKO</option>
+                  </select>
+                </div>
+                <div class="form-item">
+                  <label>品牌控比对象</label>
+                  <select id="ratioBrand">
+                    <option>美的</option>
+                    <option>华为</option>
+                    <option>索尼</option>
+                    <option>TCL</option>
+                    <option>海尔</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="section-split">
+                <div class="brand-select-shell">
+                  <div class="dropdown-head">
+                    <span>竞品品牌下拉多选（最多3个）<span class="required-mark is-inline">*</span></span>
+                    <span class="selected-count" style="color:var(--teal);">已选 3/3</span>
+                  </div>
+                  <div class="fake-select">
+                    <span>美的、华为、索尼、TCL、海尔</span>
+                    <span>⌄</span>
+                  </div>
+                  <div class="brand-menu-simple">
+                    <label><input type="checkbox" checked>美的</label>
+                    <label><input type="checkbox" checked>华为</label>
+                    <label><input type="checkbox" checked>索尼</label>
+                    <label><input type="checkbox" checked>TCL</label>
+                    <label><input type="checkbox" checked>海尔</label>
+                    <label><input type="checkbox">gorenje</label>
+                    <label><input type="checkbox">博世</label>
+                    <label><input type="checkbox">ASKO</label>
+                    <label><input type="checkbox">三星</label>
+                    <label><input type="checkbox">小米</label>
+                  </div>
+                </div>
+              </div>
+
+            </section>
+
+            <section class="panel step-panel" data-panel="2">
+              <div class="panel-head">
+                <div>
+                  <div class="panel-title">各品线重点媒介表现-1</div>
+                  <div class="panel-subtitle">用于配置报告中的“各品线重点媒介表现-1”，按本品对象和控比对象生成控比列。</div>
+                </div>
+              </div>
+
+              <div class="section-split" style="margin-top:0;">
+                <div class="panel-title" style="font-size:16px;">分平台展示站点<span class="required-mark">*</span></div>
+                <div class="platform-list" style="margin-top:12px;">
+                  <label class="platform-item"><input type="checkbox" checked>全选</label>
+                  <label class="platform-item"><input type="checkbox" checked>小红书</label>
+                  <label class="platform-item"><input type="checkbox" checked>抖音</label>
+                  <label class="platform-item"><input type="checkbox" checked>视频号</label>
+                  <label class="platform-item"><input type="checkbox" checked>B站</label>
+                  <label class="platform-item"><input type="checkbox" checked>知乎</label>
+                </div>
+              </div>
+
+              <div class="table-toolbar">
+                <span>已配置 <strong>4</strong> 条本品控比</span>
+                <button type="button" class="ghost-btn" id="addBenchmarkLineRow">新增一行</button>
+              </div>
+              <table class="line-table">
+                <thead>
+                  <tr>
+                    <th style="width:210px;">本品品牌<span class="required-mark">*</span></th>
+                    <th style="width:230px;">品牌控比对象<span class="required-mark">*</span></th>
+                    <th style="width:92px;">操作</th>
+                  </tr>
+                </thead>
+                <tbody id="benchmarkLineRows">
+                  <tr><td><select><option>海信电视</option><option>海信冰箱</option><option>海信空调</option><option>海信洗衣机</option></select></td><td><select><option>TCL电视</option><option>三星电视</option><option>索尼电视</option></select></td><td><button type="button" class="plain-btn" data-delete-row>删除</button></td></tr>
+                  <tr><td><select><option>海信冰箱</option><option>海信电视</option><option>海信空调</option><option>海信洗衣机</option></select></td><td><select><option>美的冰箱</option><option>海尔冰箱</option><option>西门子冰箱</option></select></td><td><button type="button" class="plain-btn" data-delete-row>删除</button></td></tr>
+                  <tr><td><select><option>海信空调</option><option>海信电视</option><option>海信冰箱</option><option>海信洗衣机</option></select></td><td><select><option>美的空调</option><option>格力空调</option><option>海尔空调类</option></select></td><td><button type="button" class="plain-btn" data-delete-row>删除</button></td></tr>
+                  <tr><td><select><option>海信洗衣机</option><option>海信电视</option><option>海信冰箱</option><option>海信空调</option></select></td><td><select><option>小天鹅洗衣机</option><option>海尔洗衣机</option><option>美的洗衣机</option></select></td><td><button type="button" class="plain-btn" data-delete-row>删除</button></td></tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="panel step-panel" data-panel="3">
+              <div class="panel-head">
+                <div>
+                  <div class="panel-title">各品线重点媒介表现-2</div>
+                  <div class="panel-subtitle">用于配置报告中的“各品线重点媒介表现-2”，点击新增后逐行选择品线；下拉中按一级和二级分组展示三级品线。</div>
+                </div>
+              </div>
+
+              <div class="section-split" style="margin-top:0;">
+                <div class="panel-title" style="font-size:16px;">分平台展示站点<span class="required-mark">*</span></div>
+                <div class="platform-list" style="margin-top:12px;">
+                  <label class="platform-item"><input type="checkbox" checked>全选</label>
+                  <label class="platform-item"><input type="checkbox" checked>小红书</label>
+                  <label class="platform-item"><input type="checkbox" checked>抖音</label>
+                  <label class="platform-item"><input type="checkbox" checked>视频号</label>
+                  <label class="platform-item"><input type="checkbox" checked>B站</label>
+                  <label class="platform-item"><input type="checkbox" checked>知乎</label>
+                </div>
+              </div>
+
+              <div class="table-toolbar">
+                <span>已配置 <strong>9</strong> 条品线</span>
+                <button type="button" class="ghost-btn" id="addMediaLineRow">新增一行</button>
+              </div>
+              <table class="line-table">
+                <thead>
+                  <tr>
+                    <th style="width:72px;">序号</th>
+                    <th>品线<span class="required-mark">*</span></th>
+                    <th style="width:92px;">操作</th>
+                  </tr>
+                </thead>
+                <tbody id="mediaLineRows">
+                  <tr>
+                    <td>1</td>
+                    <td><select><optgroup label="B2C / 海信电视"><option>海信电视</option><option>海信激光电视</option><option>Vidda</option><option>东芝电视</option></optgroup><optgroup label="B2C / 空调"><option>海信空调</option><option>科龙空调</option></optgroup><optgroup label="B2C / 洗衣机"><option>海信洗衣机</option></optgroup><optgroup label="B2C / 厨卫"><option>海信厨卫</option></optgroup><optgroup label="B2C / 高端品牌"><option>ASKO</option><option>gerenje</option></optgroup><optgroup label="B2B / 中央空调"><option>海信中央空调</option></optgroup><optgroup label="B2B / 医疗"><option>海信医疗</option></optgroup></select></td>
+                    <td><button type="button" class="plain-btn" data-delete-row>删除</button></td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td><select><optgroup label="B2C / 海信电视"><option>海信激光电视</option><option>海信电视</option><option>Vidda</option><option>东芝电视</option></optgroup><optgroup label="B2C / 空调"><option>海信空调</option><option>科龙空调</option></optgroup><optgroup label="B2C / 洗衣机"><option>海信洗衣机</option></optgroup><optgroup label="B2C / 厨卫"><option>海信厨卫</option></optgroup><optgroup label="B2C / 高端品牌"><option>ASKO</option><option>gerenje</option></optgroup><optgroup label="B2B / 中央空调"><option>海信中央空调</option></optgroup><optgroup label="B2B / 医疗"><option>海信医疗</option></optgroup></select></td>
+                    <td><button type="button" class="plain-btn" data-delete-row>删除</button></td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td><select><optgroup label="B2C / 海信电视"><option>Vidda</option><option>海信电视</option><option>海信激光电视</option><option>东芝电视</option></optgroup><optgroup label="B2C / 空调"><option>海信空调</option><option>科龙空调</option></optgroup><optgroup label="B2C / 洗衣机"><option>海信洗衣机</option></optgroup><optgroup label="B2C / 厨卫"><option>海信厨卫</option></optgroup><optgroup label="B2C / 高端品牌"><option>ASKO</option><option>gerenje</option></optgroup><optgroup label="B2B / 中央空调"><option>海信中央空调</option></optgroup><optgroup label="B2B / 医疗"><option>海信医疗</option></optgroup></select></td>
+                    <td><button type="button" class="plain-btn" data-delete-row>删除</button></td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td><select><optgroup label="B2C / 海信电视"><option>东芝电视</option><option>海信电视</option><option>海信激光电视</option><option>Vidda</option></optgroup><optgroup label="B2C / 空调"><option>海信空调</option><option>科龙空调</option></optgroup><optgroup label="B2C / 洗衣机"><option>海信洗衣机</option></optgroup><optgroup label="B2C / 厨卫"><option>海信厨卫</option></optgroup><optgroup label="B2C / 高端品牌"><option>ASKO</option><option>gerenje</option></optgroup><optgroup label="B2B / 中央空调"><option>海信中央空调</option></optgroup><optgroup label="B2B / 医疗"><option>海信医疗</option></optgroup></select></td>
+                    <td><button type="button" class="plain-btn" data-delete-row>删除</button></td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td><select><optgroup label="B2C / 空调"><option>科龙空调</option><option>海信空调</option></optgroup><optgroup label="B2C / 海信电视"><option>海信电视</option><option>海信激光电视</option><option>Vidda</option><option>东芝电视</option></optgroup><optgroup label="B2C / 洗衣机"><option>海信洗衣机</option></optgroup><optgroup label="B2C / 厨卫"><option>海信厨卫</option></optgroup><optgroup label="B2C / 高端品牌"><option>ASKO</option><option>gerenje</option></optgroup><optgroup label="B2B / 中央空调"><option>海信中央空调</option></optgroup><optgroup label="B2B / 医疗"><option>海信医疗</option></optgroup></select></td>
+                    <td><button type="button" class="plain-btn" data-delete-row>删除</button></td>
+                  </tr>
+                  <tr>
+                    <td>6</td>
+                    <td><select><optgroup label="B2C / 洗衣机"><option>海信洗衣机</option></optgroup><optgroup label="B2C / 海信电视"><option>海信电视</option><option>海信激光电视</option><option>Vidda</option><option>东芝电视</option></optgroup><optgroup label="B2C / 空调"><option>海信空调</option><option>科龙空调</option></optgroup><optgroup label="B2C / 厨卫"><option>海信厨卫</option></optgroup><optgroup label="B2C / 高端品牌"><option>ASKO</option><option>gerenje</option></optgroup><optgroup label="B2B / 中央空调"><option>海信中央空调</option></optgroup><optgroup label="B2B / 医疗"><option>海信医疗</option></optgroup></select></td>
+                    <td><button type="button" class="plain-btn" data-delete-row>删除</button></td>
+                  </tr>
+                  <tr>
+                    <td>7</td>
+                    <td><select><optgroup label="B2C / 厨卫"><option>海信厨卫</option></optgroup><optgroup label="B2C / 海信电视"><option>海信电视</option><option>海信激光电视</option><option>Vidda</option><option>东芝电视</option></optgroup><optgroup label="B2C / 空调"><option>海信空调</option><option>科龙空调</option></optgroup><optgroup label="B2C / 洗衣机"><option>海信洗衣机</option></optgroup><optgroup label="B2C / 高端品牌"><option>ASKO</option><option>gerenje</option></optgroup><optgroup label="B2B / 中央空调"><option>海信中央空调</option></optgroup><optgroup label="B2B / 医疗"><option>海信医疗</option></optgroup></select></td>
+                    <td><button type="button" class="plain-btn" data-delete-row>删除</button></td>
+                  </tr>
+                  <tr>
+                    <td>8</td>
+                    <td><select><optgroup label="B2C / 高端品牌"><option>ASKO</option><option>gerenje</option></optgroup><optgroup label="B2C / 海信电视"><option>海信电视</option><option>海信激光电视</option><option>Vidda</option><option>东芝电视</option></optgroup><optgroup label="B2C / 空调"><option>海信空调</option><option>科龙空调</option></optgroup><optgroup label="B2C / 洗衣机"><option>海信洗衣机</option></optgroup><optgroup label="B2C / 厨卫"><option>海信厨卫</option></optgroup><optgroup label="B2B / 中央空调"><option>海信中央空调</option></optgroup><optgroup label="B2B / 医疗"><option>海信医疗</option></optgroup></select></td>
+                    <td><button type="button" class="plain-btn" data-delete-row>删除</button></td>
+                  </tr>
+                  <tr>
+                    <td>9</td>
+                    <td><select><optgroup label="B2C / 高端品牌"><option>gerenje</option><option>ASKO</option></optgroup><optgroup label="B2C / 海信电视"><option>海信电视</option><option>海信激光电视</option><option>Vidda</option><option>东芝电视</option></optgroup><optgroup label="B2C / 空调"><option>海信空调</option><option>科龙空调</option></optgroup><optgroup label="B2C / 洗衣机"><option>海信洗衣机</option></optgroup><optgroup label="B2C / 厨卫"><option>海信厨卫</option></optgroup><optgroup label="B2B / 中央空调"><option>海信中央空调</option></optgroup><optgroup label="B2B / 医疗"><option>海信医疗</option></optgroup></select></td>
+                    <td><button type="button" class="plain-btn" data-delete-row>删除</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="panel step-panel" data-panel="4">
+              <div class="panel-head">
+                <div>
+                  <div class="panel-title">品线ai洞察</div>
+                  <div class="panel-subtitle">用于配置报告底部每个品线的 AI洞察模块，点击新增后逐行选择本品品牌和竞品品牌。</div>
+                </div>
+              </div>
+
+              <div class="table-toolbar">
+                <span>已配置 <strong>4</strong> 条品线ai洞察</span>
+                <button type="button" class="ghost-btn" id="addInsightLineRow">新增一行</button>
+              </div>
+              <table class="line-table">
+                <thead>
+                  <tr>
+                    <th style="width:72px;">序号</th>
+                    <th>本品品牌<span class="required-mark">*</span></th>
+                    <th>竞品品牌<span class="required-mark">*</span></th>
+                    <th style="width:92px;">操作</th>
+                  </tr>
+                </thead>
+                <tbody id="insightLineRows">
+                  <tr>
+                    <td>1</td>
+                    <td><select><option>海信电视</option><option>海信冰箱</option><option>海信空调</option><option>海信洗衣机</option></select></td>
+                    <td><select><option>TCL电视</option><option>小米电视</option><option>创维电视</option><option>美的冰箱</option><option>海尔冰箱</option><option>美的空调</option><option>格力空调</option><option>小天鹅洗衣机</option></select></td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td><select><option>海信冰箱</option><option>海信电视</option><option>海信空调</option><option>海信洗衣机</option></select></td>
+                    <td><select><option>美的冰箱</option><option>海尔冰箱</option><option>西门子冰箱</option><option>TCL电视</option><option>小米电视</option><option>美的空调</option><option>小天鹅洗衣机</option></select></td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td><select><option>海信空调</option><option>海信电视</option><option>海信冰箱</option><option>海信洗衣机</option></select></td>
+                    <td><select><option>美的空调</option><option>格力空调</option><option>海尔空调</option><option>TCL电视</option><option>美的冰箱</option><option>小天鹅洗衣机</option></select></td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td><select><option>海信洗衣机</option><option>海信电视</option><option>海信冰箱</option><option>海信空调</option></select></td>
+                    <td><select><option>小天鹅洗衣机</option><option>海尔洗衣机</option><option>美的洗衣机</option><option>美的空调</option><option>海尔冰箱</option></select></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="section-split">
+                <div class="preview-cta">
+                  <div>
+                    <strong>报告模块预览</strong>
+                    <span>点击后查看完整周报结构，包含品牌整体、分平台、本期重点洞察、各品线重点媒介表现和品线 AI洞察。</span>
+                  </div>
+                  <button type="button" class="primary-btn" id="openPreviewFromStep">查看预览</button>
+                </div>
+              </div>
+            </section>
+
+            <div class="action-bar">
+              <button type="button" class="ghost-btn" id="prevStep">上一步</button>
+              <button type="button" class="ghost-btn" id="nextStep">下一步</button>
+              <button type="button" class="ghost-btn" id="saveDraft">保存草稿</button>
+              <button type="button" class="primary-btn" id="submitBottom">立即生成报告</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page-view" id="page-history">
+        <div class="page-head">
+          <div class="page-title">
+            <h1>历史报告</h1>
+            <p>最新报告展示在最前，支持查看生成中状态、预览报告样式和复制配置。</p>
+          </div>
+          <button type="button" class="primary-btn" data-switch-create>新建报告</button>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div class="panel-title">筛选条件</div>
+            <button type="button" class="ghost-btn">重置</button>
+          </div>
+          <div class="history-filters">
+            <div class="filter-control">报告周期：近 3 个月 <span>⌄</span></div>
+            <div class="filter-control">报告模板：全部 <span>⌄</span></div>
+            <div class="filter-control">生成状态：全部 <span>⌄</span></div>
+            <div class="filter-control">搜索报告名称</div>
+            <button type="button" class="primary-btn">查询</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">报告列表</div>
+              <div class="panel-subtitle">历史报告保留当期配置快照，生成中报告完成后自动更新状态。</div>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>报告ID</th>
+                <th>报告名称</th>
+                <th>报告周期</th>
+                <th>模板</th>
+                <th>报告模版预览</th>
+                <th>生成状态</th>
+                <th>生成时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="historyRows">
+              <tr id="draftHistoryRow">
+                <td>RPT-20260630-001</td>
+                <td><div class="report-name"><strong>海信集团品牌周报草稿</strong></div></td>
+                <td>2026-06-27 至 2026-07-03</td>
+                <td>周报</td>
+                <td><button type="button" class="plain-btn" data-view-report>预览模版</button></td>
+                <td><span class="status pending">待提交</span></td>
+                <td>2026-06-30 14:32</td>
+                <td><button type="button" class="plain-btn active" data-edit-draft>编辑报告</button></td>
+              </tr>
+              <tr>
+                <td>RPT-20260630-002</td>
+                <td><div class="report-name"><strong>海信集团品牌周报</strong></div></td>
+                <td>2026-06-27 至 2026-07-03</td>
+                <td>周报</td>
+                <td><button type="button" class="plain-btn" data-view-report>预览模版</button></td>
+                <td><span class="status running">生成中</span></td>
+                <td>刚刚</td>
+                <td><span style="color:#9aa2ad;">--</span></td>
+              </tr>
+              <tr>
+                <td>RPT-20250515-001</td>
+                <td><div class="report-name"><strong>海信集团品牌周报</strong></div></td>
+                <td>2026-05-07 至 2026-05-14</td>
+                <td>周报</td>
+                <td><button type="button" class="plain-btn" data-view-report>预览模版</button></td>
+                <td><span class="status success">● 已生成</span></td>
+                <td>2026-05-15 10:18</td>
+                <td>
+                  <div class="inline-actions">
+                    <button type="button" class="plain-btn active" data-view-final-report>查看报告</button>
+                    <button type="button" class="plain-btn" data-copy-config>复制配置</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>RPT-20260620-001</td>
+                <td><div class="report-name"><strong>冰洗专题周报</strong></div></td>
+                <td>2026-06-13 至 2026-06-19</td>
+                <td>周报</td>
+                <td><button type="button" class="plain-btn" data-view-report>预览模版</button></td>
+                <td><span class="status success">● 已生成</span></td>
+                <td>2026-06-20 10:04</td>
+                <td>
+                  <div class="inline-actions">
+                    <button type="button" class="plain-btn active" data-view-final-report>查看报告</button>
+                    <button type="button" class="plain-btn" data-copy-config>复制配置</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>RPT-20260613-001</td>
+                <td><div class="report-name"><strong>电视专题周报</strong></div></td>
+                <td>2026-06-06 至 2026-06-12</td>
+                <td>周报</td>
+                <td><button type="button" class="plain-btn" data-view-report>预览模版</button></td>
+                <td><span class="status fail">生成失败 <span class="fail-info" data-tip="失败原因：服务异常，请稍后重新生成。">!</span></span></td>
+                <td>2026-06-13 10:08</td>
+                <td>
+                  <div class="inline-actions">
+                    <button type="button" class="plain-btn active" data-regenerate>重新生成</button>
+                    <button type="button" class="plain-btn" data-copy-config>复制配置</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-mask" id="modalMask" aria-hidden="true">
+    <div class="modal" role="dialog" aria-label="报告预览">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title">报告预览</div>
+          <div class="modal-subtitle">展示报告模板结构和字段。</div>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button type="button" class="ghost-btn" id="copyReportContent" hidden>一键复制内容</button>
+          <button type="button" class="icon-btn" id="closeModal">×</button>
+        </div>
+      </div>
+      <div class="modal-body report-preview" id="previewReportBody">
+        <header class="report-header">
+          <h1 data-report-title>海信集团品牌周报</h1>
+          <div class="report-period" data-report-period>数据周期：2026.06.20-2026.06.26</div>
+        </header>
+
+        <h2>1.1 品牌整体表现</h2>
+        <table class="report-table">
+          <thead>
+            <tr><th>品牌</th><th>SOV</th><th>同比</th><th>控比竞品</th><th>SOE</th><th>同比</th><th>控比竞品</th><th>NSR</th><th>同比</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>海信</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>美的</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>海尔</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>TCL</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+
+        <h2>1.2 品牌整体分平台表现</h2>
+        <table class="report-table">
+          <thead>
+            <tr><th>平台</th><th>SOV</th><th>同比</th><th>控比MD</th><th>SOE</th><th>同比</th><th>控比MD</th><th>NSR</th><th>同比</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>抖音</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>小红书</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>视频号</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>B站</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>知乎</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+
+        <h2>本期重点洞察</h2>
+        <section class="insight-box">
+          <p><strong>【海信本期动态】</strong></p>
+          <p></p>
+          <p><strong>【竞品数据对标】</strong></p>
+          <p></p>
+          <p><strong>【竞品动态速递】</strong></p>
+          <p></p>
+        </section>
+
+        <h2>各品线重点媒介表现-1</h2>
+        <table class="report-table">
+          <thead>
+            <tr><th>品线</th><th>媒介平台</th><th>用户互动SOE/视频号爱心赞</th><th>同比/视频号环比</th><th>控比</th><th>NSR实际</th><th>同比变化</th></tr>
+          </thead>
+          <tbody>
+            <tr><td rowspan="5" class="line-cell">海信电视<br>控比竞品<br>TCL电视</td><td>小红书</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>抖音</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>视频号</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>B站</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>知乎</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td rowspan="5" class="line-cell">海信冰箱<br>控比竞品<br>美的冰箱</td><td>小红书</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>抖音</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>视频号</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>B站</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>知乎</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td rowspan="5" class="line-cell">海信空调<br>控比竞品<br>美的空调</td><td>小红书</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>抖音</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>视频号</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>B站</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>知乎</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td rowspan="5" class="line-cell">海信洗衣机<br>控比竞品<br>小天鹅洗衣机</td><td>小红书</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>抖音</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>视频号</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>B站</td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>知乎</td><td></td><td></td><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+
+        <h2>各品线重点媒介表现-2</h2>
+        <table class="report-table">
+          <thead>
+            <tr><th>品线</th><th>媒介平台</th><th>SOE</th><th>SOE同比</th><th>NSR实际</th><th>同比变化</th></tr>
+          </thead>
+          <tbody>
+            <tr><td rowspan="5" class="line-cell">海信电视</td><td>小红书</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>抖音</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>视频号</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>B站</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>知乎</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td rowspan="5" class="line-cell">海信激光电视</td><td>小红书</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>抖音</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>视频号</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>B站</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>知乎</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td rowspan="5" class="line-cell">Vidda</td><td>小红书</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>抖音</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>视频号</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>B站</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>知乎</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td rowspan="5" class="line-cell">东芝电视</td><td>小红书</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>抖音</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>视频号</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>B站</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>知乎</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td rowspan="5" class="line-cell">科龙空调</td><td>小红书</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>抖音</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>视频号</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>B站</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>知乎</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td rowspan="5" class="line-cell">海信洗衣机</td><td>小红书</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>抖音</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>视频号</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>B站</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>知乎</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td rowspan="5" class="line-cell">海信厨卫</td><td>小红书</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>抖音</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>视频号</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>B站</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>知乎</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td rowspan="5" class="line-cell">ASKO</td><td>小红书</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>抖音</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>视频号</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>B站</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>知乎</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td rowspan="5" class="line-cell">gerenje</td><td>小红书</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>抖音</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>视频号</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>B站</td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>知乎</td><td></td><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+
+        <h2>海信电视 AI洞察</h2>
+        <section class="insight-box">
+          <p><strong>【海信电视本期动态】</strong></p>
+          <p></p>
+          <p><strong>【竞品数据对标】</strong></p>
+          <p></p>
+          <p><strong>【竞品动态速递】</strong></p>
+          <p></p>
+        </section>
+
+        <h2>海信冰箱 AI洞察</h2>
+        <section class="insight-box">
+          <p><strong>【海信冰箱本期动态】</strong></p>
+          <p></p>
+          <p><strong>【竞品数据对标】</strong></p>
+          <p></p>
+          <p><strong>【竞品动态速递】</strong></p>
+          <p></p>
+        </section>
+
+        <h2>海信空调 AI洞察</h2>
+        <section class="insight-box">
+          <p><strong>【海信空调本期动态】</strong></p>
+          <p></p>
+          <p><strong>【竞品数据对标】</strong></p>
+          <p></p>
+          <p><strong>【竞品动态速递】</strong></p>
+          <p></p>
+        </section>
+
+        <h2>海信洗衣机 AI洞察</h2>
+        <section class="insight-box">
+          <p><strong>【海信洗衣机本期动态】</strong></p>
+          <p></p>
+          <p><strong>【竞品数据对标】</strong></p>
+          <p></p>
+          <p><strong>【竞品动态速递】</strong></p>
+          <p></p>
+        </section>
+      </div>
+
+      <div class="modal-body report-preview" id="finalReportBody" hidden>
+            <header class="report-header">
+              <h1>海信周报（2026年7.1-7.8）</h1>
+              <div class="report-period">数据周期：2026.7.1-2026.7.8</div>
+            </header>
+            <h2>1.1 品牌整体表现</h2><table class="report-table"><thead><tr><th>品牌</th><th>SOV</th><th>同比</th><th>控比竞品</th><th>SOE</th><th>同比</th><th>控比竞品</th><th>NSR</th><th>同比</th></tr></thead><tbody><tr><td>海信</td><td>23.03%</td><td>-5.45%</td><td>—</td><td>35.62%</td><td>18.18%</td><td>—</td><td>94.60%</td><td>6.56%</td></tr><tr><td>美的</td><td>34.29%</td><td>4.31%</td><td>67%</td><td>29.50%</td><td>-5.69%</td><td>121%</td><td>85.70%</td><td>8.83%</td></tr><tr><td>海尔</td><td>34.38%</td><td>2.22%</td><td>67%</td><td>28.55%</td><td>-10.85%</td><td>125%</td><td>90.89%</td><td>11.24%</td></tr><tr><td>TCL</td><td>8.30%</td><td>-1.08%</td><td>277%</td><td>6.33%</td><td>-1.64%</td><td>563%</td><td>90.40%</td><td>-0.01%</td></tr></tbody></table>
+            <h2>1.2 品牌整体分平台表现</h2><table class="report-table"><thead><tr><th>平台</th><th>SOV</th><th>同比</th><th>控比MD</th><th>SOE</th><th>同比</th><th>控比MD</th><th>NSR</th><th>同比</th></tr></thead><tbody><tr><td>抖音</td><td>21.05%</td><td>-5.37%</td><td>55%</td><td>35.72%</td><td>20.03%</td><td>121%</td><td>96.43%</td><td>14.66%</td></tr><tr><td>小红书</td><td>29.10%</td><td>4.83%</td><td>112%</td><td>42.78%</td><td>16.36%</td><td>111%</td><td>95.26%</td><td>15.00%</td></tr><tr><td>视频号</td><td>36.65%</td><td>18.88%</td><td>167%</td><td>148410<br><span class="sub">（爱心赞）</span></td><td>231790.62%</td><td>277%<br><span class="sub">（爱心赞）</span></td><td>100.00%</td><td>0.00%</td></tr><tr><td>B站</td><td>17.95%</td><td>-1.79%</td><td>53%</td><td>32.26%</td><td>1.40%</td><td>93%</td><td>98.76%</td><td>4.82%</td></tr><tr><td>知乎</td><td>33.20%</td><td>7.78%</td><td>135%</td><td>30.36%</td><td>-7.65%</td><td>101%</td><td>97.88%</td><td>12.16%</td></tr></tbody></table>
+            <h2>本期重点洞察</h2><section class="insight-box"><p><strong>【海信本期动态】</strong></p><p>本期海信整体声量占比（SOV）为23.03%，同比下滑5.45个点，下滑主要来自抖音平台；互动量占比（SOE）为35.62%，同比提升18.18个点，互动承接主要由视频号带动。SOE明显高于SOV，说明本期海信虽声量份额承压，但内容触达后的互动转化表现更强。全网NSR为94.60%，同比提升6.56个点，小红书与抖音NSR改善较突出，整体NSR表现优于声量走势。</p><p><strong>【竞品数据对标】</strong></p><p>1.传播表现：本期海尔以34.38%的声量占比位列第一，美的为34.29%，海信为23.03%，在四个对象中排名第三；海信同比下滑5.45个点，主要受抖音回落影响，视频号与知乎虽有改善，但未抵消整体声量压力。竞品中美的同比提升4.31个点、海尔提升2.22个点，海信后续需强化抖音内容承接和跨平台稳定曝光。</p><p>2.NSR表现：本期海信全网NSR为94.60%，在四个对象中排名第一，同比提升6.56个点，NSR改善主要来自小红书和抖音；海尔NSR为90.89%，同比提升11.24个点，美的为85.70%，同比提升8.83个点，竞品NSR也在修复。海信当前NSR领先，但需要在声量下滑平台同步稳住正向内容，避免NSR优势无法转化为传播优势。</p><p><strong>【竞品动态速递】</strong></p><p>1.美的：本期美的围绕欧洲高温、中国空调出海和美的空调热销形成集中传播，内容中多次出现“美的空调卖爆欧洲”“中国空调在欧洲被抢疯了”“美的空调卡bug”等话题，强化其空调全球化、应对高温和中国制造外溢认知。同时，美的全屋智能、美的冰箱全食材原鲜等内容补充家庭场景触点。传播覆盖抖音、小红书、视频号、B站和知乎，以UGC热点讨论与PGC解读共同扩散。</p><p>2.海尔：本期海尔传播聚焦欧洲高温下的空调出海、海尔智慧家焕新好房子、热AI大焕新和总想陪你看等主题，同时延展到海尔空调、冰箱串味、智慧家庭和观赛场景。这些内容强化海尔在智慧家庭、健康空气和家电焕新中的综合认知，并通过官方活动与用户生活内容共同承接夏季需求。传播覆盖五个重点平台，UGC讨论、PGC内容与BGC官方内容共同参与。</p><p>3.TCL：本期TCL围绕TCL空调、欧洲高温、真省电Pro二代空调、西班牙国家队官方合作伙伴、小蓝翼夏日好梦计划和双磁鲜Pro冰箱等主题形成传播。内容一方面借欧洲高温放大空调需求，另一方面通过体育合作、小黄人互动、冰箱保鲜和超级筒洗衣机延展多品类触点。传播中PGC与UGC参与度接近，BGC内容承接品牌合作和活动信息，形成热点、产品卖点与品牌IP的组合扩散。</p></section>
+            <h2>各品线重点媒介表现-1</h2><table class="report-table"><thead><tr><th>品线</th><th>媒介平台</th><th>用户互动SOE/视频号爱心赞</th><th>同比/视频号环比</th><th>控比</th><th>NSR实际</th><th>同比变化</th></tr></thead><tbody><tr><td rowspan="5" class="line-cell">海信电视<br>控比竞品<br>TCL电视</td><td>小红书</td><td>46.39%</td><td>-8.55%</td><td>267%</td><td>97.83%</td><td>8.86%</td></tr><tr><td>抖音</td><td>45.17%</td><td>17.12%</td><td>307%</td><td>98.20%</td><td>20.88%</td></tr><tr><td>视频号</td><td>26022</td><td>36.91%</td><td>329%</td><td>100.00%</td><td>0.00%</td></tr><tr><td>B站</td><td>50.18%</td><td>8.87%</td><td>358%</td><td>98.62%</td><td>2.43%</td></tr><tr><td>知乎</td><td>35.45%</td><td>10.02%</td><td>118%</td><td>98.68%</td><td>8.94%</td></tr><tr><td rowspan="5" class="line-cell">海信冰箱<br>控比竞品<br>美的冰箱</td><td>小红书</td><td>16.17%</td><td>11.97%</td><td>127%</td><td>96.75%</td><td>15.67%</td></tr><tr><td>抖音</td><td>6.51%</td><td>4.20%</td><td>22%</td><td>98.11%</td><td>49.98%</td></tr><tr><td>视频号</td><td>11953</td><td>-22.10%</td><td>992%</td><td>100.00%</td><td>0.00%</td></tr><tr><td>B站</td><td>7.76%</td><td>6.24%</td><td>40%</td><td>99.47%</td><td>2.98%</td></tr><tr><td>知乎</td><td>24.13%</td><td>9.84%</td><td>259%</td><td>100.00%</td><td>0.00%</td></tr><tr><td rowspan="5" class="line-cell">海信空调<br>控比竞品<br>美的空调</td><td>小红书</td><td>34.59%</td><td>15.81%</td><td>74%</td><td>96.02%</td><td>23.39%</td></tr><tr><td>抖音</td><td>10.69%</td><td>-0.02%</td><td>28%</td><td>97.62%</td><td>26.86%</td></tr><tr><td>视频号</td><td>27442</td><td>5.95%</td><td>91%</td><td>100.00%</td><td>0.00%</td></tr><tr><td>B站</td><td>6.58%</td><td>5.29%</td><td>16%</td><td>99.40%</td><td>5.75%</td></tr><tr><td>知乎</td><td>27.62%</td><td>18.03%</td><td>55%</td><td>100.00%</td><td>30.77%</td></tr><tr><td rowspan="5" class="line-cell">海信洗衣机<br>控比竞品<br>小天鹅洗衣机</td><td>小红书</td><td>5.87%</td><td>1.35%</td><td>29%</td><td>95.36%</td><td>11.39%</td></tr><tr><td>抖音</td><td>5.96%</td><td>3.39%</td><td>15%</td><td>99.24%</td><td>59.99%</td></tr><tr><td>视频号</td><td>3935</td><td>181.88%</td><td>1164%</td><td>100.00%</td><td>—</td></tr><tr><td>B站</td><td>4.86%</td><td>4.53%</td><td>18%</td><td>100.00%</td><td>6.90%</td></tr><tr><td>知乎</td><td>8.54%</td><td>1.84%</td><td>222%</td><td>100.00%</td><td>0.00%</td></tr></tbody></table>
+            <h2>各品线重点媒介表现-2</h2><table class="report-table"><thead><tr><th>品线</th><th>媒介平台</th><th>SOE</th><th>SOE同比</th><th>NSR实际</th><th>同比变化</th></tr></thead><tbody><tr><td rowspan="5" class="line-cell">海信电视</td><td>小红书</td><td>46.39%</td><td>-8.55%</td><td>97.83%</td><td>8.86%</td></tr><tr><td>抖音</td><td>45.17%</td><td>17.12%</td><td>98.20%</td><td>20.88%</td></tr><tr><td>视频号</td><td>26022</td><td>36.91%</td><td>100.00%</td><td>0.00%</td></tr><tr><td>B站</td><td>50.18%</td><td>8.87%</td><td>98.62%</td><td>2.43%</td></tr><tr><td>知乎</td><td>35.45%</td><td>10.02%</td><td>98.68%</td><td>8.94%</td></tr><tr><td rowspan="5" class="line-cell">海信激光电视</td><td>小红书</td><td>68.84%</td><td>43.57%</td><td>98.94%</td><td>2.91%</td></tr><tr><td>抖音</td><td>90.03%</td><td>70.52%</td><td>99.72%</td><td>6.28%</td></tr><tr><td>视频号</td><td>803</td><td>-50.19%</td><td>100.00%</td><td>0.00%</td></tr><tr><td>B站</td><td>39.79%</td><td>36.00%</td><td>100.00%</td><td>0.00%</td></tr><tr><td>知乎</td><td>25.00%</td><td>-55.00%</td><td>100.00%</td><td>0.00%</td></tr><tr><td rowspan="5" class="line-cell">Vidda</td><td>小红书</td><td>6.10%</td><td>2.18%</td><td>92.98%</td><td>6.75%</td></tr><tr><td>抖音</td><td>13.05%</td><td>10.32%</td><td>98.83%</td><td>10.60%</td></tr><tr><td>视频号</td><td>251</td><td>109.17%</td><td>100.00%</td><td>—</td></tr><tr><td>B站</td><td>7.38%</td><td>0.88%</td><td>97.51%</td><td>1.21%</td></tr><tr><td>知乎</td><td>7.44%</td><td>-0.29%</td><td>100.00%</td><td>11.76%</td></tr><tr><td rowspan="5" class="line-cell">东芝电视</td><td>小红书</td><td>1.85%</td><td>0.79%</td><td>94.83%</td><td>-1.17%</td></tr><tr><td>抖音</td><td>2.63%</td><td>2.22%</td><td>94.59%</td><td>34.59%</td></tr><tr><td>视频号</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>B站</td><td>0.93%</td><td>0.88%</td><td>100.00%</td><td>—</td></tr><tr><td>知乎</td><td>0.42%</td><td>-5.74%</td><td>100.00%</td><td>0.00%</td></tr><tr><td rowspan="5" class="line-cell">科龙空调</td><td>小红书</td><td>0.10%</td><td>-0.87%</td><td>89.64%</td><td>42.93%</td></tr><tr><td>抖音</td><td>0.87%</td><td>0.30%</td><td>85.07%</td><td>8.20%</td></tr><tr><td>视频号</td><td>413</td><td>159.75%</td><td>—</td><td>—</td></tr><tr><td>B站</td><td>3.38%</td><td>-6.22%</td><td>99.51%</td><td>-0.49%</td></tr><tr><td>知乎</td><td>0.00%</td><td>-0.14%</td><td>100.00%</td><td>—</td></tr><tr><td rowspan="5" class="line-cell">海信洗衣机</td><td>小红书</td><td>5.87%</td><td>1.35%</td><td>95.36%</td><td>11.39%</td></tr><tr><td>抖音</td><td>5.96%</td><td>3.39%</td><td>99.24%</td><td>59.99%</td></tr><tr><td>视频号</td><td>3935</td><td>181.88%</td><td>100.00%</td><td>—</td></tr><tr><td>B站</td><td>4.86%</td><td>4.53%</td><td>100.00%</td><td>6.90%</td></tr><tr><td>知乎</td><td>8.54%</td><td>1.84%</td><td>100.00%</td><td>0.00%</td></tr><tr><td rowspan="5" class="line-cell">海信厨卫</td><td>小红书</td><td>16.06%</td><td>12.95%</td><td>98.92%</td><td>30.17%</td></tr><tr><td>抖音</td><td>7.10%</td><td>4.59%</td><td>98.60%</td><td>121.18%</td></tr><tr><td>视频号</td><td>4058</td><td>1889.22%</td><td>100.00%</td><td>—</td></tr><tr><td>B站</td><td>20.67%</td><td>20.47%</td><td>100.00%</td><td>0.00%</td></tr><tr><td>知乎</td><td>23.38%</td><td>23.38%</td><td>100.00%</td><td>—</td></tr><tr><td rowspan="5" class="line-cell">ASKO</td><td>小红书</td><td>79.35%</td><td>34.02%</td><td>95.74%</td><td>1.22%</td></tr><tr><td>抖音</td><td>96.13%</td><td>-0.74%</td><td>100.00%</td><td>0.75%</td></tr><tr><td>视频号</td><td>25</td><td>-98.21%</td><td>—</td><td>—</td></tr><tr><td>B站</td><td>39.51%</td><td>21.50%</td><td>100.00%</td><td>0.00%</td></tr><tr><td>知乎</td><td>0.00%</td><td>0.00%</td><td>—</td><td>—</td></tr><tr><td rowspan="5" class="line-cell">gerenje</td><td>小红书</td><td>16.06%</td><td>9.05%</td><td>96.80%</td><td>-3.20%</td></tr><tr><td>抖音</td><td>15.38%</td><td>7.08%</td><td>100.00%</td><td>0.00%</td></tr><tr><td>视频号</td><td>67</td><td>-88.61%</td><td>—</td><td>—</td></tr><tr><td>B站</td><td>1.37%</td><td>-3.90%</td><td>—</td><td>—</td></tr><tr><td>知乎</td><td>0.00%</td><td>0.00%</td><td>100.00%</td><td>—</td></tr></tbody></table>
+        <h2>海信电视 AI洞察</h2>
+        <section class="insight-box"><p><strong>【海信电视本期动态】</strong></p><p>本期海信电视整体声量占比（SOV）为42.54%，同比下滑4.24个点；互动量占比（SOE）为46.44%，同比提升14.14个点，提升主要来自视频号。SOE高于SOV，说明海信电视虽然声量份额有所回落，但互动承接强于声量表现。全网NSR为95.67%，同比提升4.69个点，抖音、知乎和小红书均有改善，NSR基本盘较稳。</p><p><strong>【竞品数据对标】</strong></p><p>1.传播表现：本期海信电视声量占比为42.54%，在四个电视对象中保持第一，领先TCL电视的16.38%、创维电视的12.56%和小米电视的6.73%；互动量占比为46.44%，同样排名第一，明显高于TCL电视的14.80%。海信电视SOV同比下滑4.24个点，但SOE同比提升14.14个点，说明声量份额承压的同时，高互动内容承接有所增强。竞品中TCL电视SOV同比提升4.45个点，是声量增长最明显的对象，后续仍需关注其体育观赛、电视大促和选购内容带来的传播追赶。</p><p>2.NSR表现：本期海信电视全网NSR为95.67%，排名第一，同比提升4.69个点，NSR优势明显；创维电视为90.83%、TCL电视为88.06%，小米电视仅为51.53%。从变化看，TCL电视、创维电视和小米电视NSR均同比下滑，海信电视是该组中唯一NSR改善且排名领先的对象。海信电视的NSR改善主要来自抖音、知乎和小红书，后续应把NSR优势转化为视频号等弱势平台的内容承接。</p><p><strong>【竞品动态速递】</strong></p><p>1.TCL电视：本期TCL电视传播围绕体育观赛、SQD-Mini LED产品卖点、T7M Pro电视推荐和文物展陈争议话题展开。体育内容中，TCL西班牙国家足球队官方合作伙伴、TCL奥林匹克全球合作伙伴、夏日足球狂欢和咪咕体育足球盛宴等内容持续出现，结合世界杯和主场观赛场景，强化TCL电视的大屏观赛心智。产品内容方面，T7M Pro、Q9M Pro、SQD-Mini LED、屏上高色域、高对比度、高峰值亮度等卖点被多条PGC测评和UGC体验内容提及，主要承接电视选购、装修配套和画质升级需求。事件话题方面，“国家一级文物身上出现TCL电视字样”“明朝菩萨像出现现代广告”等内容带来额外曝光，并引发用户对品牌露出和展陈管理的讨论。传播覆盖抖音、小红书、视频号和B站，官方体育合作内容、PGC电视测评推荐和UGC话题讨论共同扩散。</p><p>2.小米电视：本期小米电视传播围绕“小米电视”“京东自营小米电视”“小米全屋智能”和电视选购攻略展开，同时与小米空调、燃气灶等全屋智能内容共同出现。这些内容强化了小米电视作为智能家居入口和高性价比电视选择的认知，部分讨论集中在S Pro、送装一体和客厅电视二选一等购买决策场景。传播主要集中在抖音、小红书、B站和知乎，以UGC选购讨论为主，PGC内容承担测评、攻略和智能家居方案说明。</p><p>3.创维电视：本期创维电视围绕黑骑士A5F、壁纸电视A10H、国补恢复和电视安装避坑等内容形成传播，并通过“看球”“电视装修避坑”等场景切入大屏需求。内容突出新品价格带、装修适配和大屏观赛体验，强化创维在电视换新和家装场景中的选购心智。传播以抖音、小红书、B站和知乎为主要阵地，UGC内容贡献较多真实安装、价格和购买反馈，PGC内容补充电视推荐和参数导购。</p></section>
+        <h2>海信冰箱 AI洞察</h2>
+        <section class="insight-box"><p><strong>【海信冰箱本期动态】</strong></p><p>本期海信冰箱整体声量占比（SOV）为12.53%，同比提升3.70个点，增长主要来自抖音；互动量占比（SOE）为7.54%，同比提升4.98个点，互动改善主要由视频号承接。SOE低于SOV，说明声量向互动的转化仍有提升空间。全网NSR为95.75%，同比提升15.74个点，抖音和小红书NSR改善明显，正向评价对整体表现形成支撑。</p><p><strong>【竞品数据对标】</strong></p><p>1.传播表现：本期海尔冰箱以29.64%的声量占比领先，美的冰箱为20.51%，海信冰箱为12.53%，排名第三；互动量占比方面，美的冰箱以28.21%领先，海尔冰箱为22.31%，海信冰箱为7.54%，同样排名第三。海信冰箱SOV同比提升3.70个点、SOE同比提升4.98个点，增长方向明确，但与前两名仍有明显差距。平台上，海信冰箱声量增长主要来自抖音，互动改善主要由视频号承接，后续需要围绕保鲜、容量和家庭场景建立更连续的内容阵地。</p><p>2.NSR表现：本期海信冰箱全网NSR为95.75%，排名第一，同比提升15.74个点；海尔冰箱为94.25%，美的冰箱为92.43%，西门子冰箱为89.09%。海信冰箱的NSR领先幅度不大，但改善方向明确，主要由抖音和小红书拉动。值得注意的是，美的冰箱NSR同比提升37.56个点，修复速度更快；海信冰箱需要在保持NSR第一的同时，补齐与海尔、美的之间的声量差距。</p><p><strong>【竞品动态速递】</strong></p><p>1.美的冰箱：本期美的冰箱重点围绕美的520冰箱、双系统冰箱、法式冰箱和“全食材原鲜”保鲜卖点形成传播，并叠加美的空调以旧换新、全屋智能等跨品类内容。这些内容强化美的冰箱在保鲜、容量结构和家庭场景中的产品认知，也借助节点促销与家电组合提升转化线索。传播覆盖抖音、小红书、视频号、B站和知乎，UGC内容承担生活场景与使用反馈，PGC内容补充冰箱选购、行业套路和产品卖点解释。</p><p>2.海尔冰箱：本期海尔冰箱围绕“海尔智慧家焕新好房子”“热AI大焕新”、云溪冰箱和磁控全空间保鲜冰箱持续输出，同时出现“细胞级养鲜”“磁控保鲜60天”等具体保鲜话题。内容强化海尔冰箱在智慧家庭、AI焕新和长效保鲜上的技术认知，并通过看球、麦浪慢生活、厨房布局等场景连接家庭使用需求。传播覆盖抖音、小红书、B站、知乎和视频号，UGC讨论较多，PGC和少量BGC内容用于承接新品、技术卖点和官方活动。</p><p>3.西门子冰箱：本期西门子冰箱传播围绕西门子家电真香现场、理想厨房、西门子冰箱选购和家装民宿场景展开，内容中多次出现厨房、旅居、装修和家电配置相关讨论。这些内容强化西门子冰箱在高端厨房、品质家电和家装配套中的认知，更多以生活方式和空间配置带动产品露出。传播主要覆盖抖音、小红书和B站，知乎与视频号内容相对较少，UGC分享占主导，PGC内容补充家电选购和厨房方案。</p></section>
+        <h2>海信空调 AI洞察</h2>
+        <section class="insight-box"><p><strong>【海信空调本期动态】</strong></p><p>本期海信空调整体声量占比（SOV）为15.78%，同比下滑2.99个点；互动量占比（SOE）为12.09%，同比提升1.06个点，提升主要来自知乎。SOE低于SOV，说明互动承接仍弱于声量基础。全网NSR为96.58%，同比提升10.57个点，知乎、小红书和抖音NSR改善突出，NSR优势明显但尚未充分转化为声量优势。</p><p><strong>【竞品数据对标】</strong></p><p>1.传播表现：本期美的空调以23.96%的声量占比领先，海尔空调为18.76%，格力空调为17.51%，海信空调为15.78%，在四个对象中排名第四；互动量占比方面，美的空调以38.86%领先，格力空调为27.14%，海信空调为12.09%，排名第三。海信空调SOV同比下滑2.99个点，但SOE同比提升1.06个点，说明互动承接略有改善但声量份额仍承压。竞品中美的空调SOV同比提升4.45个点、SOE同比提升14.16个点，传播和互动同步放大，后续需要围绕夏季高温、出海和省电舒适等议题加强主阵地表达。</p><p>2.NSR表现：本期海信空调全网NSR为96.58%，排名第一，同比提升10.57个点，明显高于海尔空调的93.03%、美的空调的79.73%和格力空调的63.52%。海尔空调NSR同比提升17.02个点，改善速度最快，说明健康空气和智慧家场景正在修复其NSR表现。海信空调当前NSR优势突出，但声量排名靠后，后续重点应是把知乎、小红书等平台的正向NSR转化为更强的传播曝光。</p><p><strong>【竞品动态速递】</strong></p><p>1.美的空调：本期美的空调围绕欧洲高温、中国空调出海和美的PortaSplit移动分体式空调形成高频传播，“美的空调卖爆欧洲”“中国空调在欧洲被抢疯了”等话题带来明显事件型声量。内容强化美的空调的全球化、应对高温和便捷安装认知，同时通过美的美享家、全屋智能等话题承接家庭舒适场景。传播覆盖抖音、小红书、视频号、B站和知乎，UGC讨论与PGC解读共同扩散，形成热点事件、产品卖点和出海叙事的组合传播。</p><p>2.格力空调：本期格力空调传播围绕省电使用、空调清洁、欧洲高温和品牌人物话题展开。高互动内容中，省电模式设置、遥控器使用方法、26℃省电技巧等内容较多，强化用户对格力空调日常使用和节能场景的认知；空调自清洁、遥控器隐藏功能和清洁小妙招等内容，则承接夏季高频使用下的维护需求。产品层面，格力小冰晶空调、格力玫瑰系列和客厅立式空调等内容带来具体型号与外观讨论。行业与品牌层面，欧洲高温、中国空调出海、移动空调需求、董明珠回应出口渠道和股东分红后下单格力等话题，持续放大格力在空调专业性、中国制造和品牌人物声量上的讨论热度。传播主要覆盖抖音、小红书、B站和知乎，UGC使用技巧与PGC科普解读共同扩散。</p><p>3.海尔空调：本期海尔空调传播聚焦智慧家庭、健康空气、欧洲高温和海外落地等主题。官方内容中，“总想陪你看”结合比赛夜场景传递家庭陪伴感；“有AI家理人”与麦浪套系焕新理想书房内容，将海尔空调放入书房改造、智慧家庭焕新和十年管家服务场景中，强化全屋解决方案认知。产品内容围绕海尔洗空气空调、AI好空气中国新标杆、全屋净化除尘、速冷温润等卖点展开，承接夏季健康空气需求。行业话题方面，欧洲高温、中国空调出海、欧洲各国销售表现、尼斯学校安装海尔空调、国家科技进步奖等内容，补充了海尔空调在海外市场和技术实力上的传播素材。传播覆盖抖音、视频号、小红书、B站和知乎，BGC官方场景内容、PGC选购解读和UGC热点讨论共同参与扩散。</p></section>
+        <h2>海信洗衣机 AI洞察</h2>
+        <section class="insight-box"><p><strong>【海信洗衣机本期动态】</strong></p><p>本期海信洗衣机整体声量占比（SOV）为7.27%，同比下滑2.93个点，视频号、B站和抖音均有回落；互动量占比（SOE）为5.78%，同比提升3.01个点，主要由视频号承接。SOE低于SOV，说明声量向互动的转化仍偏弱。全网NSR为98.38%，同比提升19.01个点，抖音NSR改善最明显，当前优势集中在NSR端，传播规模仍需补强。</p><p><strong>【竞品数据对标】</strong></p><p>1.传播表现：本期海尔洗衣机以28.13%的声量占比领先，小天鹅洗衣机为21.02%，美的洗衣机为10.58%，海信洗衣机为7.27%，排名第四；互动量占比方面，小天鹅洗衣机以38.88%领先，海尔洗衣机为23.68%，美的洗衣机为11.56%，海信洗衣机为5.78%，同样排名第四。海信洗衣机SOV同比下滑2.93个点，但SOE同比提升3.01个点，说明互动承接有所修复但传播规模仍弱。竞品中小天鹅洗衣机SOV同比提升3.86个点、SOE同比提升20.01个点，家庭洗衣房、梅雨季烘干和母婴洗护内容对声量与互动拉动明显，海信洗衣机需要尽快建立可识别的洗护场景和产品议题。</p><p>2.NSR表现：本期海信洗衣机全网NSR为98.38%，排名第一，同比提升19.01个点，NSR表现显著优于小天鹅洗衣机、海尔洗衣机和美的洗衣机。但竞品NSR也在修复，美的洗衣机同比提升15.42个点，小天鹅洗衣机提升13.70个点，海尔洗衣机提升8.53个点。海信洗衣机当前问题不是NSR，而是声量弱和平台回落范围较广，后续应把正向NSR转化为小红书之外更多平台的内容曝光。</p><p><strong>【竞品动态速递】</strong></p><p>1.小天鹅洗衣机：本期小天鹅洗衣机围绕小天鹅家庭洗衣房、小乌梅洗烘套装、梅雨季烘干和母婴洗护形成传播，内容中多次出现分区洗烘、烘干机和待产准备相关话题。这些内容强化小天鹅在阳台洗衣房、梅雨季干衣和母婴衣物护理场景中的专业认知，也承接了新生儿用品和家庭装修需求。传播主要覆盖抖音、小红书、B站和知乎，UGC内容贡献真实使用与装修场景，PGC内容补充产品体验、清单和洗护方案。</p><p>2.海尔洗衣机：本期海尔洗衣机围绕“热AI大焕新”“海尔智慧家焕新好房子”、云溪5.0、AI直驱科技和十年管家服务形成传播，并与阳台洗衣机防锈、洗烘套装等实用议题结合。内容强化海尔洗衣机在AI洁净、服务保障和智慧家庭焕新中的认知，也通过租房、阳台和家装场景连接具体使用痛点。传播覆盖抖音、小红书、视频号、B站和知乎，UGC内容占比较高，PGC与少量BGC内容承担产品科技和服务权益说明。</p><p>3.美的洗衣机：本期美的洗衣机传播围绕三筒分区洗护、梅雨季洗烘、国风短片和全屋智能场景展开。产品内容中，美的可爱多三筒洗衣机、美的可爱多分区洗烘和内衣袜子分开洗等话题，强化分区洗护、年轻家庭和小件衣物护理认知；葫芦娃国风短片将传统手洗痛点与美的洗衣机功能结合，突出精华洗、超微净泡、20分钟快洗、95℃高温蒸汽空气洗、除菌除螨和大件洗护能力。季节场景方面，梅雨季衣服晒不干、阴干异味、美的美享家M20洗烘套装和熊墩墩洗烘套装等内容，承接烘干和除味需求。使用场景中，洗衣机安装避坑、美的全屋智能、一声小美、洗衣房搭建等UGC内容补充了装修和家庭洗护触点。传播主要覆盖小红书、抖音和B站，PGC种草内容与UGC使用分享共同扩散。</p></section>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <strong>周报生成任务已提交</strong>
+    <span>已跳转至历史报告，最新任务展示在列表最前，状态为生成中。</span>
+  </div>
+
+  <script>
+    const pageButtons = Array.from(document.querySelectorAll('.side-btn'));
+    const views = {
+      create: document.getElementById('page-create'),
+      history: document.getElementById('page-history')
+    };
+    const stepButtons = Array.from(document.querySelectorAll('.step-btn'));
+    const stepPanels = Array.from(document.querySelectorAll('.step-panel'));
+    const toast = document.getElementById('toast');
+    const modalMask = document.getElementById('modalMask');
+    const modalTitle = modalMask.querySelector('.modal-title');
+    const modalSubtitle = modalMask.querySelector('.modal-subtitle');
+    const prevStepButton = document.getElementById('prevStep');
+    const nextStepButton = document.getElementById('nextStep');
+    let currentStep = 0;
+
+    const uiDimensionCsv = `dimension_type,module_scope,category_value,category_display_name,brand_value,brand_display_name,brand_relation,selectable_as
+brand_overall,品牌整体表现/品牌整体分平台表现,,,海信本系,海信,own,本品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,美的,美的,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,华为,华为,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,索尼,索尼,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,海尔,海尔,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,小米,小米,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,三星,三星,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,格力,格力,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,TCL,TCL,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,松下,松下,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,西门子,西门子,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,奥克斯,奥克斯,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,创维,创维,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,长虹,长虹,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,LG,LG,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,索尼电视,索尼电视,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,古洛尼,gorenje,own,本品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,博世,博世,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,雅士高,ASKO,own,本品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,Miele,Miele,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,璀璨,海信璀璨,own,本品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,COLMO,COLMO,competitor,竞品品牌
+brand_overall,品牌整体表现/品牌整体分平台表现,,,东芝,东芝,own,本品品牌
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信电视,海信电视,海信电视,海信电视,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信电视,海信电视,三星电视,三星电视,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信电视,海信电视,索尼电视,索尼电视,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信电视,海信电视,TCL电视,TCL电视,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信电视,海信电视,雷鸟电视,雷鸟电视,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信电视,海信电视,红米电视,红米电视,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信电视,海信电视,创维电视,创维电视,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信电视,海信电视,酷开电视,酷开电视,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信电视,海信电视,华为电视,华为智慧屏,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信电视,海信电视,vidda电视,Vidda,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信电视,海信电视,东芝电视,东芝电视,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信电视,海信电视,小米电视,小米电视,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,Vidda,Vidda,vidda电视,Vidda,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,Vidda,Vidda,坚果电视,坚果投影,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,Vidda,Vidda,小米电视,小米电视,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,Vidda,Vidda,极米电视,极米电视,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,Vidda,Vidda,极米投影,极米投影,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,东芝电视,东芝电视,东芝电视,东芝电视,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,东芝电视,东芝电视,索尼电视,索尼电视,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信激光电视,海信激光电视,海信激光电视,海信激光电视,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信激光电视,海信激光电视,极米电视,极米电视,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信冰箱,海信冰箱,海信冰箱,海信冰箱,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信冰箱,海信冰箱,美菱冰箱,美菱冰箱,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信冰箱,海信冰箱,卡萨帝冰箱,卡萨帝冰箱,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信冰箱,海信冰箱,统帅冰箱,统帅冰箱,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信冰箱,海信冰箱,华凌冰箱,华凌冰箱,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信冰箱,海信冰箱,COLMO冰箱,COLMO冰箱,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信冰箱,海信冰箱,西门子冰箱,西门子冰箱,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信冰箱,海信冰箱,容声冰箱,容声冰箱,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信冰箱,海信冰箱,海尔冰箱,海尔冰箱,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信冰箱,海信冰箱,美的冰箱,美的冰箱,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信冰箱,海信冰箱,东芝冰箱,东芝冰箱,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,容声冰箱,容声冰箱,容声冰箱,容声冰箱,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,容声冰箱,容声冰箱,海尔冰箱,海尔冰箱,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,容声冰箱,容声冰箱,美的冰箱,美的冰箱,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信空调,海信空调,海信非中央空调,海信空调,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信空调,海信空调,海尔空调类,海尔空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信空调,海信空调,美的非中央空调,美的空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信空调,海信空调,COLMO空调类,COLMO空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信空调,海信空调,格力非中央空调,格力空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信空调,海信空调,TCL空调类,TCL空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信空调,海信空调,卡萨帝空调类,卡萨帝空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信空调,海信空调,科龙非中央空调,科龙空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信空调,海信空调,奥克斯空调类,奥克斯空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信空调,海信空调,leader空调类,leader空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信空调,海信空调,小米非中央空调,小米空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信空调,海信空调,华凌空调类,华凌空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,科龙空调,科龙空调,科龙非中央空调,科龙空调,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,科龙空调,科龙空调,奥克斯空调类,奥克斯空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,科龙空调,科龙空调,华凌空调类,华凌空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,科龙空调,科龙空调,小超人空调类,小超人空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信洗衣机,海信洗衣机,海信洗衣机类,海信洗衣机,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信洗衣机,海信洗衣机,美的洗衣机,美的洗衣机,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信洗衣机,海信洗衣机,海尔洗衣机,海尔洗衣机,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信洗衣机,海信洗衣机,小天鹅洗衣机,小天鹅洗衣机,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信洗衣机,海信洗衣机,松下洗衣机,松下洗衣机,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信洗衣机,海信洗衣机,西门子洗衣机,西门子洗衣机,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信洗衣机,海信洗衣机,米家洗衣机,米家洗衣机,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信洗衣机,海信洗衣机,博世洗衣机,博世洗衣机,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信洗衣机,海信洗衣机,TCL洗衣机,TCL洗衣机,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信洗衣机,海信洗衣机,COLMO洗衣机,COLMO洗衣机,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信洗衣机,海信洗衣机,东芝洗衣机,东芝洗衣机,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信厨卫,海信厨卫,海信厨卫fake,海信厨卫,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信厨卫,海信厨卫,海尔厨卫fake,海尔厨电,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信中央空调,海信中央空调,海信中央空调,海信中央空调,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信中央空调,海信中央空调,格力中央空调,格力中央空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信中央空调,海信中央空调,美的中央空调,美的中央空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信中央空调,海信中央空调,约克VRF中央空调,约克VRF中央空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信中央空调,海信中央空调,日立中央空调,日立中央空调,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信医疗,海信医疗,海信医疗,海信医疗,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信医疗,海信医疗,开立医疗,开立医疗,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信商用显示,海信商用显示,海信商用显示,海信商用显示,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信商用显示,海信商用显示,视源股份商用显示,视源股份商用显示,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信商用显示,海信商用显示,鸿合商用显示,鸿合商用显示,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信商用显示,海信商用显示,利亚德商用显示,利亚德商用显示,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信地产,海信地产,海信地产,海信地产,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信地产,海信地产,和达地产,和达地产,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信其他产品,海信其他产品,海信其他产品,海信其他产品,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,gorenje,gorenje,古洛尼,gorenje,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,gorenje,gorenje,博世,博世,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,ASKO,ASKO,雅士高,ASKO,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,ASKO,ASKO,Miele,Miele,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信璀璨,海信璀璨,璀璨,海信璀璨,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信璀璨,海信璀璨,COLMO,COLMO,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信网络科技,海信网络科技,海信网络科技,海信网络科技,own,本品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信网络科技,海信网络科技,阿里智慧城市,阿里智慧城市,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信网络科技,海信网络科技,千方科技,千方科技,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信网络科技,海信网络科技,浪潮智慧城市,浪潮智慧城市,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,海信网络科技,海信网络科技,科大讯飞智慧城市,科大讯飞智慧城市,competitor,控比对象/竞品品牌/二级品线
+line_hierarchy,各品线重点媒介表现-1/各品线重点媒介表现-2/品线AI洞察,科林电气,科林电气,科林电气,科林电气,own,本品品牌/二级品线`;
+
+    function parseDimensionCsv(csvText) {
+      const [headerLine, ...lines] = csvText.trim().split('\n');
+      const headers = headerLine.split(',');
+      return lines.map(line => {
+        const values = line.split(',');
+        return headers.reduce((row, header, index) => {
+          row[header] = values[index] || '';
+          return row;
+        }, {});
+      });
+    }
+
+    const uiDimensionRows = parseDimensionCsv(uiDimensionCsv);
+    const overallBrands = uiDimensionRows.filter(row => row.dimension_type === 'brand_overall');
+    const lineHierarchy = uiDimensionRows.filter(row => row.dimension_type === 'line_hierarchy');
+    const maxOverallCompetitors = 3;
+    const maxInsightCompetitors = 3;
+
+    function uniqueRows(rows, getKey) {
+      const seen = new Set();
+      return rows.filter(row => {
+        const key = getKey(row);
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    }
+
+    function optionValue(row) {
+      return [row.category_value, row.brand_value].filter(Boolean).join('|||');
+    }
+
+    function fillSelect(select, rows, selectedValue, options = {}) {
+      select.innerHTML = '';
+      if (options.placeholder) {
+        const placeholder = document.createElement('option');
+        placeholder.value = '';
+        placeholder.textContent = options.placeholder;
+        placeholder.disabled = Boolean(options.disablePlaceholder);
+        select.appendChild(placeholder);
+      }
+      rows.forEach(row => {
+        const option = document.createElement('option');
+        option.value = row.value || row.brand_value || row.category_value;
+        option.textContent = row.label || row.brand_display_name || row.category_display_name;
+        if (row.category_value) option.dataset.categoryValue = row.category_value;
+        if (row.brand_value) option.dataset.brandValue = row.brand_value;
+        select.appendChild(option);
+      });
+      if (selectedValue !== undefined && selectedValue !== null) select.value = selectedValue;
+      if (!select.value && !options.placeholder && select.options.length) select.selectedIndex = 0;
+    }
+
+    function competitorRowsForCategory(categoryValue) {
+      const rows = lineHierarchy.filter(row => row.category_value === categoryValue);
+      const category = rows[0];
+      return uniqueRows(rows, row => `${row.brand_value}|||${row.brand_display_name}`)
+        .filter(row => row.selectable_as.includes('控比对象') || row.selectable_as.includes('竞品品牌'))
+        .filter(row => row.brand_display_name !== (category && category.category_display_name))
+        .filter(row => row.brand_value !== categoryValue);
+    }
+
+    function pairCategoryRows() {
+      return uniqueRows(
+        lineHierarchy
+          .filter(row => row.selectable_as.includes('本品品牌'))
+          .filter(row => competitorRowsForCategory(row.category_value).length > 0),
+        row => row.category_value
+      ).map(row => ({
+        category_value: row.category_value,
+        category_display_name: row.category_display_name
+      }));
+    }
+
+    function mediaCategoryRows() {
+      return uniqueRows(lineHierarchy, row => row.category_value);
+    }
+
+    function selectedBenchmarkPairValues(excludeRow) {
+      return Array.from(document.querySelectorAll('#benchmarkLineRows tr'))
+        .filter(row => row !== excludeRow)
+        .map(row => {
+          const ownSelect = row.querySelector('select');
+          const competitorShell = row.querySelector('.benchmark-single-select');
+          return ownSelect && competitorShell && ownSelect.value && competitorShell.dataset.value
+            ? `${ownSelect.value}|||${competitorShell.dataset.value}`
+            : '';
+        })
+        .filter(Boolean);
+    }
+
+    function benchmarkPairExists(categoryValue, competitorValue, excludeRow) {
+      if (!categoryValue || !competitorValue) return false;
+      return selectedBenchmarkPairValues(excludeRow).includes(`${categoryValue}|||${competitorValue}`);
+    }
+
+    function showDuplicateBenchmarkLineToast(ownLabel, competitorLabel) {
+      toast.querySelector('strong').textContent = '重复品线配置';
+      toast.querySelector('span').textContent = '该本品与控比竞品组合已存在，请勿重复添加。';
+      showToast();
+    }
+
+    function bindPairRow(row, defaultCategory, defaultCompetitor, emptyDefault = false) {
+      const ownSelect = row.querySelector('select');
+      const competitorShell = row.querySelector('.benchmark-single-select');
+      const competitorTrigger = row.querySelector('.benchmark-single-trigger');
+      const competitorSummary = row.querySelector('.benchmark-single-trigger span:first-child');
+      const competitorPanel = row.querySelector('.benchmark-single-panel');
+      const categories = pairCategoryRows();
+      fillSelect(ownSelect, categories.map(item => ({
+        value: item.category_value,
+        label: item.category_display_name,
+        category_value: item.category_value
+      })), emptyDefault ? '' : defaultCategory, emptyDefault ? {
+        placeholder: '请选择本品品牌',
+        disablePlaceholder: true
+      } : {});
+
+      function setBenchmarkCompetitor(value, label) {
+        competitorShell.dataset.value = value || '';
+        competitorShell.dataset.label = label || '';
+        competitorSummary.textContent = label || '请选择控比对象';
+      }
+
+      function benchmarkCompetitorValue() {
+        return competitorShell.dataset.value || '';
+      }
+
+      function renderBenchmarkCompetitors(selectedValue, selectedCompetitor) {
+        competitorPanel.innerHTML = '';
+        if (!selectedValue) {
+          setBenchmarkCompetitor('', '');
+          competitorPanel.innerHTML = '<div class="empty-option">请先选择本品品牌</div>';
+          return;
+        }
+        const rows = competitorRowsForCategory(selectedValue);
+        const nextValue = selectedCompetitor || (!emptyDefault && rows[0] && rows[0].brand_value) || '';
+        const selectedRow = rows.find(item => item.brand_value === nextValue);
+        setBenchmarkCompetitor(nextValue, selectedRow ? selectedRow.brand_display_name : '');
+        rows.forEach(item => {
+          const option = document.createElement('button');
+          option.type = 'button';
+          option.textContent = item.brand_display_name;
+          option.dataset.value = item.brand_value;
+          option.dataset.label = item.brand_display_name;
+          option.addEventListener('click', () => {
+            const previousValue = competitorShell.dataset.previousValue || '';
+            const previousLabel = competitorShell.dataset.previousLabel || '';
+            setBenchmarkCompetitor(item.brand_value, item.brand_display_name);
+            setFieldInvalid(competitorShell, false);
+            competitorShell.classList.remove('open');
+            if (handleDuplicatePair()) {
+              setBenchmarkCompetitor(previousValue, previousLabel);
+              setFieldInvalid(competitorShell, !benchmarkCompetitorValue());
+              return;
+            }
+            rememberCurrentPair();
+          });
+          competitorPanel.appendChild(option);
+        });
+      }
+
+      function rememberCurrentPair() {
+        ownSelect.dataset.previousValue = ownSelect.value;
+        competitorShell.dataset.previousValue = benchmarkCompetitorValue();
+        competitorShell.dataset.previousLabel = competitorShell.dataset.label || '';
+      }
+
+      function handleDuplicatePair() {
+        if (!benchmarkPairExists(ownSelect.value, benchmarkCompetitorValue(), row)) return false;
+        showDuplicateBenchmarkLineToast(selectedOptionText(ownSelect), competitorShell.dataset.label || '');
+        return true;
+      }
+
+      renderBenchmarkCompetitors(ownSelect.value, defaultCompetitor);
+      rememberCurrentPair();
+
+      competitorTrigger.addEventListener('click', event => {
+        event.stopPropagation();
+        const willOpen = !competitorShell.classList.contains('open');
+        document.querySelectorAll('.benchmark-single-select.open').forEach(shell => {
+          if (shell !== competitorShell) shell.classList.remove('open');
+        });
+        closeInsightMultiSelects();
+        competitorShell.classList.toggle('open', willOpen);
+      });
+
+      competitorTrigger.addEventListener('keydown', event => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        competitorTrigger.click();
+      });
+
+      competitorPanel.addEventListener('click', event => event.stopPropagation());
+      document.addEventListener('click', () => {
+        competitorShell.classList.remove('open');
+      });
+
+      ownSelect.onchange = () => {
+        const previousCategory = ownSelect.dataset.previousValue;
+        const previousCompetitor = competitorShell.dataset.previousValue;
+        const previousCompetitorLabel = competitorShell.dataset.previousLabel;
+        setFieldInvalid(ownSelect, !ownSelect.value);
+        renderBenchmarkCompetitors(ownSelect.value, '');
+        setFieldInvalid(competitorShell, false);
+        if (handleDuplicatePair()) {
+          ownSelect.value = previousCategory;
+          renderBenchmarkCompetitors(previousCategory, previousCompetitor);
+          if (previousCompetitor) setBenchmarkCompetitor(previousCompetitor, previousCompetitorLabel);
+          setFieldInvalid(ownSelect, !ownSelect.value);
+          setFieldInvalid(competitorShell, !benchmarkCompetitorValue());
+        }
+        rememberCurrentPair();
+      };
+    }
+
+    function buildPairRow(defaultCategory, defaultCompetitor, withIndex, emptyDefault = false) {
+      const row = document.createElement('tr');
+      if (withIndex) row.appendChild(document.createElement('td'));
+      row.insertAdjacentHTML('beforeend', '<td><select></select></td><td><div class="benchmark-single-select"><div class="benchmark-single-trigger" role="button" tabindex="0"><span>请选择控比对象</span><span>⌄</span></div><div class="benchmark-single-panel"></div></div></td>');
+      if (!withIndex) row.insertAdjacentHTML('beforeend', '<td><button type="button" class="plain-btn" data-delete-row>删除</button></td>');
+      bindPairRow(row, defaultCategory, defaultCompetitor, emptyDefault);
+      return row;
+    }
+
+    function fillMediaSelect(select, selectedCombinedValue, emptyDefault = false) {
+      select.innerHTML = '';
+      if (emptyDefault) {
+        const placeholder = document.createElement('option');
+        placeholder.value = '';
+        placeholder.textContent = '请选择品线';
+        placeholder.disabled = true;
+        select.appendChild(placeholder);
+      }
+      mediaCategoryRows().forEach(category => {
+        const group = document.createElement('optgroup');
+        group.label = category.category_display_name;
+        const options = uniqueRows(
+          lineHierarchy.filter(row => row.category_value === category.category_value),
+          row => `${row.brand_value}|||${row.brand_display_name}`
+        );
+        options.forEach(row => {
+          const option = document.createElement('option');
+          option.value = optionValue(row);
+          option.textContent = row.brand_display_name;
+          option.dataset.categoryValue = row.category_value;
+          option.dataset.brandValue = row.brand_value;
+          group.appendChild(option);
+        });
+        select.appendChild(group);
+      });
+      if (selectedCombinedValue !== undefined && selectedCombinedValue !== null) select.value = selectedCombinedValue;
+      if (!select.value && !emptyDefault && select.options.length) select.selectedIndex = 0;
+    }
+
+    function buildMediaRow(selectedCombinedValue, emptyDefault = false) {
+      const row = document.createElement('tr');
+      row.insertAdjacentHTML('beforeend', '<td></td><td><select></select></td><td><button type="button" class="plain-btn" data-delete-row>删除</button></td>');
+      const select = row.querySelector('select');
+      fillMediaSelect(select, selectedCombinedValue, emptyDefault);
+      bindMediaLineDuplicateGuard(row);
+      return row;
+    }
+
+    function closeInsightMultiSelects(exceptShell) {
+      document.querySelectorAll('.insight-multi-select.open').forEach(shell => {
+        if (shell !== exceptShell) shell.classList.remove('open');
+      });
+    }
+
+    function insightCompetitorValuesFromPanel(panel) {
+      return Array.from(panel.querySelectorAll('input:checked')).map(input => input.value);
+    }
+
+    function selectedInsightOwnValues(excludeRow) {
+      return Array.from(document.querySelectorAll('#insightLineRows tr'))
+        .filter(row => row !== excludeRow)
+        .map(row => {
+          const ownSelect = row.querySelector('select');
+          return ownSelect ? ownSelect.value : '';
+        })
+        .filter(Boolean);
+    }
+
+    function insightOwnExists(categoryValue, excludeRow) {
+      if (!categoryValue) return false;
+      return selectedInsightOwnValues(excludeRow).includes(categoryValue);
+    }
+
+    function showDuplicateInsightLineToast() {
+      toast.querySelector('strong').textContent = '重复品线配置';
+      toast.querySelector('span').textContent = '该本品已存在，请勿重复添加。';
+      showToast();
+    }
+
+    function bindInsightRow(row, defaultCategory, defaultCompetitors = [], emptyDefault = false) {
+      const ownSelect = row.querySelector('select');
+      const shell = row.querySelector('.insight-multi-select');
+      const trigger = row.querySelector('.insight-multi-trigger');
+      const summary = row.querySelector('.insight-multi-trigger span:first-child');
+      const panel = row.querySelector('.insight-multi-panel');
+      const categories = pairCategoryRows();
+      const defaults = Array.isArray(defaultCompetitors) ? defaultCompetitors : [defaultCompetitors].filter(Boolean);
+
+      fillSelect(ownSelect, categories.map(item => ({
+        value: item.category_value,
+        label: item.category_display_name,
+        category_value: item.category_value
+      })), emptyDefault ? '' : defaultCategory, emptyDefault ? {
+        placeholder: '请选择本品品牌',
+        disablePlaceholder: true
+      } : {});
+
+      function currentCompetitorValues() {
+        return insightCompetitorValuesFromPanel(panel);
+      }
+
+      function previousCompetitorValues() {
+        try {
+          return JSON.parse(shell.dataset.previousValues || '[]');
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function rememberCurrentInsightCombo() {
+        ownSelect.dataset.previousValue = ownSelect.value;
+        shell.dataset.previousValues = JSON.stringify(currentCompetitorValues());
+      }
+
+      function handleDuplicateInsightOwn() {
+        if (!insightOwnExists(ownSelect.value, row)) return false;
+        showDuplicateInsightLineToast();
+        return true;
+      }
+
+      function renderCompetitors(selectedCategory, selectedValues) {
+        if (!selectedCategory) {
+          panel.innerHTML = '<div class="empty-option">请先选择本品品牌</div>';
+          summary.textContent = '请选择竞品品牌';
+          return;
+        }
+        const rows = competitorRowsForCategory(selectedCategory);
+        const selectedSet = new Set(
+          selectedValues.length
+            ? selectedValues
+            : (emptyDefault ? [] : rows.slice(0, maxInsightCompetitors).map(item => item.brand_value))
+        );
+        const selectedOrder = selectedValues.length ? selectedValues : Array.from(selectedSet);
+        const selectedRows = selectedOrder
+          .map(value => rows.find(item => item.brand_value === value))
+          .filter(Boolean);
+        const orderedRows = selectedRows.concat(rows.filter(item => !selectedSet.has(item.brand_value)));
+        panel.innerHTML = '';
+        orderedRows.forEach(item => {
+          const label = document.createElement('label');
+          const checked = selectedSet.has(item.brand_value) ? ' checked' : '';
+          label.innerHTML = `<input type="checkbox"${checked} value="${item.brand_value}">${item.brand_display_name}`;
+          panel.appendChild(label);
+        });
+        panel.querySelectorAll('input').forEach(input => input.addEventListener('change', () => {
+          updateInsightSummary(input);
+          rememberCurrentInsightCombo();
+        }));
+        updateInsightSummary(null, false);
+      }
+
+      function updateInsightSummary(changedInput, markInvalid = true) {
+        const checkedItems = Array.from(panel.querySelectorAll('input:checked'));
+        if (checkedItems.length > maxInsightCompetitors && changedInput) changedInput.checked = false;
+        const selected = Array.from(panel.querySelectorAll('input:checked')).map(input => input.parentElement.textContent.trim());
+        summary.textContent = selected.length ? selected.join('、') : '请选择竞品品牌';
+        if (markInvalid) setFieldInvalid(shell, !selected.length);
+      }
+
+      trigger.addEventListener('click', event => {
+        event.stopPropagation();
+        const willOpen = !shell.classList.contains('open');
+        closeInsightMultiSelects(shell);
+        shell.classList.toggle('open', willOpen);
+      });
+      trigger.addEventListener('keydown', event => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        trigger.click();
+      });
+      panel.addEventListener('click', event => event.stopPropagation());
+      document.addEventListener('click', () => closeInsightMultiSelects());
+      ownSelect.addEventListener('change', () => {
+        const previousCategory = ownSelect.dataset.previousValue;
+        const previousValues = previousCompetitorValues();
+        setFieldInvalid(ownSelect, !ownSelect.value);
+        renderCompetitors(ownSelect.value, []);
+        setFieldInvalid(shell, false);
+        if (handleDuplicateInsightOwn()) {
+          ownSelect.value = previousCategory;
+          renderCompetitors(previousCategory, previousValues);
+          setFieldInvalid(ownSelect, false);
+        }
+        rememberCurrentInsightCombo();
+      });
+
+      renderCompetitors(ownSelect.value, defaults);
+      rememberCurrentInsightCombo();
+    }
+
+    function buildInsightRow(defaultCategory, defaultCompetitors, emptyDefault = false) {
+      const row = document.createElement('tr');
+      row.insertAdjacentHTML('beforeend', '<td></td><td><select></select></td><td><div class="insight-multi-select"><div class="insight-multi-trigger" role="button" tabindex="0"><span>请选择竞品品牌</span><span>⌄</span></div><div class="insight-multi-panel"></div></div></td><td><button type="button" class="plain-btn" data-delete-row>删除</button></td>');
+      bindInsightRow(row, defaultCategory, defaultCompetitors, emptyDefault);
+      return row;
+    }
+
+    function initOverallBrandControls() {
+      const ownRows = overallBrands.filter(row => row.brand_relation === 'own');
+      const competitorRows = overallBrands.filter(row => row.brand_relation === 'competitor');
+      fillSelect(document.getElementById('ownBrand'), ownRows.map(row => ({
+        value: row.brand_value,
+        label: row.brand_display_name,
+        brand_value: row.brand_value
+      })), '海信本系');
+      fillSelect(document.getElementById('ratioBrand'), competitorRows.map(row => ({
+        value: row.brand_value,
+        label: row.brand_display_name,
+        brand_value: row.brand_value
+      })), '美的');
+
+      const panel = document.querySelector('[data-panel="1"]');
+      const shell = panel.querySelector('.brand-select-shell');
+      const trigger = panel.querySelector('.fake-select');
+      const summary = panel.querySelector('.fake-select span:first-child');
+      const count = panel.querySelector('.dropdown-head > .selected-count');
+      const menu = panel.querySelector('.brand-menu-simple');
+      trigger.setAttribute('role', 'button');
+      trigger.setAttribute('tabindex', '0');
+      trigger.setAttribute('aria-expanded', 'false');
+      menu.innerHTML = '';
+      competitorRows.forEach((row, index) => {
+        const label = document.createElement('label');
+        const checked = index < maxOverallCompetitors ? ' checked' : '';
+        label.innerHTML = `<input type="checkbox"${checked} value="${row.brand_value}">${row.brand_display_name}`;
+        menu.appendChild(label);
+      });
+
+      function updateSummary(changedInput) {
+        const checkedItems = Array.from(menu.querySelectorAll('input:checked'));
+        if (checkedItems.length > maxOverallCompetitors && changedInput) changedInput.checked = false;
+        const selected = Array.from(menu.querySelectorAll('input:checked')).map(input => input.parentElement.textContent.trim());
+        summary.textContent = selected.length ? selected.join('、') : '请选择竞品品牌';
+        count.textContent = `已选 ${selected.length}/${maxOverallCompetitors}`;
+        setFieldInvalid(shell, !selected.length);
+      }
+
+      menu.querySelectorAll('input').forEach(input => input.addEventListener('change', () => updateSummary(input)));
+      trigger.addEventListener('click', event => {
+        event.stopPropagation();
+        const isOpen = shell.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', String(isOpen));
+      });
+      trigger.addEventListener('keydown', event => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        trigger.click();
+      });
+      menu.addEventListener('click', event => event.stopPropagation());
+      document.addEventListener('click', () => {
+        shell.classList.remove('open');
+        trigger.setAttribute('aria-expanded', 'false');
+      });
+      updateSummary();
+    }
+
+    function initBenchmarkRows() {
+      const tbody = document.getElementById('benchmarkLineRows');
+      tbody.innerHTML = '';
+      [
+        ['海信电视', 'TCL电视'],
+        ['海信冰箱', '美的冰箱'],
+        ['海信空调', '美的非中央空调'],
+        ['海信洗衣机', '小天鹅洗衣机']
+      ].forEach(([category, competitor]) => tbody.appendChild(buildPairRow(category, competitor, false)));
+      updateConfiguredCount(tbody);
+    }
+
+    function initMediaRows() {
+      const tbody = document.getElementById('mediaLineRows');
+      tbody.innerHTML = '';
+      [
+        '海信电视|||海信电视',
+        '海信激光电视|||海信激光电视',
+        'Vidda|||vidda电视',
+        '东芝电视|||东芝电视',
+        '科龙空调|||科龙非中央空调',
+        '海信洗衣机|||海信洗衣机类',
+        '海信厨卫|||海信厨卫fake',
+        'ASKO|||雅士高',
+        'gorenje|||古洛尼'
+      ].forEach(value => tbody.appendChild(buildMediaRow(value)));
+      renumberRows(tbody);
+      updateConfiguredCount(tbody);
+    }
+
+    function initInsightRows() {
+      const tbody = document.getElementById('insightLineRows');
+      tbody.innerHTML = '';
+      [
+        ['海信电视', ['TCL电视', '小米电视', '创维电视']],
+        ['海信冰箱', ['美的冰箱', '海尔冰箱', '西门子冰箱']],
+        ['海信空调', ['美的非中央空调', '格力非中央空调', '海尔空调类']],
+        ['海信洗衣机', ['小天鹅洗衣机', '海尔洗衣机', '美的洗衣机']]
+      ].forEach(([category, competitors]) => tbody.appendChild(buildInsightRow(category, competitors)));
+      renumberRows(tbody);
+      updateConfiguredCount(tbody);
+    }
+
+    function switchPage(name) {
+      pageButtons.forEach(button => button.classList.toggle('active', button.dataset.page === name));
+      Object.entries(views).forEach(([key, view]) => view.classList.toggle('active', key === name));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function setStep(index) {
+      currentStep = Math.max(0, Math.min(stepButtons.length - 1, index));
+      stepButtons.forEach((button, i) => button.classList.toggle('active', i === currentStep));
+      stepPanels.forEach((panel, i) => panel.classList.toggle('active', i === currentStep));
+      prevStepButton.hidden = currentStep === 0;
+      nextStepButton.hidden = currentStep === stepButtons.length - 1;
+    }
+
+    function showToast() {
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    function showValidationToast(message) {
+      toast.querySelector('strong').textContent = '请完善必填配置';
+      toast.querySelector('span').textContent = message;
+      showToast();
+    }
+
+    function checkedCount(container, selector) {
+      return container.querySelectorAll(selector).length;
+    }
+
+    function setFieldInvalid(field, invalid) {
+      if (field) field.classList.toggle('is-invalid', invalid);
+    }
+
+    function checkedPlatforms(panel) {
+      return Array.from(panel.querySelectorAll('.platform-list input:checked'))
+        .filter(input => input.parentElement.textContent.trim() !== '全选');
+    }
+
+    function validateBasicInfo() {
+      const panel = document.querySelector('[data-panel="0"]');
+      const reportNameField = panel.querySelector('[data-required-field="reportName"]');
+      const reportNameInput = reportNameField.querySelector('input');
+      const dateRangeField = panel.querySelector('[data-required-field="reportDateRange"]');
+      const dateRange = dateRangeField.querySelector('.date-range');
+      const reportName = reportNameInput.value.trim();
+      const dateInputs = panel.querySelectorAll('input[type="date"]');
+      const dateEmpty = !dateInputs[0].value || !dateInputs[1].value;
+      setFieldInvalid(reportNameField, !reportName);
+      setFieldInvalid(dateRange, dateEmpty);
+      if (!reportName) {
+        showValidationToast('报告名称不能为空。');
+        return false;
+      }
+      if (dateEmpty) {
+        showValidationToast('报告时间范围不能为空，请选择开始日期和结束日期。');
+        return false;
+      }
+      return true;
+    }
+
+    function validateOverallCompetitors() {
+      const panel = document.querySelector('[data-panel="1"]');
+      const shell = panel.querySelector('.brand-select-shell');
+      const invalid = !checkedCount(panel, '.brand-menu-simple input:checked');
+      setFieldInvalid(shell, invalid);
+      if (invalid) {
+        showValidationToast('竞品品牌不能为空，请至少选择 1 个竞品品牌。');
+        return false;
+      }
+      return true;
+    }
+
+    function validatePlatformSelection(panelIndex, message) {
+      const panel = document.querySelector(`[data-panel="${panelIndex}"]`);
+      const list = panel.querySelector('.platform-list');
+      const invalid = !checkedPlatforms(panel).length;
+      setFieldInvalid(list, invalid);
+      if (invalid) {
+        showValidationToast(message);
+        return false;
+      }
+      return true;
+    }
+
+    function validateBenchmarkRows() {
+      const rows = Array.from(document.querySelectorAll('#benchmarkLineRows tr'));
+      let invalidRow = null;
+      rows.forEach(row => {
+        const ownSelect = row.querySelector('select');
+        const competitorShell = row.querySelector('.benchmark-single-select');
+        const ownInvalid = !ownSelect.value;
+        const competitorInvalid = !competitorShell.dataset.value;
+        setFieldInvalid(ownSelect, ownInvalid);
+        setFieldInvalid(competitorShell, competitorInvalid);
+        if ((ownInvalid || competitorInvalid) && !invalidRow) invalidRow = row;
+      });
+      if (invalidRow) {
+        showValidationToast('各品线重点媒介表现-1 的本品品牌和品牌控比对象不能为空。');
+        return false;
+      }
+      return true;
+    }
+
+    function validateMediaRows() {
+      const rows = Array.from(document.querySelectorAll('#mediaLineRows tr'));
+      let invalidRow = null;
+      rows.forEach(row => {
+        const select = row.querySelector('select');
+        const invalid = !select.value;
+        setFieldInvalid(select, invalid);
+        if (invalid && !invalidRow) invalidRow = row;
+      });
+      if (invalidRow) {
+        showValidationToast('各品线重点媒介表现-2 的品线不能为空。');
+        return false;
+      }
+      return true;
+    }
+
+    function validateInsightCompetitors() {
+      const rows = Array.from(document.querySelectorAll('#insightLineRows tr'));
+      let invalidRow = null;
+      rows.forEach(row => {
+        const ownSelect = row.querySelector('select');
+        const shell = row.querySelector('.insight-multi-select');
+        const ownInvalid = !ownSelect.value;
+        const competitorInvalid = !row.querySelectorAll('.insight-multi-panel input:checked').length;
+        setFieldInvalid(ownSelect, ownInvalid);
+        setFieldInvalid(shell, competitorInvalid);
+        if ((ownInvalid || competitorInvalid) && !invalidRow) invalidRow = row;
+      });
+      if (invalidRow) {
+        showValidationToast('品线 AI 洞察中的本品品牌和竞品品牌不能为空。');
+        return false;
+      }
+      return true;
+    }
+
+    function validateBeforeStepChange(targetIndex) {
+      if (targetIndex <= currentStep) return true;
+      if (targetIndex > 0 && !validateBasicInfo()) return false;
+      if (targetIndex > 1 && !validateOverallCompetitors()) return false;
+      if (targetIndex > 2 && !validatePlatformSelection(2, '各品线重点媒介表现-1 的分平台展示站点不能为空，请至少选择 1 个站点。')) return false;
+      if (targetIndex > 2 && !validateBenchmarkRows()) return false;
+      if (targetIndex > 3 && !validatePlatformSelection(3, '各品线重点媒介表现-2 的分平台展示站点不能为空，请至少选择 1 个站点。')) return false;
+      if (targetIndex > 3 && !validateMediaRows()) return false;
+      return true;
+    }
+
+    function validateAllReportConfig() {
+      if (!validateBasicInfo()) return false;
+      if (!validateOverallCompetitors()) return false;
+      if (!validatePlatformSelection(2, '各品线重点媒介表现-1 的分平台展示站点不能为空，请至少选择 1 个站点。')) return false;
+      if (!validateBenchmarkRows()) return false;
+      if (!validatePlatformSelection(3, '各品线重点媒介表现-2 的分平台展示站点不能为空，请至少选择 1 个站点。')) return false;
+      if (!validateMediaRows()) return false;
+      if (!validateInsightCompetitors()) return false;
+      return true;
+    }
+
+    function bindPlatformSelectAll() {
+      document.querySelectorAll('.platform-list').forEach(list => {
+        const inputs = Array.from(list.querySelectorAll('input'));
+        const allInput = inputs.find(input => input.parentElement.textContent.trim() === '全选');
+        const platformInputs = inputs.filter(input => input !== allInput);
+        if (!allInput) return;
+
+        allInput.addEventListener('change', () => {
+          platformInputs.forEach(input => {
+            input.checked = allInput.checked;
+          });
+          setFieldInvalid(list, !checkedPlatforms(list.closest('.step-panel')).length);
+        });
+
+        platformInputs.forEach(input => {
+          input.addEventListener('change', () => {
+            allInput.checked = platformInputs.every(item => item.checked);
+            setFieldInvalid(list, !checkedPlatforms(list.closest('.step-panel')).length);
+          });
+        });
+      });
+    }
+
+    function submitReport() {
+      if (!validateAllReportConfig()) return;
+      switchPage('history');
+      toast.querySelector('strong').textContent = '周报生成任务已提交';
+      toast.querySelector('span').textContent = '已跳转至历史报告，最新任务展示在列表最前，状态为生成中。';
+      showToast();
+    }
+
+    function saveDraft() {
+      switchPage('history');
+      document.getElementById('draftHistoryRow').hidden = false;
+      toast.querySelector('strong').textContent = '草稿已保存';
+      toast.querySelector('span').textContent = '已在历史报告中生成待提交记录，可从操作栏进入编辑报告。';
+      showToast();
+      setTimeout(() => {
+        toast.querySelector('strong').textContent = '周报生成任务已提交';
+        toast.querySelector('span').textContent = '已跳转至历史报告，最新任务展示在列表最前，状态为生成中。';
+      }, 4300);
+    }
+
+    function editDraft() {
+      switchPage('create');
+      setStep(0);
+      toast.querySelector('strong').textContent = '已进入草稿编辑';
+      toast.querySelector('span').textContent = '页面已带入此前保存的报告配置，可继续修改后保存或立即生成。';
+      showToast();
+      setTimeout(() => {
+        toast.querySelector('strong').textContent = '周报生成任务已提交';
+        toast.querySelector('span').textContent = '已跳转至历史报告，最新任务展示在列表最前，状态为生成中。';
+      }, 4300);
+    }
+
+    function regenerateReport() {
+      toast.querySelector('strong').textContent = '重新生成任务已提交';
+      toast.querySelector('span').textContent = '系统将按该报告配置重新生成，状态更新为生成中。';
+      showToast();
+      setTimeout(() => {
+        toast.querySelector('strong').textContent = '周报生成任务已提交';
+        toast.querySelector('span').textContent = '已跳转至历史报告，最新任务展示在列表最前，状态为生成中。';
+      }, 4300);
+    }
+
+    function copyConfig() {
+      switchPage('create');
+      setStep(0);
+      toast.querySelector('strong').textContent = '配置已复制';
+      toast.querySelector('span').textContent = '已进入生成报告页面，并按该历史报告带入配置，可检查后立即生成。';
+      showToast();
+      setTimeout(() => {
+        toast.querySelector('strong').textContent = '周报生成任务已提交';
+        toast.querySelector('span').textContent = '已跳转至历史报告，最新任务展示在列表最前，状态为生成中。';
+      }, 4300);
+    }
+
+    function formatReportDate(value) {
+      return value ? value.replaceAll('-', '.') : '';
+    }
+
+    function getReportMeta() {
+      const reportName = document.querySelector('[data-required-field="reportName"] input').value.trim() || '未命名报告';
+      const dateInputs = document.querySelectorAll('[data-required-field="reportDateRange"] input[type="date"]');
+      const startDate = formatReportDate(dateInputs[0].value);
+      const endDate = formatReportDate(dateInputs[1].value);
+      const periodText = startDate && endDate ? `数据周期：${startDate}-${endDate}` : '数据周期：未选择完整周期';
+      return { reportName, periodText };
+    }
+
+    function updateReportMeta() {
+      const { reportName, periodText } = getReportMeta();
+      document.querySelectorAll('[data-report-title]').forEach(title => {
+        title.textContent = reportName;
+      });
+      document.querySelectorAll('[data-report-period]').forEach(period => {
+        period.textContent = periodText;
+      });
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[char]));
+    }
+
+    function emptyCells(count) {
+      return '<td></td>'.repeat(count);
+    }
+
+    function selectedOptionText(select) {
+      return select.selectedOptions[0] ? select.selectedOptions[0].textContent.trim() : '';
+    }
+
+    function selectedOverallBrands() {
+      const ownBrand = selectedOptionText(document.getElementById('ownBrand'));
+      const competitors = Array.from(document.querySelectorAll('[data-panel="1"] .brand-menu-simple input:checked'))
+        .map(input => input.parentElement.textContent.trim());
+      return [ownBrand].concat(competitors).filter(Boolean);
+    }
+
+    function selectedPlatformNames(panelIndex) {
+      const panel = document.querySelector(`[data-panel="${panelIndex}"]`);
+      return checkedPlatforms(panel).map(input => input.parentElement.textContent.trim());
+    }
+
+    function selectedBenchmarkRows() {
+      return Array.from(document.querySelectorAll('#benchmarkLineRows tr')).map(row => {
+        const ownSelect = row.querySelector('select');
+        const competitorShell = row.querySelector('.benchmark-single-select');
+        return {
+          own: selectedOptionText(ownSelect),
+          competitor: competitorShell.dataset.label || ''
+        };
+      }).filter(row => row.own && row.competitor);
+    }
+
+    function selectedMediaRows() {
+      return Array.from(document.querySelectorAll('#mediaLineRows tr')).map(row => {
+        const select = row.querySelector('select');
+        return selectedOptionText(select);
+      }).filter(Boolean);
+    }
+
+    function selectedInsightRows() {
+      return Array.from(document.querySelectorAll('#insightLineRows tr')).map(row => {
+        const select = row.querySelector('select');
+        return selectedOptionText(select);
+      }).filter(Boolean);
+    }
+
+    function renderSimpleRows(labels, emptyCount) {
+      return labels.map(label => `<tr><td>${escapeHtml(label)}</td>${emptyCells(emptyCount)}</tr>`).join('');
+    }
+
+    function renderBenchmarkPreviewRows(rows, platforms) {
+      return rows.map(row => platforms.map((platform, index) => {
+        const lineCell = index === 0
+          ? `<td rowspan="${platforms.length}" class="line-cell">${escapeHtml(row.own)}<br>控比竞品<br>${escapeHtml(row.competitor)}</td>`
+          : '';
+        return `<tr>${lineCell}<td>${escapeHtml(platform)}</td>${emptyCells(5)}</tr>`;
+      }).join('')).join('');
+    }
+
+    function renderMediaPreviewRows(rows, platforms) {
+      return rows.map(line => platforms.map((platform, index) => {
+        const lineCell = index === 0
+          ? `<td rowspan="${platforms.length}" class="line-cell">${escapeHtml(line)}</td>`
+          : '';
+        return `<tr>${lineCell}<td>${escapeHtml(platform)}</td>${emptyCells(4)}</tr>`;
+      }).join('')).join('');
+    }
+
+    function renderInsightPreviewSections(lines) {
+      return lines.map(line => `
+        <h2>${escapeHtml(line)} AI洞察</h2>
+        <section class="insight-box">
+          <p><strong>【${escapeHtml(line)}本期动态】</strong></p>
+          <p></p>
+          <p><strong>【竞品数据对标】</strong></p>
+          <p></p>
+          <p><strong>【竞品动态速递】</strong></p>
+          <p></p>
+        </section>
+      `).join('');
+    }
+
+    function renderPreviewReport() {
+      const { reportName, periodText } = getReportMeta();
+      const brandRows = selectedOverallBrands();
+      const brandPlatforms = ['抖音', '小红书', '视频号', 'B站', '知乎'];
+      const benchmarkPlatforms = selectedPlatformNames(2);
+      const mediaPlatforms = selectedPlatformNames(3);
+      const benchmarkRows = selectedBenchmarkRows();
+      const mediaRows = selectedMediaRows();
+      const insightRows = selectedInsightRows();
+
+      document.getElementById('previewReportBody').innerHTML = `
+        <header class="report-header">
+          <h1 data-report-title>${escapeHtml(reportName)}</h1>
+          <div class="report-period" data-report-period>${escapeHtml(periodText)}</div>
+        </header>
+
+        <h2>1.1 品牌整体表现</h2>
+        <table class="report-table">
+          <thead>
+            <tr><th>品牌</th><th>SOV</th><th>同比</th><th>控比竞品</th><th>SOE</th><th>同比</th><th>控比竞品</th><th>NSR</th><th>同比</th></tr>
+          </thead>
+          <tbody>${renderSimpleRows(brandRows, 8)}</tbody>
+        </table>
+
+        <h2>1.2 品牌整体分平台表现</h2>
+        <table class="report-table">
+          <thead>
+            <tr><th>平台</th><th>SOV</th><th>同比</th><th>控比MD</th><th>SOE</th><th>同比</th><th>控比MD</th><th>NSR</th><th>同比</th></tr>
+          </thead>
+          <tbody>${renderSimpleRows(brandPlatforms, 8)}</tbody>
+        </table>
+
+        <h2>本期重点洞察</h2>
+        <section class="insight-box">
+          <p><strong>【${escapeHtml(selectedOptionText(document.getElementById('ownBrand')))}本期动态】</strong></p>
+          <p></p>
+          <p><strong>【竞品数据对标】</strong></p>
+          <p></p>
+          <p><strong>【竞品动态速递】</strong></p>
+          <p></p>
+        </section>
+
+        <h2>各品线重点媒介表现-1</h2>
+        <table class="report-table">
+          <thead>
+            <tr><th>品线</th><th>媒介平台</th><th>用户互动SOE/视频号爱心赞</th><th>同比/视频号环比</th><th>控比</th><th>NSR实际</th><th>同比变化</th></tr>
+          </thead>
+          <tbody>${renderBenchmarkPreviewRows(benchmarkRows, benchmarkPlatforms)}</tbody>
+        </table>
+
+        <h2>各品线重点媒介表现-2</h2>
+        <table class="report-table">
+          <thead>
+            <tr><th>品线</th><th>媒介平台</th><th>SOE</th><th>SOE同比</th><th>NSR实际</th><th>同比变化</th></tr>
+          </thead>
+          <tbody>${renderMediaPreviewRows(mediaRows, mediaPlatforms)}</tbody>
+        </table>
+
+        ${renderInsightPreviewSections(insightRows)}
+      `;
+    }
+
+    function openModal(mode = 'preview') {
+      if (mode === 'preview') renderPreviewReport();
+      updateReportMeta();
+      modalTitle.textContent = mode === 'final' ? '查看报告' : '报告预览';
+      modalSubtitle.textContent = mode === 'final'
+        ? '展示已生成报告内容，可一键复制内容到文档。'
+        : '展示报告模板结构和字段。';
+      document.getElementById('previewReportBody').hidden = mode === 'final';
+      document.getElementById('finalReportBody').hidden = mode !== 'final';
+      document.getElementById('copyReportContent').hidden = mode !== 'final';
+      modalMask.classList.add('open');
+      modalMask.setAttribute('aria-hidden', 'false');
+    }
+
+    async function copyReportContent() {
+      const text = document.getElementById('finalReportBody').innerText.trim();
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        textarea.remove();
+      }
+      toast.querySelector('strong').textContent = '报告内容已复制';
+      toast.querySelector('span').textContent = '已复制当前已生成报告内容，可粘贴到文档中。';
+      showToast();
+    }
+
+    function closeModal() {
+      modalMask.classList.remove('open');
+      modalMask.setAttribute('aria-hidden', 'true');
+    }
+
+    pageButtons.forEach(button => button.addEventListener('click', () => switchPage(button.dataset.page)));
+    stepButtons.forEach(button => button.addEventListener('click', () => {
+      const targetIndex = Number(button.dataset.step);
+      if (!validateBeforeStepChange(targetIndex)) return;
+      setStep(targetIndex);
+    }));
+    document.querySelectorAll('[data-switch-history]').forEach(button => button.addEventListener('click', () => switchPage('history')));
+    document.querySelectorAll('[data-switch-create]').forEach(button => button.addEventListener('click', () => switchPage('create')));
+    prevStepButton.addEventListener('click', () => setStep(currentStep - 1));
+    nextStepButton.addEventListener('click', () => {
+      const targetIndex = currentStep + 1;
+      if (!validateBeforeStepChange(targetIndex)) return;
+      setStep(targetIndex);
+    });
+    document.getElementById('submitBottom').addEventListener('click', submitReport);
+    document.getElementById('saveDraft').addEventListener('click', saveDraft);
+    document.getElementById('openPreviewFromStep').addEventListener('click', () => openModal('preview'));
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    document.getElementById('copyReportContent').addEventListener('click', copyReportContent);
+    modalMask.addEventListener('click', event => {
+      if (event.target === modalMask) closeModal();
+    });
+    document.querySelectorAll('[data-view-report]').forEach(button => button.addEventListener('click', () => openModal('preview')));
+    document.querySelectorAll('[data-view-final-report]').forEach(button => button.addEventListener('click', () => openModal('final')));
+    document.querySelectorAll('[data-copy-config]').forEach(button => button.addEventListener('click', copyConfig));
+    document.querySelectorAll('[data-edit-draft]').forEach(button => button.addEventListener('click', editDraft));
+    document.querySelectorAll('[data-regenerate]').forEach(button => button.addEventListener('click', regenerateReport));
+    document.querySelectorAll('[data-period-option]').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('[data-period-option]').forEach(item => item.classList.toggle('active', item === button));
+      });
+    });
+    document.querySelectorAll('[data-line-category]').forEach(button => {
+      button.addEventListener('click', () => {
+        const category = button.dataset.lineCategory;
+        document.querySelectorAll('[data-line-category]').forEach(item => item.classList.toggle('active', item === button));
+        document.querySelectorAll('[data-line-options]').forEach(panel => {
+          panel.hidden = panel.dataset.lineOptions !== category;
+        });
+      });
+    });
+
+    function renumberRows(tbody) {
+      Array.from(tbody.querySelectorAll('tr')).forEach((row, index) => {
+        row.cells[0].textContent = index + 1;
+      });
+    }
+
+    function updateConfiguredCount(tbody) {
+      const panel = tbody.closest('.step-panel');
+      const count = panel && panel.querySelector('.table-toolbar strong');
+      if (count) count.textContent = tbody.rows.length;
+    }
+
+    function selectedMediaLineValues(excludeRow) {
+      return Array.from(document.querySelectorAll('#mediaLineRows tr'))
+        .filter(row => row !== excludeRow)
+        .map(row => row.querySelector('select'))
+        .filter(Boolean)
+        .filter(select => select.value)
+        .map(select => select.value);
+    }
+
+    function mediaLineExists(value, excludeRow) {
+      if (!value) return false;
+      return selectedMediaLineValues(excludeRow).includes(value);
+    }
+
+    function showDuplicateMediaLineToast(label) {
+      toast.querySelector('strong').textContent = '重复品线配置';
+      toast.querySelector('span').textContent = '该品线已存在，请勿重复添加。';
+      showToast();
+    }
+
+    function bindMediaLineDuplicateGuard(row) {
+      const select = row.querySelector('select');
+      select.dataset.previousValue = select.value;
+      select.addEventListener('focus', () => {
+        select.dataset.previousValue = select.value;
+      });
+      select.addEventListener('change', () => {
+        setFieldInvalid(select, !select.value);
+        if (mediaLineExists(select.value, row)) {
+          const label = selectedOptionText(select);
+          select.value = select.dataset.previousValue;
+          setFieldInvalid(select, !select.value);
+          showDuplicateMediaLineToast(label);
+          return;
+        }
+        select.dataset.previousValue = select.value;
+      });
+    }
+
+    function addMediaLineRow() {
+      const tbody = document.getElementById('mediaLineRows');
+      tbody.appendChild(buildMediaRow('', true));
+      renumberRows(tbody);
+      updateConfiguredCount(tbody);
+    }
+
+    function addBenchmarkLineRow() {
+      const tbody = document.getElementById('benchmarkLineRows');
+      tbody.appendChild(buildPairRow('', '', false, true));
+      updateConfiguredCount(tbody);
+    }
+
+    function addInsightLineRow() {
+      const tbody = document.getElementById('insightLineRows');
+      tbody.appendChild(buildInsightRow('', [], true));
+      renumberRows(tbody);
+      updateConfiguredCount(tbody);
+    }
+
+    document.getElementById('addBenchmarkLineRow').addEventListener('click', addBenchmarkLineRow);
+    document.getElementById('addMediaLineRow').addEventListener('click', addMediaLineRow);
+    document.getElementById('addInsightLineRow').addEventListener('click', addInsightLineRow);
+    document.querySelector('[data-required-field="reportName"] input').addEventListener('input', event => {
+      setFieldInvalid(event.target.closest('[data-required-field="reportName"]'), !event.target.value.trim());
+    });
+    document.querySelectorAll('[data-required-field="reportDateRange"] input[type="date"]').forEach(input => {
+      input.addEventListener('change', () => {
+        const dateRange = document.querySelector('[data-required-field="reportDateRange"] .date-range');
+        const dateInputs = document.querySelectorAll('[data-required-field="reportDateRange"] input[type="date"]');
+        setFieldInvalid(dateRange, !dateInputs[0].value || !dateInputs[1].value);
+      });
+    });
+    document.getElementById('benchmarkLineRows').addEventListener('click', event => {
+      if (!event.target.matches('[data-delete-row]')) return;
+      const tbody = document.getElementById('benchmarkLineRows');
+      if (tbody.rows.length > 1) {
+        event.target.closest('tr').remove();
+        updateConfiguredCount(tbody);
+      }
+    });
+    document.getElementById('mediaLineRows').addEventListener('click', event => {
+      if (!event.target.matches('[data-delete-row]')) return;
+      const tbody = document.getElementById('mediaLineRows');
+      if (tbody.rows.length > 1) {
+        event.target.closest('tr').remove();
+        renumberRows(tbody);
+        updateConfiguredCount(tbody);
+      }
+    });
+    document.getElementById('insightLineRows').addEventListener('click', event => {
+      if (!event.target.matches('[data-delete-row]')) return;
+      const tbody = document.getElementById('insightLineRows');
+      if (tbody.rows.length > 1) {
+        event.target.closest('tr').remove();
+        renumberRows(tbody);
+        updateConfiguredCount(tbody);
+      }
+    });
+    initOverallBrandControls();
+    initBenchmarkRows();
+    initMediaRows();
+    initInsightRows();
+    bindPlatformSelectAll();
+    setStep(0);
+  </script>
+</body>
+</html>
+
+

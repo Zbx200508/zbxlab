@@ -64,6 +64,8 @@ assets/
 cases/
 css/
 js/
+resume/
+demos/
 ```
 
 注意：COS 默认域名或静态网站默认域名可能会下载 HTML 或返回目录访问错误，最终访问以 CDN 自定义域名为准。
@@ -209,7 +211,7 @@ https://www.zbxlab.cn/index.html
 ```text
 1. 拉取仓库代码
 2. 生成临时 dist/ 目录
-3. 只复制线上需要的文件：index.html、assets/、cases/、css/、js/
+3. 只复制线上需要的文件：index.html、assets/、cases/、css/、js/、resume/、demos/；PDF 简历位于 assets/resume/
 4. 使用 COSCMD 同步到腾讯云 COS
 5. 使用腾讯云 CLI 刷新 CDN 目录缓存
 ```
