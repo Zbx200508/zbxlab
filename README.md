@@ -1,19 +1,40 @@
 # ZBX Lab
 
-个人产品作品集网站，域名：`zbxlab.cn`。
+个人作品集网站，正式访问地址：
 
-当前第一版先完成首页，用于展示：
+```text
+https://www.zbxlab.cn
+```
 
-- 个人定位
+当前第一版先完成首页与海信项目页背景原型，用于展示：
+
 - 重点项目入口
-- 能力结构
-- 项目推进方法
-- 最近在搭建的内容
+- 简历入口
 - 联系方式
+- 项目详情页原型
 
-后续重点扩展：
+当前部署链路：
+
+```text
+腾讯云 COS 香港桶
+→ 腾讯云 CDN 中国境外加速
+→ www.zbxlab.cn
+→ HTTPS 证书
+→ HTTP 自动跳转 HTTPS
+```
+
+后续重点：
 
 - 海信自动化报告工作台项目详情页
 - 雅迪 VOC 用户洞察看板项目详情页
 - 项目 Demo、PRD、操作 GIF 和脱敏截图展示
-- 国内稳定访问部署方案
+- GitHub 仓库 `zbxlab`
+- GitHub Actions 自动同步到 COS 并刷新 CDN
+
+更多交接信息见：
+
+```text
+PROJECT_HANDOFF.md
+docs/DEPLOYMENT.md
+docs/HOMEPAGE_PROTOTYPE.md
+```
