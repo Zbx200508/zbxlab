@@ -38,7 +38,7 @@ jobs:
 
       - name: Upload files to COS
         run: |
-          coscmd upload -rs --delete ./dist/ /
+          coscmd upload -rsy --delete ./dist/ /
 
       - name: Configure Tencent Cloud CLI
         run: |

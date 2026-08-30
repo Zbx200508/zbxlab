@@ -214,6 +214,8 @@ https://www.zbxlab.cn/index.html
 5. 使用腾讯云 CLI 刷新 CDN 目录缓存
 ```
 
+COSCMD 同步命令中使用 `-y` 自动确认删除提示，避免 GitHub Actions 无法输入确认而失败。
+
 需要在 GitHub 仓库中配置 Secrets：
 
 ```text
