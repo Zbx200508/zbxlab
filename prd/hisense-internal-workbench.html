@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="海信自动化报告工作台交付前内部工具展示，说明人工周报流程拆解、指标口径与配置范围、生成进度可视化和交付结果。"
+    />
+    <title>交付前内部工具 | 海信自动化报告工作台</title>
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+    <style>
+      :root {
+        --bg: #f5f8f7;
+        --paper: #ffffff;
+        --ink: #13211e;
+        --muted: #66766f;
+        --soft: #edf8f5;
+        --line: #dfe9e6;
+        --teal: #08aaa5;
+        --teal-dark: #087f78;
+        --green: #18a875;
+        --amber: #e79822;
+        --red: #e25b61;
+        --shadow: 0 18px 48px rgba(19, 33, 30, 0.09);
+        --max: 1180px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+      }
+
+      html::-webkit-scrollbar,
+      body::-webkit-scrollbar,
+      *::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+
+      body,
+      * {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 16% 8%, rgba(8, 170, 165, 0.18), transparent 30%),
+          radial-gradient(circle at 92% 18%, rgba(24, 168, 117, 0.14), transparent 32%),
+          linear-gradient(180deg, #fbfdfd 0%, var(--bg) 100%);
+        color: var(--ink);
+        font-family: "Inter", "Noto Sans SC", system-ui, -apple-system, BlinkMacSystemFont, "Microsoft YaHei", sans-serif;
+        letter-spacing: 0;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        width: min(var(--max), calc(100% - 48px));
+        margin: 0 auto;
+        padding: 34px 0 72px;
+      }
+
+      .topbar {
+        margin-bottom: 36px;
+      }
+
+      .back {
+        color: #50635e;
+        font-size: 22px;
+        font-weight: 900;
+      }
+
+      .back-to-top {
+        position: fixed;
+        right: max(28px, calc((100vw - var(--max)) / 2));
+        bottom: 28px;
+        z-index: 30;
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border: 1px solid rgba(8, 127, 120, 0.2);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.84);
+        box-shadow: 0 12px 30px rgba(19, 33, 30, 0.12);
+        color: var(--teal-dark);
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: 900;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(10px);
+        transition:
+          opacity 0.18s ease,
+          transform 0.18s ease,
+          background 0.18s ease;
+      }
+
+      .back-to-top.is-visible {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+
+      .back-to-top:hover {
+        background: #ffffff;
+      }
+
+      .hero {
+        margin-bottom: 28px;
+        padding-bottom: 30px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        color: var(--teal-dark);
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 760px;
+        margin-bottom: 14px;
+        font-size: clamp(28px, 3.2vw, 38px);
+        line-height: 1.18;
+      }
+
+      .hero-copy {
+        max-width: 780px;
+        margin-bottom: 0;
+        color: #3d4e49;
+        font-size: 16px;
+        line-height: 1.8;
+      }
+
+      .card,
+      .evidence-card,
+      .metric {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.88);
+        box-shadow: var(--shadow);
+      }
+
+      .section {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 380px;
+        gap: 22px;
+        align-items: stretch;
+        margin-bottom: 22px;
+      }
+
+      .card {
+        padding: 26px;
+      }
+
+      .section-label {
+        display: inline-flex;
+        margin-bottom: 14px;
+        border-radius: 999px;
+        padding: 5px 10px;
+        background: var(--soft);
+        color: var(--teal-dark);
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .card h2,
+      .evidence-card h2 {
+        margin-bottom: 14px;
+        font-size: 25px;
+        line-height: 1.2;
+      }
+
+      .card p,
+      .card li,
+      .evidence-card p,
+      .evidence-card li {
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.85;
+      }
+
+      .card p:last-child,
+      .evidence-card p:last-child {
+        margin-bottom: 0;
+      }
+
+      ul,
+      ol {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      .process-line {
+        display: grid;
+        gap: 10px;
+        padding: 0;
+        list-style: none;
+      }
+
+      .process-line li {
+        display: grid;
+        grid-template-columns: 32px minmax(0, 1fr);
+        gap: 12px;
+        align-items: start;
+        border: 1px solid #e2ece9;
+        border-radius: 8px;
+        padding: 12px;
+        background: #fbfdfd;
+      }
+
+      .process-line b {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--teal);
+        color: #fff;
+        font-size: 12px;
+      }
+
+      .module-grid,
+      .metric-grid,
+      .effort-grid,
+      .formula-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .module,
+      .metric,
+      .effort-item,
+      .formula-card {
+        padding: 14px;
+      }
+
+      .module,
+      .effort-item,
+      .formula-card {
+        border: 1px solid #e4ece9;
+        border-radius: 8px;
+        background: #fbfdfd;
+      }
+
+      .module strong,
+      .metric strong,
+      .effort-item strong,
+      .formula-card strong {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .module span,
+      .metric span,
+      .effort-item span,
+      .formula-card span {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .formula-card code {
+        display: block;
+        margin: 8px 0;
+        border-radius: 6px;
+        background: #eef7f5;
+        padding: 9px 10px;
+        color: var(--teal-dark);
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 13px;
+        font-weight: 800;
+        white-space: normal;
+      }
+
+      .metric strong {
+        color: var(--teal-dark);
+        font-size: 28px;
+        line-height: 1;
+      }
+
+      .evidence-card {
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        min-height: 340px;
+        overflow: hidden;
+      }
+
+      .evidence-head {
+        padding: 22px 22px 0;
+      }
+
+      .evidence-head h2 {
+        margin-bottom: 8px;
+      }
+
+      .evidence-head p {
+        margin-bottom: 0;
+        font-size: 15px;
+        line-height: 1.75;
+      }
+
+      .evidence-visual {
+        display: grid;
+        place-items: center;
+        margin: 20px 22px;
+        border: 1px solid rgba(8, 170, 165, 0.24);
+        border-radius: 8px;
+        background:
+          linear-gradient(135deg, rgba(8, 170, 165, 0.09), transparent),
+          #f8fbfa;
+        min-height: 180px;
+        color: #7a8984;
+        text-align: center;
+      }
+
+      .stage-list {
+        display: grid;
+        width: 100%;
+        gap: 9px;
+        text-align: left;
+      }
+
+      .stage {
+        display: grid;
+        grid-template-columns: 76px minmax(0, 1fr) 54px;
+        gap: 10px;
+        align-items: center;
+        border: 1px solid #dfe9e6;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.84);
+        padding: 10px;
+      }
+
+      .status {
+        display: inline-flex;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 4px 8px;
+        font-size: 12px;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      .status.done {
+        background: #e8f8f1;
+        color: #087f5b;
+      }
+
+      .status.running {
+        background: #fff4d8;
+        color: #936100;
+      }
+
+      .status.waiting {
+        background: #eef1f4;
+        color: #65716d;
+      }
+
+      .stage strong {
+        display: block;
+        color: var(--ink);
+        font-size: 13px;
+      }
+
+      .stage span:last-child {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        text-align: right;
+      }
+
+      .link-flow {
+        display: grid;
+        width: 100%;
+        gap: 10px;
+        text-align: left;
+      }
+
+      .link-node {
+        border: 1px solid #dfe9e6;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.84);
+        padding: 12px;
+      }
+
+      .link-node strong {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--ink);
+      }
+
+      .link-node span {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .evidence-foot {
+        border-top: 1px solid var(--line);
+        padding: 14px 22px;
+        color: #81908b;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      @media (max-width: 980px) {
+        .section {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 680px) {
+        .page {
+          width: min(var(--max), calc(100% - 28px));
+          padding-top: 22px;
+        }
+
+        .module-grid,
+        .metric-grid,
+        .effort-grid,
+        .formula-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .card,
+        .evidence-head {
+          padding: 20px;
+        }
+
+        .evidence-visual {
+          margin: 18px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar">
+        <a class="back" href="../cases/hisense.html" aria-label="返回海信项目页">←</a>
+      </header>
+
+      <section class="hero">
+        <div>
+          <p class="eyebrow">交付前内部工具 · Report Automation</p>
+          <h1>海信自动化报告工作台｜交付前内部工具</h1>
+          <p class="hero-copy">
+            面向海信品牌周报正式系统上线前的报告交付场景，内部工作台将报告配置、数据获取、指标计算、重点内容筛选、AI 洞察生成与 HTML 报告渲染集中处理，用于承接完整周报生成流程，并提升交付前报告制作效率。
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <article class="card">
+          <span class="section-label">01 人工周报流程</span>
+          <h2>人工周报的耗时来源：数据处理、指标计算与内容核查</h2>
+          <p>
+            海信品牌周报并非单纯撰写总结，而是需要依次确认报告范围、拉取多平台数据、计算 SOV / SOE / NSR 等核心指标、筛选高互动与负面帖子，再基于结构化数据生成 AI 洞察并输出 HTML 报告。
+          </p>
+          <p>
+            品牌范围、统计周期、帖子样本或 AI 结论任一环节出现偏差，都会影响报告结论，后续需要重新取数、复核指标或调整洞察内容。
+          </p>
+          <div class="effort-grid">
+            <div class="effort-item"><strong>配置报告范围</strong><span>品牌、竞品、品线、周期、平台、关键词。</span></div>
+            <div class="effort-item"><strong>拉取多平台数据</strong><span>品牌声量、竞品声量、互动数据。</span></div>
+            <div class="effort-item"><strong>计算核心指标</strong><span>SOV、SOE、NSR、同比、环比。</span></div>
+            <div class="effort-item"><strong>筛选重点帖子</strong><span>高互动、负面、话题相关内容。</span></div>
+            <div class="effort-item"><strong>生成 AI 洞察</strong><span>品牌表现、话题总结、情感观点。</span></div>
+            <div class="effort-item"><strong>渲染 HTML 报告</strong><span>生成报告并人工复核。</span></div>
+          </div>
+        </article>
+        <aside class="evidence-card">
+          <div class="evidence-head">
+            <h2>人工周报流程</h2>
+            <p>一份周报从需求确认到报告交付，通常需要经过范围确认、数据获取、指标计算、内容筛选、洞察生成和报告复核。</p>
+          </div>
+          <div class="evidence-visual" aria-hidden="true">
+            <ol class="process-line">
+              <li><b>1</b><span><strong>确认范围</strong><br />品牌、竞品、周期、平台和关键词</span></li>
+              <li><b>2</b><span><strong>拉取数据</strong><br />声量、互动、情绪和重点帖子</span></li>
+              <li><b>3</b><span><strong>计算指标</strong><br />SOV、SOE、NSR、同比和环比</span></li>
+              <li><b>4</b><span><strong>校对洞察</strong><br />检查 AI 输出是否贴合数据</span></li>
+              <li><b>5</b><span><strong>渲染报告</strong><br />HTML 报告、样式检查和人工复核</span></li>
+            </ol>
+          </div>
+          <div class="evidence-foot">范围 → 数据 → 指标 → 帖子 → 洞察 → 报告</div>
+        </aside>
+      </section>
+
+      <section class="section">
+        <article class="card">
+          <span class="section-label">02 指标口径与配置范围</span>
+          <h2>指标口径与统计范围需要保持一致</h2>
+          <p>
+            周报中的核心指标用于对比海信与竞品在不同平台、周期和品线下的表现。指标计算依赖统一的品牌范围、竞品范围、平台范围和周期范围，任一维度口径不一致，都会影响最终结论。
+          </p>
+          <p>
+            因此，工作台在生成报告前需要先完成配置范围确认，确保后续指标计算和 AI 洞察使用同一套统计口径。
+          </p>
+          <div class="formula-grid">
+            <div class="formula-card"><strong>SOV</strong><code>本品声量 /（本品声量 + 竞品声量）</code><span>用于判断品牌在整体讨论中的声量份额。</span></div>
+            <div class="formula-card"><strong>SOE</strong><code>本品互动量 /（本品互动量 + 竞品互动量）</code><span>用于判断品牌在互动表现中的占比。</span></div>
+            <div class="formula-card"><strong>NSR</strong><code>（正面声量 - 负面声量）/ 总声量</code><span>用于判断品牌口碑的正负向净表现。</span></div>
+          </div>
+        </article>
+        <aside class="evidence-card">
+          <div class="evidence-head">
+            <h2>统计口径</h2>
+            <p>同一份报告内，品牌、竞品、平台、周期和关键词范围需保持一致。</p>
+          </div>
+          <div class="evidence-visual" aria-hidden="true">
+            <div class="link-flow">
+              <div class="link-node"><strong>品牌范围</strong><span>本品品牌和竞品品牌必须先确定</span></div>
+              <div class="link-node"><strong>平台范围</strong><span>抖音、小红书、微博、B站等平台口径一致</span></div>
+              <div class="link-node"><strong>周期范围</strong><span>本期、同比期和环比期不能混用</span></div>
+            </div>
+          </div>
+          <div class="evidence-foot">固定公式 / 自定义范围 / 统一分母</div>
+        </aside>
+      </section>
+
+      <section class="section">
+        <article class="card">
+          <span class="section-label">03 返工来源分析</span>
+          <h2>返工通常来自前置口径或数据异常</h2>
+          <p>
+            内部工作台保留人工复核环节，同时将分散的报告生产动作整理为固定步骤，使配置、取数、计算、帖子筛选、AI 洞察和 HTML 报告输出可以逐步检查。
+          </p>
+          <ul>
+            <li>报告范围变化后，品牌、竞品、品线和关键词需要重新确认。</li>
+            <li>平台数据缺失时，相关指标和洞察结论需要重新复核。</li>
+            <li>重点帖子缺失时，AI 洞察会缺少内容依据。</li>
+            <li>HTML 报告渲染异常时，需要回到对应步骤定位问题。</li>
+          </ul>
+        </article>
+        <aside class="evidence-card">
+          <div class="evidence-head">
+            <h2>返工来源</h2>
+            <p>配置、数据、帖子、洞察和报告渲染任一环节出错，都会影响最终报告。</p>
+          </div>
+          <div class="evidence-visual" aria-hidden="true">
+            <div class="link-flow">
+              <div class="link-node"><strong>口径不一致</strong><span>品牌、竞品、平台或周期范围不一致。</span></div>
+              <div class="link-node"><strong>数据缺失</strong><span>部分平台或关键词组合未召回有效内容。</span></div>
+              <div class="link-node"><strong>帖子缺失</strong><span>重点帖子未拉取，洞察缺少内容依据。</span></div>
+              <div class="link-node"><strong>洞察偏差</strong><span>AI 结论与指标或帖子内容不一致。</span></div>
+            </div>
+          </div>
+          <div class="evidence-foot">口径 / 数据 / 帖子 / 洞察 / 渲染</div>
+        </aside>
+      </section>
+
+      <section class="section">
+        <article class="card">
+          <span class="section-label">04 自动化流程拆解</span>
+          <h2>报告生产流程拆解为 5 个处理模块</h2>
+          <p>
+            内部工作台将人工流程中的主要耗时环节拆分为配置、取数、计算、洞察和渲染五个模块。配置决定报告边界，取数决定数据基础，计算决定指标口径，帖子样本影响洞察质量，渲染决定最终报告产物。
+          </p>
+          <div class="module-grid">
+            <div class="module"><strong>配置模块</strong><span>报告名称、品牌、竞品、周期、关键词和过滤词等输入项。</span></div>
+            <div class="module"><strong>取数模块</strong><span>拉取品牌声量、平台数据、互动数据和重点帖子。</span></div>
+            <div class="module"><strong>计算模块</strong><span>计算 SOV、SOE、NSR、趋势、平台分布和品牌对比。</span></div>
+            <div class="module"><strong>洞察模块</strong><span>整理结构化输入，生成品牌表现、话题总结和情感观点。</span></div>
+            <div class="module"><strong>渲染模块</strong><span>输出 HTML 报告，并保留人工复核和调整空间。</span></div>
+          </div>
+        </article>
+        <aside class="evidence-card">
+          <div class="evidence-head">
+            <h2>自动化处理流程</h2>
+            <p>工作台将配置、数据、计算、洞察和输出串成一条可执行流程。</p>
+          </div>
+          <div class="evidence-visual" aria-hidden="true">
+            <div class="link-flow">
+              <div class="link-node"><strong>配置</strong><span>确定报告范围和参数</span></div>
+              <div class="link-node"><strong>取数</strong><span>读取品牌、平台和帖子数据</span></div>
+              <div class="link-node"><strong>计算</strong><span>生成指标和对比结果</span></div>
+              <div class="link-node"><strong>洞察</strong><span>组织 AI 输入并生成分析</span></div>
+              <div class="link-node"><strong>渲染</strong><span>输出 HTML 报告</span></div>
+            </div>
+          </div>
+          <div class="evidence-foot">配置 → 取数 → 计算 → 洞察 → 渲染</div>
+        </aside>
+      </section>
+
+      <section class="section">
+        <article class="card">
+          <span class="section-label">05 生成进度可视化</span>
+          <h2>报告生成进度拆解为 5 个执行节点</h2>
+          <p>
+            内部工作台将报告生成过程拆分为取数、计算、帖子拉取、AI 洞察和报告渲染五个节点，并记录各节点的执行状态、耗时和异常原因。通过节点状态，可以判断生成耗时主要来自数据获取、指标计算、帖子召回、AI 生成还是报告渲染。
+          </p>
+          <ul>
+            <li>每个节点展示待开始、进行中、已完成或失败状态。</li>
+            <li>每个节点记录执行耗时，用于判断主要耗时环节。</li>
+            <li>运行日志记录当前正在执行的环节，方便回溯异常。</li>
+            <li>生成完成后进入报告预览，缩短人工复核路径。</li>
+          </ul>
+        </article>
+        <aside class="evidence-card">
+          <div class="evidence-head">
+            <h2>执行进度</h2>
+            <p>取数、计算、帖子、洞察和渲染节点分别记录状态和耗时。</p>
+          </div>
+          <div class="evidence-visual" aria-hidden="true">
+            <div class="stage-list">
+              <div class="stage"><span class="status done">已完成</span><strong>取数</strong><span>02:10</span></div>
+              <div class="stage"><span class="status done">已完成</span><strong>计算</strong><span>00:42</span></div>
+              <div class="stage"><span class="status running">进行中</span><strong>帖子</strong><span>03:26</span></div>
+              <div class="stage"><span class="status waiting">待开始</span><strong>洞察</strong><span>--</span></div>
+              <div class="stage"><span class="status waiting">待开始</span><strong>渲染</strong><span>--</span></div>
+            </div>
+          </div>
+          <div class="evidence-foot">取数 / 计算 / 帖子 / 洞察 / 渲染</div>
+        </aside>
+      </section>
+
+      <section class="section">
+        <article class="card">
+          <span class="section-label">06 交付前报告制作</span>
+          <h2>用内部工作台承接交付前的周报制作</h2>
+          <p>
+            在正式周报配置中心上线前，内部工作台先承接周报生成流程。通过真实品牌、竞品、周期和关键词配置，完成取数、计算、帖子拉取、AI 洞察和 HTML 报告输出，并在每次生成后进行人工复核和必要调整。
+          </p>
+          <ul>
+            <li>使用真实品牌、竞品、周期和关键词配置生成周报。</li>
+            <li>检查数据结果是否覆盖目标平台和重点帖子。</li>
+            <li>对照数据库结果复核 SOV、SOE、NSR 等指标口径。</li>
+            <li>检查 AI 洞察是否引用正确的指标和帖子依据。</li>
+            <li>根据交付中暴露的问题调整配置项、Prompt 输入结构和异常提示。</li>
+          </ul>
+        </article>
+        <aside class="evidence-card">
+          <div class="evidence-head">
+            <h2>试跑检查项</h2>
+            <p>试跑重点集中在配置完整性、数据召回、指标口径和报告输出质量。</p>
+          </div>
+          <div class="evidence-visual" aria-hidden="true">
+            <div class="link-flow">
+              <div class="link-node"><strong>配置检查</strong><span>品牌、竞品、周期和关键词是否完整</span></div>
+              <div class="link-node"><strong>数据检查</strong><span>目标平台和重点帖子是否正常召回</span></div>
+              <div class="link-node"><strong>输出检查</strong><span>AI 洞察和 HTML 报告是否可复核</span></div>
+            </div>
+          </div>
+          <div class="evidence-foot">配置 / 数据 / 指标 / 洞察 / 输出</div>
+        </aside>
+      </section>
+
+      <section class="section">
+        <article class="card">
+          <span class="section-label">07 交付结果</span>
+          <h2>交付前内部工具带来的效率提升</h2>
+          <div class="metric-grid">
+            <div class="metric"><strong>3h → 30min</strong><span>单份报告制作时间由约 3 小时压缩至约 30 分钟。</span></div>
+            <div class="metric"><strong>30+ 报告</strong><span>项目前期累计支撑 30+ 份完整报告制作。</span></div>
+            <div class="metric"><strong>5 个节点</strong><span>记录取数、计算、帖子拉取、AI 生成和报告渲染等关键执行节点。</span></div>
+            <div class="metric"><strong>正式版参考</strong><span>内部使用中发现的配置、校验、状态和复用问题，为正式周报配置中心设计提供参考。</span></div>
+          </div>
+        </article>
+        <aside class="evidence-card">
+          <div class="evidence-head">
+            <h2>交付结论</h2>
+            <p>内部工作台在正式系统上线前承接周报制作任务，将原本分散的人工处理转为按配置范围、执行节点和复核结果推进的生成流程。</p>
+          </div>
+          <div class="evidence-visual" aria-hidden="true">
+            <div class="link-flow">
+              <div class="link-node"><strong>效率提升</strong><span>单份报告制作时间下降。</span></div>
+              <div class="link-node"><strong>异常定位</strong><span>生成耗时和失败位置可以定位。</span></div>
+              <div class="link-node"><strong>正式版参考</strong><span>形成配置、校验、状态和复用需求。</span></div>
+            </div>
+          </div>
+          <div class="evidence-foot">效率提升 / 异常定位 / 正式版参考</div>
+        </aside>
+      </section>
+    </main>
+    <button class="back-to-top" type="button" aria-label="回到顶部">↑</button>
+    <script>
+      const backToTop = document.querySelector(".back-to-top");
+
+      function updateBackToTop() {
+        backToTop.classList.toggle("is-visible", window.scrollY > window.innerHeight * 0.8);
+      }
+
+      backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      updateBackToTop();
+      window.addEventListener("scroll", updateBackToTop, { passive: true });
+    </script>
+  </body>
+</html>

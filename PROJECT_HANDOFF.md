@@ -73,7 +73,12 @@ https://www.zbxlab.cn
 - 已从 PDF 提取证件照并放入在线简历：`assets/resume/portrait.jpg`。
 - 海信 Case 已从背景原型扩展为项目页骨架，包含业务问题、角色、核心链路、Demo 展示区、PRD 展示结构和数据打标链路验证延展判断。
 - 用户确认海信页改为“展览空间”方向：背景保留氛围感，原型作为整页缩略展品出现，点击展品进入具体原型页。
-- 已接入占位原型文件：`demos/hisense-weekly-config.html`。该文件只作为占位展示素材，不是最终上线 Demo。
+- 已保留正式原型参考文件：`demos/hisense-weekly-config.html`，来源为海信周报中心配置 7.29 原型。
+- 已新增初期自建工作台静态原型：`demos/hisense-self-built-prototype.html`。
+- 海信 Case 当前采用上下两组展示：上方展示“交付前内部工具”，下方展示“正式周报配置中心”。
+- 已新增交付前内部工具说明页：`prd/hisense-internal-workbench.html`，重点说明人工周报流程、指标口径、返工来源、自动化处理流程、生成进度可视化和交付结果。
+- 已新增正式周报配置中心产品方案页：`prd/hisense-formal-weekly-center-prd.html`，重点说明正式版页面结构、5 步配置、交互校验、状态流转、配置快照和复用规则。
+- 两个说明方案页已采用统一桌面端配置：隐藏滚动条、页面顶部返回箭头、右下角回到顶部按钮。
 - 雅迪和香港迪士尼占位页已重新设计不同背景方向，不再沿用海信深色绿光视觉。
 
 当前本地核心文件：
@@ -86,6 +91,14 @@ resume/index.html
 css/resume.css
 cases/hisense.html
 demos/hisense-weekly-config.html
+demos/hisense-self-built-prototype.html
+demos/hisense-weekly-report/index.html
+demos/hisense-weekly-report/styles.css
+demos/hisense-weekly-report/app.js
+demos/hisense-weekly-report/sample-report.html
+prd/hisense-weekly-report-prd.html
+prd/hisense-internal-workbench.html
+prd/hisense-formal-weekly-center-prd.html
 cases/yadea-voc.html
 cases/disney.html
 css/hisense.css
@@ -222,6 +235,8 @@ zbxlab/
 │     └─ hong-kong-disneyland.svg
 ├─ cases/
 │  └─ hisense.html
+├─ prd/
+│  └─ hisense-weekly-report-prd.html
 ├─ css/
 │  ├─ styles.css
 │  └─ hisense.css
@@ -242,6 +257,7 @@ resume/
 demos/
 screenshots/
 prd/
+  hisense-weekly-report-prd.html
 ```
 
 ## 8. 跨电脑同步规则
@@ -323,7 +339,7 @@ HTTP 强制跳 HTTPS：已开启
 - 不展示未经允许的内部文档原文。
 - 截图中出现姓名、电话、邮箱、订单号、设备号、地址等信息必须打码。
 - 指标数值可以用模拟数据、比例化数据或区间表达。
-- Demo 中的数据统一标注为模拟数据。
+- Demo 不连接内部接口、账号、Token 或 MCP 地址；可公开展示的品牌名、指标结构和样例报告数据可保留。
 - 项目成果可以写“流程优化、效率提升、报告自动化、可复用模板”等，但具体数字必须有依据，不能编造。
 
 推荐表达方式：
@@ -334,13 +350,41 @@ HTTP 强制跳 HTTPS：已开启
 不包含任何公司内部真实数据
 ```
 
-## 11. 另一台电脑需要补充/打包的内容
+## 11. 说明方案页配置规范
+
+海信两个说明方案页已经形成可复用配置：
+
+```text
+prd/hisense-internal-workbench.html
+prd/hisense-formal-weekly-center-prd.html
+```
+
+页面定位：
+
+- 说明方案页用于展示项目方案、流程拆解、交互逻辑、PRD 片段和设计价值。
+- 不作为普通后台系统页面处理，视觉上应保持作品集展示感。
+- 页面内容允许纵向滚动，但不显示浏览器滚动条或页面内滚动条。
+
+桌面端交互配置：
+
+- 页面顶部保留返回箭头，点击回到对应 Case 总览页；返回箭头不固定在视口上。
+- 右下角固定回到顶部按钮，用户向下滚动超过约一屏后出现。
+- 回到顶部按钮使用小尺寸圆形图标按钮，不使用文字 tag，避免干扰正文和素材展示。
+- 页面顶部不再放固定跳转 tag，避免和阅读滚动、素材放大操作产生冲突。
+- 如果页面内有 GIF / 视频素材，优先放在内容侧栏或弹窗中，避免占满整屏。
+
+移动端配置：
+
+- 移动端后续基于桌面端单独适配。
+- 当前阶段先记录需求，不处理移动端布局。
+
+## 12. 另一台电脑需要补充/打包的内容
 
 如果公司电脑上还有早期素材，需要尽快打包迁移：
 
 - 当前 HTML / CSS / JS 文件。
-- 海信自动化报告 Demo 原型。
-- 海信 Case 文案草稿。
+- 海信自动化报告 Demo 原型。（公开入口为基于 7.29 正式原型重做的作品集 Demo）
+- 海信 Case 文案草稿与 PRD 页面。（已新增作品集版 PRD）
 - 雅迪 VOC 看板资料。
 - 香港迪士尼项目资料。
 - 所有截图、GIF、录屏。
@@ -369,7 +413,7 @@ PROJECT_HANDOFF_FROM_WORK_PC.md
 
 然后放入 GitHub 仓库。
 
-## 12. 下一步待办
+## 13. 下一步待办
 
 明天优先做：
 

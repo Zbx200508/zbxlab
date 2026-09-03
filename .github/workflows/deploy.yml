@@ -24,7 +24,7 @@ jobs:
           rm -rf dist
           mkdir -p dist
           cp index.html dist/
-          cp -R assets cases css js resume demos dist/
+          cp -R assets cases css js resume demos prd dist/
 
       - name: Install Tencent Cloud tools
         run: |

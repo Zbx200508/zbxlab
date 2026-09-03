@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="海信自动化周报中心作品集版 PRD，展示从人工周报到可配置报告生成系统的产品化设计。"
+    />
+    <title>PRD | 海信自动化周报中心</title>
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../css/hisense.css" />
+    <style>
+      body {
+        overflow-x: hidden;
+        background: #f5f7f8;
+        color: #17202b;
+      }
+
+      .prd-page {
+        width: min(1120px, calc(100% - 48px));
+        margin: 0 auto;
+        padding: 44px 0 72px;
+      }
+
+      .prd-back {
+        display: inline-flex;
+        margin-bottom: 28px;
+        color: #47605b;
+        font-weight: 800;
+      }
+
+      .prd-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: 28px;
+        align-items: end;
+        padding-bottom: 30px;
+        border-bottom: 1px solid #dfe6ea;
+      }
+
+      .prd-eyebrow {
+        margin: 0 0 10px;
+        color: #078f8b;
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .prd-hero h1 {
+        margin: 0;
+        color: #101820;
+        font-size: 38px;
+        line-height: 1.15;
+        text-shadow: none;
+      }
+
+      .prd-hero p {
+        margin: 14px 0 0;
+        color: #62717d;
+        font-size: 16px;
+        line-height: 1.8;
+      }
+
+      .prd-meta {
+        display: grid;
+        gap: 10px;
+      }
+
+      .prd-meta div,
+      .prd-card {
+        border: 1px solid #dfe6ea;
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 12px 30px rgba(16, 24, 32, 0.05);
+      }
+
+      .prd-meta div {
+        padding: 14px 16px;
+      }
+
+      .prd-meta strong {
+        display: block;
+        margin-bottom: 4px;
+        color: #101820;
+        font-size: 18px;
+      }
+
+      .prd-meta span {
+        color: #6f7d88;
+        font-size: 13px;
+      }
+
+      .prd-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 320px;
+        gap: 22px;
+        align-items: start;
+        margin-top: 26px;
+      }
+
+      .prd-main,
+      .prd-side {
+        display: grid;
+        gap: 18px;
+      }
+
+      .prd-card {
+        padding: 24px;
+      }
+
+      .prd-card h2 {
+        margin: 0 0 12px;
+        color: #101820;
+        font-size: 22px;
+      }
+
+      .prd-card h3 {
+        margin: 20px 0 8px;
+        color: #17202b;
+        font-size: 16px;
+      }
+
+      .prd-card p,
+      .prd-card li {
+        color: #52616d;
+        line-height: 1.8;
+      }
+
+      .prd-card p {
+        margin: 0 0 12px;
+      }
+
+      .prd-card ul,
+      .prd-card ol {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      .prd-card li + li {
+        margin-top: 7px;
+      }
+
+      .flow-list {
+        display: grid;
+        gap: 10px;
+        padding: 0;
+        list-style: none;
+      }
+
+      .flow-list li {
+        display: grid;
+        grid-template-columns: 32px minmax(0, 1fr);
+        gap: 12px;
+        align-items: start;
+        padding: 12px;
+        border: 1px solid #e4ecef;
+        border-radius: 8px;
+        background: #fbfdfd;
+      }
+
+      .flow-list b {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        place-items: center;
+        border-radius: 50%;
+        background: #08aaa5;
+        color: #fff;
+        font-size: 13px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #e8edf0;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        color: #71808b;
+        font-size: 13px;
+      }
+
+      td {
+        color: #52616d;
+        line-height: 1.65;
+      }
+
+      .tag-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tag-list span {
+        display: inline-flex;
+        min-height: 30px;
+        align-items: center;
+        border-radius: 999px;
+        background: #e9f8f7;
+        color: #067d79;
+        padding: 0 12px;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .note {
+        border-left: 4px solid #08aaa5;
+        background: #eefaf8;
+      }
+
+      @media (max-width: 880px) {
+        .prd-page {
+          width: min(100% - 28px, 1120px);
+          padding-top: 28px;
+        }
+
+        .prd-hero,
+        .prd-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .prd-hero h1 {
+          font-size: 30px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="prd-page">
+      <a class="prd-back" href="../cases/hisense.html">← 返回海信 Case</a>
+
+      <header class="prd-hero">
+        <div>
+          <p class="prd-eyebrow">Product Requirements Document</p>
+          <h1>海信自动化周报中心</h1>
+          <p>
+            这是一份面向作品集展示的 PRD，不包含内部接口、账号、Token 或客户系统路径。
+            文档重点展示从人工周报到可配置报告生成系统的产品化设计。
+          </p>
+        </div>
+        <aside class="prd-meta" aria-label="项目摘要">
+          <div><strong>3h → 自动化</strong><span>原人工制作成本</span></div>
+          <div><strong>5 步配置</strong><span>正式版核心流程</span></div>
+          <div><strong>配置快照</strong><span>支持复用与重试</span></div>
+        </aside>
+      </header>
+
+      <div class="prd-grid">
+        <section class="prd-main">
+          <article class="prd-card note">
+            <h2>1. 项目背景</h2>
+            <p>
+              海信品牌周报原本依赖人工从多平台抓取数据、计算指标、整理竞品对标、生成 AI 洞察并排版成固定报告。
+              这个过程重复、耗时，且容易在品牌、品线、平台和指标口径上出错。
+            </p>
+            <p>
+              项目早期先通过自建工作台验证自动化链路，随后正式版将能力产品化为“生成报告 + 历史报告”的周报中心。
+            </p>
+          </article>
+
+          <article class="prd-card">
+            <h2>2. 目标与衡量</h2>
+            <table>
+              <thead><tr><th>目标</th><th>衡量方式</th></tr></thead>
+              <tbody>
+                <tr><td>降低重复劳动</td><td>将单份周报约 3 小时人工制作，转为配置后自动生成。</td></tr>
+                <tr><td>降低配置错误</td><td>在提交前拦截必填项缺失、平台为空、竞品超限、品线重复等问题。</td></tr>
+                <tr><td>提升复用效率</td><td>历史报告保留配置快照，支持复制配置和失败重试。</td></tr>
+                <tr><td>稳定报告结构</td><td>输出固定模板，覆盖品牌整体、分平台、品线媒介表现和 AI 洞察。</td></tr>
+              </tbody>
+            </table>
+          </article>
+
+          <article class="prd-card">
+            <h2>3. 核心流程</h2>
+            <ol class="flow-list">
+              <li><b>1</b><span><strong>基础信息</strong><br />配置报告名称、模板、时间范围、对比周期、关键词和过滤词。</span></li>
+              <li><b>2</b><span><strong>品牌整体表现与分平台表现</strong><br />配置本品品牌、品牌控比对象和参与整体对比的竞品品牌。</span></li>
+              <li><b>3</b><span><strong>各品线重点媒介表现-1</strong><br />配置平台范围、本品品线和对应控比对象。</span></li>
+              <li><b>4</b><span><strong>各品线重点媒介表现-2</strong><br />配置平台范围和需要进入报告的品线。</span></li>
+              <li><b>5</b><span><strong>品线 AI 洞察</strong><br />配置需要生成洞察的本品品线及对应竞品品牌。</span></li>
+            </ol>
+          </article>
+
+          <article class="prd-card">
+            <h2>4. 交互校验规则</h2>
+            <h3>步骤校验</h3>
+            <ul>
+              <li>点击“下一步”或向后点击步骤条时，系统按顺序校验当前及前置步骤。</li>
+              <li>向前返回历史步骤时，不触发必填校验。</li>
+              <li>校验失败时停留在错误步骤，并展示 2.5 秒提示。</li>
+            </ul>
+            <h3>配置约束</h3>
+            <ul>
+              <li>竞品品牌至少选择 1 个，最多选择 3 个。</li>
+              <li>分平台展示站点至少选择 1 个。</li>
+              <li>各配置表至少保留 1 行。</li>
+              <li>新增行默认为空，用户必须补全后才能继续。</li>
+              <li>本品品牌 + 控比对象组合不可重复，品线 AI 洞察中的本品品线不可重复。</li>
+            </ul>
+          </article>
+
+          <article class="prd-card">
+            <h2>5. 历史报告</h2>
+            <table>
+              <thead><tr><th>状态</th><th>含义</th><th>可用操作</th></tr></thead>
+              <tbody>
+                <tr><td>待提交</td><td>用户已保存草稿但未生成。</td><td>编辑报告、预览模板</td></tr>
+                <tr><td>生成中</td><td>任务已提交，系统正在生成。</td><td>预览模板</td></tr>
+                <tr><td>已生成</td><td>报告已完成。</td><td>查看报告、复制配置、预览模板</td></tr>
+                <tr><td>生成失败</td><td>任务执行失败。</td><td>重新生成、复制配置、预览模板</td></tr>
+              </tbody>
+            </table>
+          </article>
+        </section>
+
+        <aside class="prd-side">
+          <article class="prd-card">
+            <h2>我的职责</h2>
+            <ul>
+              <li>拆解人工周报生产流程。</li>
+              <li>设计 5 步配置路径。</li>
+              <li>定义字段、默认值和校验规则。</li>
+              <li>设计历史报告状态与操作。</li>
+              <li>对齐 SOV、SOE、NSR、同比、环比、控比等指标口径。</li>
+            </ul>
+          </article>
+
+          <article class="prd-card">
+            <h2>指标口径</h2>
+            <div class="tag-list">
+              <span>SOV</span>
+              <span>SOE</span>
+              <span>NSR</span>
+              <span>同比</span>
+              <span>环比</span>
+              <span>控比</span>
+              <span>视频号爱心赞</span>
+            </div>
+          </article>
+
+          <article class="prd-card">
+            <h2>作品集讲法</h2>
+            <p>
+              不把重点放在“做了一个页面”，而是说明我如何把人工报告流程拆成可配置、可校验、可复用、可追溯的产品能力。
+            </p>
+          </article>
+        </aside>
+      </div>
+    </main>
+  </body>
+</html>

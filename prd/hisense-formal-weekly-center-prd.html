@@ -1,0 +1,1361 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta
+        name="description"
+      content="海信正式周报配置中心产品方案设计，说明正式交付版本的页面结构、配置流程、交互校验、状态流转和复用机制。"
+      />
+    <title>产品方案设计 | 海信正式周报配置中心</title>
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+    <style>
+      :root {
+        --bg: #f4f7f6;
+        --paper: #ffffff;
+        --ink: #14201d;
+        --muted: #66746f;
+        --soft: #eef7f5;
+        --line: #dfe9e6;
+        --teal: #08aaa5;
+        --teal-dark: #087f78;
+        --green: #18a875;
+        --warn: #f5a524;
+        --red: #e25b61;
+        --shadow: 0 18px 46px rgba(20, 32, 29, 0.08);
+        --max: 1180px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+      }
+
+      html::-webkit-scrollbar,
+      body::-webkit-scrollbar,
+      *::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+
+      body,
+      * {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 88% 6%, rgba(8, 170, 165, 0.16), transparent 30%),
+          linear-gradient(180deg, #fbfdfd 0%, var(--bg) 100%);
+        color: var(--ink);
+        font-family: "Inter", "Noto Sans SC", system-ui, -apple-system, BlinkMacSystemFont, "Microsoft YaHei", sans-serif;
+        letter-spacing: 0;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        width: min(var(--max), calc(100% - 48px));
+        margin: 0 auto;
+        padding: 34px 0 72px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 36px;
+      }
+
+      .back {
+        color: #50635e;
+        font-size: 22px;
+        font-weight: 900;
+      }
+
+      .back-to-top {
+        position: fixed;
+        right: max(28px, calc((100vw - var(--max)) / 2));
+        bottom: 28px;
+        z-index: 30;
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border: 1px solid rgba(8, 127, 120, 0.2);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.84);
+        box-shadow: 0 12px 30px rgba(20, 32, 29, 0.12);
+        color: var(--teal-dark);
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: 900;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(10px);
+        transition:
+          opacity 0.18s ease,
+          transform 0.18s ease,
+          background 0.18s ease;
+      }
+
+      .back-to-top.is-visible {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+
+      .back-to-top:hover {
+        background: #ffffff;
+      }
+
+      .hero {
+        margin-bottom: 32px;
+        padding-bottom: 30px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        color: var(--teal-dark);
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 760px;
+        margin-bottom: 14px;
+        font-size: clamp(28px, 3.2vw, 38px);
+        line-height: 1.18;
+      }
+
+      .hero-copy {
+        max-width: 800px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.85;
+      }
+
+      .meta-card,
+      .card,
+      .evidence-card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.86);
+        box-shadow: var(--shadow);
+      }
+
+      .meta-card {
+        padding: 14px 16px;
+      }
+
+      .meta-card strong {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 18px;
+      }
+
+      .meta-card span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .prd-section {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 380px;
+        gap: 22px;
+        align-items: stretch;
+        margin-bottom: 22px;
+        scroll-margin-top: 30px;
+      }
+
+      .card {
+        padding: 26px;
+      }
+
+      .section-label {
+        display: inline-flex;
+        margin-bottom: 14px;
+        border-radius: 999px;
+        padding: 5px 10px;
+        background: var(--soft);
+        color: var(--teal-dark);
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .card h2,
+      .evidence-card h2 {
+        margin-bottom: 14px;
+        font-size: 25px;
+        line-height: 1.2;
+      }
+
+      .card p,
+      .card li,
+      .evidence-card p,
+      .evidence-card li {
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.85;
+      }
+
+      .card p:last-child,
+      .evidence-card p:last-child {
+        margin-bottom: 0;
+      }
+
+      ul,
+      ol {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      .flow-list {
+        display: grid;
+        gap: 10px;
+        padding: 0;
+        list-style: none;
+      }
+
+      .flow-list li {
+        display: grid;
+        grid-template-columns: 34px minmax(0, 1fr);
+        gap: 12px;
+        align-items: start;
+        border: 1px solid #e2ece9;
+        border-radius: 8px;
+        padding: 13px;
+        background: #fbfdfd;
+      }
+
+      .flow-list b {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--teal);
+        color: #fff;
+        font-size: 13px;
+      }
+
+      .rule-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .rule {
+        border: 1px solid #e4ece9;
+        border-radius: 8px;
+        padding: 14px;
+        background: #fbfdfd;
+      }
+
+      .rule strong {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .rule span {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .state-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .state-table th,
+      .state-table td {
+        border-bottom: 1px solid #e7eeec;
+        padding: 12px 10px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .state-table th {
+        color: #72807b;
+        font-size: 13px;
+      }
+
+      .state-table td {
+        color: #52615d;
+        line-height: 1.7;
+      }
+
+      .pill {
+        display: inline-flex;
+        border-radius: 999px;
+        padding: 4px 9px;
+        font-size: 12px;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      .pill.draft {
+        background: #eef1f4;
+        color: #65716d;
+      }
+
+      .pill.running {
+        background: #fff4d8;
+        color: #936100;
+      }
+
+      .pill.done {
+        background: #e8f8f1;
+        color: #087f5b;
+      }
+
+      .pill.failed {
+        background: #fdecec;
+        color: var(--red);
+      }
+
+      .evidence-card {
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        min-height: 360px;
+        overflow: hidden;
+      }
+
+      .evidence-head {
+        padding: 22px 22px 0;
+      }
+
+      .evidence-head h2 {
+        margin-bottom: 8px;
+      }
+
+      .evidence-head p {
+        margin-bottom: 0;
+        font-size: 15px;
+        line-height: 1.75;
+      }
+
+      .evidence-visual {
+        display: grid;
+        place-items: center;
+        margin: 20px 22px;
+        border: 1px solid rgba(8, 170, 165, 0.24);
+        border-radius: 8px;
+        background:
+          linear-gradient(135deg, rgba(8, 170, 165, 0.09), transparent),
+          #f8fbfa;
+        min-height: 180px;
+        color: #7a8984;
+        text-align: center;
+      }
+
+      .prototype-thumb {
+        position: relative;
+        width: 100%;
+        min-height: 230px;
+        overflow: hidden;
+        border-radius: 8px;
+        background: #eef3f2;
+      }
+
+      .prototype-thumb iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 175%;
+        height: 175%;
+        border: 0;
+        pointer-events: none;
+        transform: scale(0.572);
+        transform-origin: 0 0;
+      }
+
+      .process-flow,
+      .step-demo,
+      .state-demo,
+      .reuse-flow {
+        display: grid;
+        width: 100%;
+        gap: 10px;
+        text-align: left;
+      }
+
+      .process-item,
+      .step-demo li,
+      .state-row,
+      .reuse-node {
+        border: 1px solid #dfe9e6;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.82);
+        padding: 11px 12px;
+      }
+
+      .process-item strong,
+      .reuse-node strong {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--ink);
+      }
+
+      .process-item span,
+      .reuse-node span {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .step-demo {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .step-demo li {
+        display: grid;
+        grid-template-columns: 24px minmax(0, 1fr);
+        gap: 9px;
+        align-items: center;
+        color: #53635e;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .step-demo b {
+        display: grid;
+        width: 24px;
+        height: 24px;
+        place-items: center;
+        border-radius: 50%;
+        background: #dfe9e6;
+        color: #6f807b;
+        font-size: 12px;
+      }
+
+      .step-demo li.active {
+        border-color: rgba(8, 170, 165, 0.42);
+        background: var(--soft);
+        color: var(--teal-dark);
+      }
+
+      .step-demo li.active b {
+        background: var(--teal);
+        color: #fff;
+      }
+
+      .validation-demo {
+        display: grid;
+        width: min(290px, 100%);
+        gap: 10px;
+        text-align: left;
+      }
+
+      .field-error {
+        border: 1px solid #f0b4b8;
+        border-radius: 8px;
+        background: #fff;
+        padding: 10px 12px;
+      }
+
+      .field-error span {
+        display: block;
+        margin-bottom: 6px;
+        color: #66746f;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .error-input {
+        height: 34px;
+        border: 1px solid var(--red);
+        border-radius: 6px;
+        background: #fff7f7;
+      }
+
+      .toast-demo {
+        border-left: 4px solid var(--red);
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 12px 28px rgba(226, 91, 97, 0.16);
+        padding: 12px;
+      }
+
+      .toast-demo strong {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--ink);
+      }
+
+      .toast-demo span {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .relation-demo {
+        display: grid;
+        width: 100%;
+        gap: 10px;
+        text-align: left;
+      }
+
+      .select-card {
+        border: 1px solid #dfe9e6;
+        border-radius: 8px;
+        background: #fff;
+        padding: 12px;
+      }
+
+      .select-card strong {
+        display: block;
+        margin-bottom: 8px;
+        color: #60706b;
+        font-size: 12px;
+      }
+
+      .select-value {
+        display: flex;
+        min-height: 34px;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid rgba(8, 170, 165, 0.36);
+        border-radius: 6px;
+        padding: 0 10px;
+        color: var(--ink);
+        font-weight: 800;
+      }
+
+      .option-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .option-pills span {
+        border-radius: 999px;
+        background: var(--soft);
+        padding: 5px 8px;
+        color: var(--teal-dark);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .state-row {
+        display: grid;
+        grid-template-columns: 76px minmax(0, 1fr);
+        gap: 10px;
+        align-items: center;
+      }
+
+      .state-row span:last-child {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .reuse-flow {
+        grid-template-columns: 1fr;
+      }
+
+      .reuse-arrow {
+        color: var(--teal-dark);
+        font-weight: 900;
+        text-align: center;
+      }
+
+      .value-grid {
+        display: grid;
+        width: 100%;
+        gap: 12px;
+      }
+
+      .value-card {
+        border: 1px solid #dfe9e6;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.86);
+        padding: 16px;
+        text-align: left;
+      }
+
+      .value-card strong {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--teal-dark);
+        font-size: 28px;
+        line-height: 1;
+      }
+
+      .value-card span {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .evidence-foot {
+        border-top: 1px solid var(--line);
+        padding: 14px 22px;
+        color: #81908b;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .side-demo-list {
+        display: grid;
+        width: 100%;
+        gap: 9px;
+      }
+
+      .demo-thumb {
+        display: grid;
+        grid-template-columns: 96px minmax(0, 1fr);
+        gap: 10px;
+        align-items: center;
+        width: 100%;
+        overflow: hidden;
+        border: 1px solid #dfe9e6;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.86);
+        padding: 8px;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .demo-thumb:hover {
+        border-color: rgba(8, 170, 165, 0.48);
+        background: var(--soft);
+      }
+
+      .demo-thumb video {
+        display: block;
+        width: 100%;
+        height: 58px;
+        border-radius: 6px;
+        background: #07110e;
+        object-fit: contain;
+      }
+
+      .demo-thumb span,
+      .demo-thumb b,
+      .demo-thumb small {
+        display: block;
+      }
+
+      .demo-thumb b {
+        margin-bottom: 3px;
+        color: var(--ink);
+        font-size: 13px;
+      }
+
+      .demo-thumb small {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      .compact-demo-visual {
+        align-items: stretch;
+        min-height: auto;
+      }
+
+      .media-modal[hidden] {
+        display: none;
+      }
+
+      .media-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 20;
+        display: grid;
+        place-items: center;
+        padding: 28px;
+      }
+
+      .modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.72);
+        backdrop-filter: blur(8px);
+      }
+
+      .modal-panel {
+        position: relative;
+        z-index: 1;
+        width: min(980px, calc(100vw - 56px));
+        border: 1px solid rgba(8, 170, 165, 0.34);
+        border-radius: 8px;
+        background: #f8fbfa;
+        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.46);
+        padding: 18px;
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border: 1px solid #dbe6e3;
+        border-radius: 50%;
+        background: #fff;
+        color: var(--ink);
+        font-size: 22px;
+        cursor: pointer;
+      }
+
+      .modal-top {
+        display: grid;
+        gap: 5px;
+        padding-right: 46px;
+        margin-bottom: 14px;
+      }
+
+      .modal-top span {
+        color: var(--teal-dark);
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .modal-top strong {
+        color: var(--ink);
+        font-size: 22px;
+      }
+
+      .modal-video {
+        display: block;
+        width: 100%;
+        max-height: 66vh;
+        border-radius: 8px;
+        background: #07110e;
+        object-fit: contain;
+      }
+
+      .modal-desc {
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.7;
+      }
+
+      .modal-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 14px;
+      }
+
+      .modal-actions button {
+        border: 1px solid rgba(8, 170, 165, 0.35);
+        border-radius: 999px;
+        background: #fff;
+        padding: 9px 14px;
+        color: var(--teal-dark);
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .modal-actions button[hidden] {
+        visibility: hidden;
+      }
+
+      .decision-list {
+        display: grid;
+        gap: 12px;
+        padding: 0;
+        list-style: none;
+      }
+
+      .decision-list li {
+        border-left: 3px solid var(--teal);
+        padding-left: 12px;
+      }
+
+      .snippet-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .snippet {
+        border: 1px solid #e4ece9;
+        border-radius: 8px;
+        background: #fbfdfd;
+        padding: 14px;
+      }
+
+      .snippet strong {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .snippet span {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 980px) {
+        .hero,
+        .prd-section {
+          grid-template-columns: 1fr;
+        }
+
+      }
+
+      @media (max-width: 680px) {
+        .page {
+          width: min(var(--max), calc(100% - 28px));
+          padding-top: 22px;
+        }
+
+        .rule-grid,
+        .snippet-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .demo-thumb {
+          grid-template-columns: 84px minmax(0, 1fr);
+        }
+
+        .modal-panel {
+          width: min(100%, calc(100vw - 28px));
+          padding: 14px;
+        }
+
+        .card,
+        .evidence-head {
+          padding: 20px;
+        }
+
+        .evidence-visual {
+          margin: 18px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar">
+        <a class="back" href="../cases/hisense.html" aria-label="返回海信项目页">←</a>
+      </header>
+
+      <section class="hero">
+        <div>
+          <p class="eyebrow">产品方案设计 · Formal Delivery</p>
+          <h1>海信正式周报配置中心｜产品方案设计</h1>
+        </div>
+      </section>
+
+      <section id="background" class="prd-section">
+        <article class="card">
+          <span class="section-label">01 业务背景</span>
+          <h2>将周报生产沉淀为客户系统内的配置中心</h2>
+          <p>
+            海信品牌周报涉及多平台数据、品牌控比、品线分析、AI 洞察和报告生成。正式交付阶段需要将周报生产沉淀为客户系统内可配置、可校验、可追踪、可复用的周报中心。
+          </p>
+          <p>
+            原周报生产依赖人工配置品牌、品线、平台、周期和控比对象，配置项多且互相影响，容易出现漏填、重复配置或错误进入生成链路的问题。
+          </p>
+          <ul>
+            <li>把正式周报拆成“生成报告”和“历史报告”两个稳定入口。</li>
+            <li>把品牌、品线、平台、周期、控比对象和 AI 洞察拆成 5 步配置。</li>
+            <li>通过校验、状态和配置快照，支撑客户系统内的长期复用。</li>
+          </ul>
+        </article>
+        <aside class="evidence-card">
+          <div class="evidence-head">
+            <h2>生成报告页面</h2>
+            <p>正式周报中心以“生成报告”和“历史报告”作为两个核心入口。</p>
+          </div>
+          <div class="evidence-visual" aria-hidden="true">
+            <div class="prototype-thumb">
+              <iframe src="../demos/hisense-weekly-config.html" title="正式周报中心页面缩略图" tabindex="-1"></iframe>
+            </div>
+          </div>
+          <div class="evidence-foot">生成报告 / 历史报告</div>
+        </aside>
+      </section>
+
+      <section id="role" class="prd-section">
+        <article class="card">
+          <span class="section-label">02 我的职责</span>
+          <h2>围绕正式交付版梳理流程、规则和交付材料</h2>
+          <p>
+            我参与正式周报配置中心的需求拆解与 PRD 编写，重点负责生成报告流程、5 步配置结构、字段默认值与校验逻辑、历史报告状态、配置快照、复制配置和失败重试规则的梳理，并与 PM 共同优化后推进研发实现。
+          </p>
+          <ul>
+            <li>将周报生产流程拆成可配置的页面结构和步骤顺序。</li>
+            <li>梳理下一步、跳步、保存草稿和提交生成前的校验条件。</li>
+            <li>定义历史报告状态、可用操作和配置复用规则。</li>
+          </ul>
+        </article>
+        <aside class="evidence-card">
+          <div class="evidence-head">
+            <h2>职责范围</h2>
+            <p>工作重点集中在需求拆解、交互规则、状态机制和交付文档表达。</p>
+          </div>
+          <div class="evidence-visual" aria-hidden="true">
+            <div class="value-grid">
+              <div class="value-card"><strong>流程</strong><span>生成报告与历史报告的信息架构</span></div>
+              <div class="value-card"><strong>规则</strong><span>配置校验、联动关系和状态流转</span></div>
+              <div class="value-card"><strong>交付</strong><span>业务版 PRD 与研发沟通依据</span></div>
+            </div>
+          </div>
+          <div class="evidence-foot">需求拆解 / 交互规则 / PRD 编写</div>
+        </aside>
+      </section>
+
+      <section id="prd-fragments" class="prd-section">
+        <article class="card">
+          <span class="section-label">03 PRD 交付片段</span>
+          <h2>交付片段：页面结构、配置流程和校验规则</h2>
+          <p>
+            正式作品集中不公开完整内部文档，而是抽取正式交付中最能体现产品设计深度的片段：页面结构、5 步配置、校验规则、历史报告状态和配置快照。
+          </p>
+          <div class="snippet-grid">
+            <div class="snippet"><strong>页面结构</strong><span>生成报告与历史报告的职责边界、入口关系和页面动作。</span></div>
+            <div class="snippet"><strong>5 步配置</strong><span>基础信息、品牌整体表现、品线媒介表现和 AI 洞察的配置顺序。</span></div>
+            <div class="snippet"><strong>校验规则</strong><span>下一步、跳步、保存草稿和提交生成前的校验条件。</span></div>
+            <div class="snippet"><strong>配置快照</strong><span>历史报告复用、失败重试和周期性生成所依赖的配置记录。</span></div>
+          </div>
+        </article>
+        <aside class="evidence-card">
+          <div class="evidence-head">
+            <h2>PRD 片段</h2>
+            <p>PRD 片段围绕流程、规则和状态展开，避免公开完整内部文档。</p>
+          </div>
+          <div class="evidence-visual" aria-hidden="true">
+            <div class="process-flow">
+              <div class="process-item"><strong>页面结构</strong><span>生成报告 / 历史报告</span></div>
+              <div class="process-item"><strong>配置流程</strong><span>5 步配置顺序与进入条件</span></div>
+              <div class="process-item"><strong>交互规则</strong><span>校验、联动、状态、复用</span></div>
+              <div class="process-item"><strong>验收依据</strong><span>业务确认和研发实现对齐</span></div>
+            </div>
+          </div>
+          <div class="evidence-foot">页面结构 / 校验规则 / 状态机制</div>
+        </aside>
+      </section>
+
+      <section id="structure" class="prd-section">
+        <article class="card">
+          <span class="section-label">04 页面结构</span>
+          <h2>正式版拆成生成报告和历史报告两个页面</h2>
+          <div class="rule-grid">
+            <div class="rule">
+              <strong>生成报告</strong>
+              <span>承接周报配置，用户按步骤填写报告边界、品牌表现、品线媒介表现和 AI 洞察配置。</span>
+            </div>
+            <div class="rule">
+              <strong>历史报告</strong>
+              <span>承接任务追踪和结果复用，用户查看状态、预览模板、查看报告、复制配置或重新生成。</span>
+            </div>
+          </div>
+        </article>
+        <aside class="evidence-card">
+          <div class="evidence-head">
+            <h2>页面结构路径</h2>
+            <p>生成报告承接配置与提交，历史报告承接状态追踪和配置复用。</p>
+          </div>
+          <div class="evidence-visual" aria-hidden="true">
+            <div class="process-flow">
+              <div class="process-item"><strong>生成报告</strong><span>配置报告范围和生成规则</span></div>
+              <div class="process-item"><strong>提交任务</strong><span>校验通过后写入历史记录</span></div>
+              <div class="process-item"><strong>历史报告</strong><span>查看状态、报告和配置快照</span></div>
+              <div class="process-item"><strong>复用配置</strong><span>复制或重试后回到生成报告</span></div>
+            </div>
+          </div>
+          <div class="evidence-foot">生成报告 → 历史报告 → 复制配置</div>
+        </aside>
+      </section>
+
+      <section id="flow" class="prd-section">
+        <article class="card">
+          <span class="section-label">05 配置拆解</span>
+          <h2>5 步配置不是罗列字段，而是按报告生产顺序拆流程</h2>
+          <ol class="flow-list">
+            <li><b>1</b><span><strong>基础信息先定报告边界</strong><br />先确认模板、周期、对比方式、关键词和过滤词，避免后续指标口径失焦。</span></li>
+            <li><b>2</b><span><strong>品牌整体表现处理大盘</strong><br />先配置本品、控比对象和竞品池，让报告先形成全局对比视角。</span></li>
+            <li><b>3</b><span><strong>品线媒介表现处理控比业务</strong><br />对重点品线配置控比对象，支撑“本品 vs 竞品”的媒介表现判断。</span></li>
+            <li><b>4</b><span><strong>品线列表处理细分业务</strong><br />单独配置进入报告的品线范围，保证不同业务线可以按需展示。</span></li>
+            <li><b>5</b><span><strong>AI 洞察最后生成</strong><br />等前置配置完成后再生成洞察，降低品牌、品线或竞品范围未定导致结论不稳的风险。</span></li>
+          </ol>
+        </article>
+        <aside id="demo" class="evidence-card">
+          <div class="evidence-head">
+            <h2>5 步配置演示</h2>
+            <p>每一步配置在继续推进前完成校验，避免错误参数进入报告生成链路。</p>
+          </div>
+          <div class="evidence-visual compact-demo-visual">
+            <div class="side-demo-list">
+              <button class="demo-thumb" type="button" data-demo-index="0">
+                <video src="../assets/videos/hisense/hisense-formal-01-basic-info-validation.mp4" autoplay muted loop playsinline></video>
+                <span><b>1. 基础信息校验</b><small>报告边界、周期和关键词校验</small></span>
+              </button>
+              <button class="demo-thumb" type="button" data-demo-index="1">
+                <video src="../assets/videos/hisense/hisense-formal-02-brand-performance-validation.mp4" autoplay muted loop playsinline></video>
+                <span><b>2. 品牌整体表现</b><small>平台、本品和控比品牌校验</small></span>
+              </button>
+              <button class="demo-thumb" type="button" data-demo-index="2">
+                <video src="../assets/videos/hisense/hisense-formal-03-platform-brand-validation.mp4" autoplay muted loop playsinline></video>
+                <span><b>3. 分平台控比</b><small>按平台拆分本品和控比关系</small></span>
+              </button>
+            </div>
+          </div>
+          <div class="evidence-foot">放大后可查看完整 5 步配置示例</div>
+        </aside>
+      </section>
+
+      <section id="design" class="prd-section">
+        <article class="card">
+          <span class="section-label">06 关键设计</span>
+          <h2>让业务用户少填错、能复用、出错可恢复</h2>
+          <div class="rule-grid">
+            <div class="rule">
+              <strong>减少填错</strong>
+              <span>点击下一步、向后跳步或立即生成前，先校验当前及前置配置，避免错误参数进入报告生成链路。</span>
+            </div>
+            <div class="rule">
+              <strong>方便复用</strong>
+              <span>历史报告支持复制配置，用户可以基于过往周报快速调整周期和范围，而不是每次从零配置。</span>
+            </div>
+            <div class="rule">
+              <strong>出错可恢复</strong>
+              <span>生成失败的报告支持重新生成，也支持复制配置后修改再提交，避免一次失败导致配置丢失。</span>
+            </div>
+            <div class="rule">
+              <strong>保留依据</strong>
+              <span>每次保存草稿或提交生成时保留配置快照，保证历史报告可追溯、可解释、可复用。</span>
+            </div>
+          </div>
+        </article>
+        <aside class="evidence-card">
+          <div class="evidence-head">
+            <h2>校验失败演示</h2>
+            <p>系统在进入下一步前校验必要参数，减少无效配置进入生成链路。</p>
+          </div>
+          <div class="evidence-visual" aria-hidden="true">
+            <div class="validation-demo">
+              <div class="field-error">
+                <span>报告名称 *</span>
+                <div class="error-input"></div>
+              </div>
+              <div class="toast-demo">
+                <strong>配置校验未通过</strong>
+                <span>报告名称不能为空，请填写后再继续。</span>
+              </div>
+            </div>
+          </div>
+          <div class="evidence-foot">前置校验 / 配置复用 / 失败重试</div>
+        </aside>
+      </section>
+
+      <section class="prd-section">
+        <article class="card">
+          <span class="section-label">07 联动规则</span>
+          <h2>复杂品牌和品线关系，用联动选择降低理解成本</h2>
+          <ul>
+            <li>用户先选择本品品线，再看到对应可选控比对象，避免在大品牌池里反复查找。</li>
+            <li>控比对象不自动选中，关键业务判断仍由用户确认。</li>
+            <li>重复的“本品品牌 + 控比对象”组合会被拦截，减少重复统计。</li>
+            <li>新增或删除品线后自动重排序号，让报告结构保持清晰。</li>
+          </ul>
+        </article>
+        <aside class="evidence-card">
+          <div class="evidence-head">
+            <h2>品牌品线联动</h2>
+            <p>品线选择会收窄控比对象范围，降低复杂品牌池带来的选择成本。</p>
+          </div>
+          <div class="evidence-visual" aria-hidden="true">
+            <div class="relation-demo">
+              <div class="select-card">
+                <strong>本品品线</strong>
+                <div class="select-value">海信电视 <span>⌄</span></div>
+              </div>
+              <div class="select-card">
+                <strong>控比对象候选</strong>
+                <div class="option-pills">
+                  <span>TCL电视</span>
+                  <span>索尼电视</span>
+                  <span>小米电视</span>
+                  <span>创维电视</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="evidence-foot">本品品线 → 控比对象候选</div>
+        </aside>
+      </section>
+
+      <section id="history" class="prd-section">
+        <article class="card">
+          <span class="section-label">08 历史报告</span>
+          <h2>让报告任务从一次性产物变成可追踪记录</h2>
+          <table class="state-table">
+            <thead>
+              <tr>
+                <th>状态</th>
+                <th>含义</th>
+                <th>可用操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="pill draft">待提交</span></td>
+                <td>用户已保存草稿，但尚未提交生成。</td>
+                <td>编辑报告、预览模板</td>
+              </tr>
+              <tr>
+                <td><span class="pill running">生成中</span></td>
+                <td>报告任务已提交，系统正在生成。</td>
+                <td>预览模板，最终报告入口置灰</td>
+              </tr>
+              <tr>
+                <td><span class="pill done">已生成</span></td>
+                <td>报告已生成完成。</td>
+                <td>查看报告、复制配置、预览模板</td>
+              </tr>
+              <tr>
+                <td><span class="pill failed">生成失败</span></td>
+                <td>报告生成失败，需要支持恢复。</td>
+                <td>重新生成、复制配置、预览模板</td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+        <aside class="evidence-card">
+          <div class="evidence-head">
+            <h2>历史报告状态</h2>
+            <p>不同任务状态对应不同操作，保证用户能判断当前报告可执行动作。</p>
+          </div>
+          <div class="evidence-visual" aria-hidden="true">
+            <div class="state-demo">
+              <div class="state-row"><span class="pill draft">待提交</span><span>编辑报告、预览模板</span></div>
+              <div class="state-row"><span class="pill running">生成中</span><span>仅预览模板，最终报告置灰</span></div>
+              <div class="state-row"><span class="pill done">已生成</span><span>查看报告、复制配置</span></div>
+              <div class="state-row"><span class="pill failed">生成失败</span><span>重新生成、复制配置</span></div>
+            </div>
+          </div>
+          <div class="evidence-foot">待提交 / 生成中 / 已生成 / 生成失败</div>
+        </aside>
+      </section>
+
+      <section class="prd-section">
+        <article class="card">
+          <span class="section-label">09 复用规则</span>
+          <h2>配置快照是历史报告的核心产品机制</h2>
+          <p>
+            每次保存草稿或立即生成时，系统都应保存当时的配置快照。用户从历史报告复制配置或重新生成失败报告时，系统必须使用该报告的历史配置，而不是当前系统默认配置。
+          </p>
+          <ul>
+            <li>保存草稿后，历史报告新增一条“待提交”记录。</li>
+            <li>立即生成后，历史报告新增一条“生成中”记录。</li>
+            <li>复制配置进入生成报告页面，回填报告名称、模板、时间范围、品牌、品线、平台和关键词等配置。</li>
+            <li>重新生成仅对失败状态可用，按原配置再次提交任务。</li>
+          </ul>
+        </article>
+        <aside class="evidence-card">
+          <div class="evidence-head">
+            <h2>配置复用路径</h2>
+            <p>历史配置快照支持复制和重试，让周期性周报不需要每次从零配置。</p>
+          </div>
+          <div class="evidence-visual" aria-hidden="true">
+            <div class="reuse-flow">
+              <div class="reuse-node"><strong>历史报告</strong><span>选择一份已生成或失败报告</span></div>
+              <div class="reuse-arrow">↓</div>
+              <div class="reuse-node"><strong>复制配置</strong><span>读取当期配置快照</span></div>
+              <div class="reuse-arrow">↓</div>
+              <div class="reuse-node"><strong>重新生成</strong><span>调整周期后再次提交</span></div>
+            </div>
+          </div>
+          <div class="evidence-foot">历史报告 → 复制配置 → 重新生成</div>
+        </aside>
+      </section>
+
+      <section id="value" class="prd-section">
+        <article class="card">
+          <span class="section-label">10 设计价值</span>
+          <h2>让正式周报中心具备长期使用的产品基础</h2>
+          <ul class="decision-list">
+            <li>
+              <strong>配置更清晰</strong>
+              <p>把原本集中在一个长页面里的复杂配置，拆成按报告结构推进的 5 个步骤。</p>
+            </li>
+            <li>
+              <strong>错误前置拦截</strong>
+              <p>通过必填、数量、重复组合和表达式校验，减少错误配置进入生成链路。</p>
+            </li>
+            <li>
+              <strong>任务状态可追踪</strong>
+              <p>历史报告区分待提交、生成中、已生成和生成失败，让业务用户知道每份报告当前能做什么。</p>
+            </li>
+            <li>
+              <strong>配置可复用</strong>
+              <p>配置快照、复制配置和失败重试让周报中心能支持长期、周期性使用。</p>
+            </li>
+          </ul>
+        </article>
+        <aside class="evidence-card">
+          <div class="evidence-head">
+            <h2>设计价值归纳</h2>
+            <p>正式版重点解决客户系统内的可用性、稳定性和复用性。</p>
+          </div>
+          <div class="evidence-visual">
+            <div class="value-grid">
+              <div class="value-card"><strong>清晰</strong><span>5 步配置降低复杂表单理解成本</span></div>
+              <div class="value-card"><strong>稳定</strong><span>前置校验减少无效生成任务</span></div>
+              <div class="value-card"><strong>复用</strong><span>历史配置快照支持复制和重试</span></div>
+            </div>
+          </div>
+          <div class="evidence-foot">可用性 / 稳定性 / 复用性</div>
+        </aside>
+      </section>
+    </main>
+    <div class="media-modal" id="demoModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+      <div class="modal-backdrop" data-modal-close></div>
+      <section class="modal-panel">
+        <button class="modal-close" type="button" data-modal-close aria-label="关闭">×</button>
+        <div class="modal-top">
+          <span id="modalStep">Step 01</span>
+          <strong id="modalTitle">基础信息校验</strong>
+        </div>
+        <video class="modal-video" id="modalVideo" autoplay muted loop playsinline controls></video>
+        <p class="modal-desc" id="modalDesc"></p>
+        <div class="modal-actions">
+          <button type="button" id="modalPrev">← 上一步</button>
+          <button type="button" id="modalNext">下一步 →</button>
+        </div>
+      </section>
+    </div>
+    <button class="back-to-top" type="button" aria-label="回到顶部">↑</button>
+    <script>
+      const backToTop = document.querySelector('.back-to-top');
+      const demoItems = [
+        {
+          step: 'Step 01',
+          title: '基础信息校验',
+          src: '../assets/videos/hisense/hisense-formal-01-basic-info-validation.mp4',
+          desc: '报告名称、模板、周期、对比方式、关键词和过滤词等基础信息先触发校验，再补齐配置并进入下一步。'
+        },
+        {
+          step: 'Step 02',
+          title: '品牌整体表现配置',
+          src: '../assets/videos/hisense/hisense-formal-02-brand-performance-validation.mp4',
+          desc: '平台、本品品牌和控比品牌配置会被前置校验，保证品牌层面的 SOV、SOE、NSR 等指标有明确比较对象。'
+        },
+        {
+          step: 'Step 03',
+          title: '分平台本品控比配置',
+          src: '../assets/videos/hisense/hisense-formal-03-platform-brand-validation.mp4',
+          desc: '按平台拆分本品和控比关系，避免不同渠道的统计范围混用。'
+        },
+        {
+          step: 'Step 04',
+          title: '品线媒介表现配置',
+          src: '../assets/videos/hisense/hisense-formal-04-line-media-validation.mp4',
+          desc: '品线范围、平台和控比对象进入配置校验，支撑品线层面的媒介表现分析。'
+        },
+        {
+          step: 'Step 05',
+          title: '品线 AI 洞察配置',
+          src: '../assets/videos/hisense/hisense-formal-05-line-ai-insight-validation.mp4',
+          desc: '前置品牌、品线和竞品范围确认后，再进入 AI 洞察配置和报告提交。'
+        }
+      ];
+
+      const modal = document.getElementById('demoModal');
+      const modalStep = document.getElementById('modalStep');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalVideo = document.getElementById('modalVideo');
+      const modalDesc = document.getElementById('modalDesc');
+      const modalPrev = document.getElementById('modalPrev');
+      const modalNext = document.getElementById('modalNext');
+      let currentDemoIndex = 0;
+
+      function renderDemo(index) {
+        const item = demoItems[index];
+        currentDemoIndex = index;
+        modalStep.textContent = item.step;
+        modalTitle.textContent = item.title;
+        modalVideo.src = item.src;
+        modalDesc.textContent = item.desc;
+        modalPrev.hidden = index === 0;
+        modalNext.textContent = index === demoItems.length - 1 ? '回到第 1 步 →' : '下一步 →';
+        modalVideo.play().catch(() => {});
+      }
+
+      function openDemo(index) {
+        renderDemo(index);
+        modal.hidden = false;
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeDemo() {
+        modal.hidden = true;
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        modalVideo.pause();
+        modalVideo.removeAttribute('src');
+        modalVideo.load();
+      }
+
+      document.querySelectorAll('.demo-thumb').forEach((button) => {
+        button.addEventListener('click', () => openDemo(Number(button.dataset.demoIndex)));
+      });
+
+      modalPrev.addEventListener('click', () => {
+        if (currentDemoIndex > 0) renderDemo(currentDemoIndex - 1);
+      });
+
+      modalNext.addEventListener('click', () => {
+        const nextIndex = currentDemoIndex === demoItems.length - 1 ? 0 : currentDemoIndex + 1;
+        renderDemo(nextIndex);
+      });
+
+      document.querySelectorAll('[data-modal-close]').forEach((item) => {
+        item.addEventListener('click', closeDemo);
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (modal.hidden) return;
+        if (event.key === 'Escape') closeDemo();
+        if (event.key === 'ArrowRight') modalNext.click();
+        if (event.key === 'ArrowLeft' && currentDemoIndex > 0) modalPrev.click();
+      });
+
+      function updateBackToTop() {
+        backToTop.classList.toggle('is-visible', window.scrollY > window.innerHeight * 0.8);
+      }
+
+      backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      updateBackToTop();
+      window.addEventListener('scroll', updateBackToTop, { passive: true });
+    </script>
+  </body>
+</html>
