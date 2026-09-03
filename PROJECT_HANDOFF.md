@@ -61,6 +61,7 @@ https://www.zbxlab.cn
 - 当前网站已经可通过 `https://www.zbxlab.cn` 访问。
 - GitHub 仓库已创建并推送初始代码：`https://github.com/Zbx200508/zbxlab`
 - 已添加 GitHub Actions 自动部署工作流：`.github/workflows/deploy.yml`
+- 已通过 `main` 分支推送触发 GitHub Actions，同步部署到腾讯云 COS/CDN。
 - 已新增在线简历第一版：`resume/index.html`。
 - 已新增简历页样式：`css/resume.css`。
 - 首页“查看简历”和“在线查看 HTML 简历”已指向 `/resume/`。
@@ -79,6 +80,7 @@ https://www.zbxlab.cn
 - 已新增交付前内部工具说明页：`prd/hisense-internal-workbench.html`，重点说明人工周报流程、指标口径、返工来源、自动化处理流程、生成进度可视化和交付结果。
 - 已新增正式周报配置中心产品方案页：`prd/hisense-formal-weekly-center-prd.html`，重点说明正式版页面结构、5 步配置、交互校验、状态流转、配置快照和复用规则。
 - 两个说明方案页已采用统一桌面端配置：隐藏滚动条、页面顶部返回箭头、右下角回到顶部按钮。
+- 本地与线上均已验证海信项目总览页、交付前内部工具说明页、正式周报配置中心产品方案页可正常访问。
 - 雅迪和香港迪士尼占位页已重新设计不同背景方向，不再沿用海信深色绿光视觉。
 
 当前本地核心文件：
@@ -415,14 +417,13 @@ PROJECT_HANDOFF_FROM_WORK_PC.md
 
 ## 13. 下一步待办
 
-明天优先做：
+近期优先做：
 
-1. 在 GitHub 仓库中配置 `TENCENT_SECRET_ID` 和 `TENCENT_SECRET_KEY`。
-2. 手动运行一次 GitHub Actions，验证自动部署链路。
-3. 检查线上站点 `https://www.zbxlab.cn` 是否仍可访问。
-4. 设计并实现简历页面。
-5. 开始完善海信 Case 页面内容。
-6. 收集海信 Demo 的脱敏截图、操作 GIF、PRD 片段。
+1. 继续检查线上站点 `https://www.zbxlab.cn` 的首页、海信 Case、两个说明方案页和 Demo 页面。
+2. 补充海信内部工作台的生成进度 GIF 或关键截图。
+3. 梳理雅迪 VOC 项目页结构与展示素材。
+4. 梳理香港迪士尼项目展示内容。
+5. 检查移动端布局，海信说明方案页后续基于桌面端单独适配。
 
 GitHub Actions 已配置：
 
