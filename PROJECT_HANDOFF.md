@@ -389,7 +389,7 @@ prd/hisense-formal-weekly-center-prd.html
 - 项目详情页 `cases/` 增加 `noindex, nofollow, noarchive, nosnippet`。
 - 方案与 PRD 页面 `prd/` 增加 `noindex, nofollow, noarchive, nosnippet`。
 - Demo 页面 `demos/` 增加 `noindex, nofollow, noarchive, nosnippet`。
-- 首页项目卡片避免直接使用“海信自动化报告工作台”等强搜索关键词，改为更概括的项目名。
+- 首页项目卡片和项目详情页 `<title>` / description 避免直接使用“海信自动化报告工作台”等强搜索关键词，改为更概括的项目名。
 - `robots.txt` 暂不禁止抓取 `cases/`、`prd/`、`demos/`，因为已被收录的页面需要搜索引擎重新抓取后读取 `noindex`，才能从结果中逐步移除。
 - 等搜索结果消退后，可再考虑在 `robots.txt` 中进一步屏蔽详情目录。
 
