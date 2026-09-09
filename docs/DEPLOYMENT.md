@@ -60,6 +60,7 @@ zbxlab-1476825963
 
 ```text
 index.html
+robots.txt
 assets/
 cases/
 css/
@@ -213,7 +214,7 @@ https://www.zbxlab.cn/index.html
 ```text
 1. 拉取仓库代码
 2. 生成临时 dist/ 目录
-3. 只复制线上需要的文件：index.html、assets/、cases/、css/、js/、resume/、demos/、prd/；PDF 简历位于 assets/resume/
+3. 只复制线上需要的文件：index.html、robots.txt、assets/、cases/、css/、js/、resume/、demos/、prd/；PDF 简历位于 assets/resume/
 4. 使用 COSCMD 同步到腾讯云 COS
 5. 使用腾讯云 CLI 刷新 CDN 目录缓存
 ```

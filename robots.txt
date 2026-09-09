@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Project detail, PRD, and demo pages use page-level noindex tags.
+# Keep them crawlable for now so search engines can read noindex and remove old results.

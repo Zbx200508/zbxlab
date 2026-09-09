@@ -81,6 +81,7 @@ https://www.zbxlab.cn
 - 已新增正式周报配置中心产品方案页：`prd/hisense-formal-weekly-center-prd.html`，重点说明正式版页面结构、5 步配置、交互校验、状态流转、配置快照和复用规则。
 - 两个说明方案页已采用统一桌面端配置：隐藏滚动条、页面顶部返回箭头、右下角回到顶部按钮。
 - 本地与线上均已验证海信项目总览页、交付前内部工具说明页、正式周报配置中心产品方案页可正常访问。
+- 已对项目详情页、方案页和 Demo 页增加 `noindex`，避免搜索“海信”等项目关键词时直接展示具体项目页面；首页保留收录，用于搜索 `ZBX Lab` 或网站名称时展示。
 - 雅迪和香港迪士尼占位页已重新设计不同背景方向，不再沿用海信深色绿光视觉。
 
 当前本地核心文件：
@@ -380,7 +381,21 @@ prd/hisense-formal-weekly-center-prd.html
 - 移动端后续基于桌面端单独适配。
 - 当前阶段先记录需求，不处理移动端布局。
 
-## 12. 另一台电脑需要补充/打包的内容
+## 12. 搜索引擎收录规则
+
+当前网站采用“首页可收录，具体项目页不收录”的策略：
+
+- 首页 `index.html` 保持可收录，用于搜索 `ZBX Lab`、`zbxlab` 或网站名称时展示。
+- 项目详情页 `cases/` 增加 `noindex, nofollow, noarchive, nosnippet`。
+- 方案与 PRD 页面 `prd/` 增加 `noindex, nofollow, noarchive, nosnippet`。
+- Demo 页面 `demos/` 增加 `noindex, nofollow, noarchive, nosnippet`。
+- 首页项目卡片避免直接使用“海信自动化报告工作台”等强搜索关键词，改为更概括的项目名。
+- `robots.txt` 暂不禁止抓取 `cases/`、`prd/`、`demos/`，因为已被收录的页面需要搜索引擎重新抓取后读取 `noindex`，才能从结果中逐步移除。
+- 等搜索结果消退后，可再考虑在 `robots.txt` 中进一步屏蔽详情目录。
+
+注意：搜索引擎去索引不会立即生效，通常需要数天到数周。若需要更快移除，需在 Google Search Console、Bing Webmaster 或百度资源平台提交移除请求。
+
+## 13. 另一台电脑需要补充/打包的内容
 
 如果公司电脑上还有早期素材，需要尽快打包迁移：
 
@@ -415,7 +430,7 @@ PROJECT_HANDOFF_FROM_WORK_PC.md
 
 然后放入 GitHub 仓库。
 
-## 13. 下一步待办
+## 14. 下一步待办
 
 近期优先做：
 
