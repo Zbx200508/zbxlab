@@ -83,6 +83,7 @@ https://www.zbxlab.cn
 - 本地与线上均已验证海信项目总览页、交付前内部工具说明页、正式周报配置中心产品方案页可正常访问。
 - 已对项目详情页、方案页和 Demo 页增加 `noindex`，避免搜索“海信”等项目关键词时直接展示具体项目页面；首页保留收录，用于搜索 `ZBX Lab` 或网站名称时展示。
 - 雅迪和香港迪士尼占位页已重新设计不同背景方向，不再沿用海信深色绿光视觉。
+- 已新增 Agent 延展项目规划：`docs/AGENT_PROJECT_PLAN_2026-09-10.md`，方向为基于 LangGraph 的“品牌社媒洞察与周报支持多 Agent 系统”。
 
 当前时间节点：
 
@@ -269,6 +270,8 @@ demos/
 screenshots/
 prd/
   hisense-weekly-report-prd.html
+docs/
+  AGENT_PROJECT_PLAN_2026-09-10.md
 ```
 
 ## 8. 跨电脑同步规则
@@ -446,6 +449,12 @@ PROJECT_HANDOFF_FROM_WORK_PC.md
 docs/SPRINT_PLAN_2026-09-10.md
 ```
 
+2026-09-14 至 2026-09-15 的 Agent 延展项目规划见：
+
+```text
+docs/AGENT_PROJECT_PLAN_2026-09-10.md
+```
+
 近期优先做：
 
 1. 海信项目最终 QA：总览页、两个说明页、两个原型、正式交互视频、链接、返回、回顶部。
@@ -453,6 +462,14 @@ docs/SPRINT_PLAN_2026-09-10.md
 3. 简历页与首页项目入口统一，检查项目名称、贡献描述、联系方式和 PDF。
 4. 香港迪士尼根据素材情况做轻量案例页，不抢主项目时间。
 5. 周日前完成移动端基础可读、全站脱敏、SEO noindex 检查和线上部署验收。
+
+周日后延展：
+
+1. 基于 `ro-anderson/multi-agent-rag-customer-support` 跑通 LangGraph 多 Agent RAG 原项目。
+2. 将旅游客服场景改造成品牌社媒洞察与周报支持场景。
+3. 准备脱敏或模拟数据，覆盖指标口径、项目复盘、样例周报和 VOC 原帖。
+4. 完成主路由助手、周报指标 Agent、VOC 洞察 Agent，并尽量补数据质量 Agent 或行动建议 Agent。
+5. 输出 README、架构图、演示问题清单和面试复盘讲稿，目标在 2026-09-15 周二晚上完成可演示版本。
 
 GitHub Actions 已配置：
 
