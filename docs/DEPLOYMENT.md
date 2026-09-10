@@ -257,11 +257,9 @@ CDN_REFRESH_PATH：https://www.zbxlab.cn/
 zbxlab
 ```
 
-GitHub 用作长期代码源。明天创建仓库后，需要继续补：
+GitHub 用作长期代码源。当前仓库和自动部署链路已跑通，后续维护重点：
 
-- 远程仓库绑定
-- 第一次 push
-- `.github/workflows/deploy.yml`
-- 腾讯云密钥放入 GitHub Secrets
-- 自动上传 COS
-- 自动刷新 CDN
+- 本地修改后提交并推送到 `main`
+- GitHub Actions 自动上传 COS
+- GitHub Actions 自动刷新 CDN
+- 线上检查 `https://www.zbxlab.cn`
