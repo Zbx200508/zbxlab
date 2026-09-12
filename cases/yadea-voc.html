@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
-    <meta name="description" content="雅迪 VOC 用户洞察看板项目整理页。" />
-    <title>雅迪 VOC 用户洞察看板 | ZBX Lab</title>
+    <meta name="description" content="雅迪消费者洞察看板项目展示页。" />
+    <title>雅迪消费者洞察看板 | ZBX Lab</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,42 +13,1072 @@
       rel="stylesheet"
     />
     <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="../css/case-placeholder.css" />
+    <link rel="stylesheet" href="../css/yadea.css" />
   </head>
-  <body class="case-yadea">
-    <header class="site-header">
-      <a href="../index.html">返回作品集</a>
+  <body>
+    <header class="case-header">
+      <a class="back-link" href="../index.html" aria-label="返回作品集">返回作品集</a>
+      <nav class="jump-nav" aria-label="页面快速定位">
+        <a href="#overview">概览</a>
+        <a href="#pipeline">数据处理</a>
+        <a href="#label-system">标签体系</a>
+        <a href="#prototype">看板原型</a>
+        <a href="#analysis">分析路径</a>
+      </nav>
     </header>
 
     <main>
-      <section class="case-hero">
-        <p class="eyebrow">Case in progress</p>
-        <img src="../assets/logos/yadea.svg" alt="Yadea" />
-        <h1>雅迪 VOC 用户洞察看板</h1>
-        <p>
-          这个 Case 将用于展示如何从用户反馈中提炼问题趋势、需求线索与产品优化机会，
-          并沉淀为可复盘的数据洞察看板。
-        </p>
+      <section class="hero" aria-labelledby="case-title">
+        <div class="hero-copy">
+          <img src="../assets/logos/yadea.svg" alt="Yadea" />
+          <h1 id="case-title">雅迪消费者洞察看板</h1>
+          <p>
+            将分散的电动车社媒内容处理成可聚合、可交叉、可回溯的消费者反馈数据，
+            回答“哪个车型，在什么场景下，出现了什么问题，为什么值得优先处理”。
+          </p>
+        </div>
       </section>
 
-      <section class="case-grid">
-        <article>
-          <h2>后续补充</h2>
-          <ul>
-            <li>VOC 数据来源、字段口径与脱敏示例。</li>
-            <li>高频问题、趋势变化和重点用户场景。</li>
-            <li>看板截图、核心指标和洞察结论。</li>
-          </ul>
-        </article>
-        <article>
-          <h2>展示原则</h2>
-          <p>仅使用模拟数据或脱敏资料，不展示真实用户信息、内部系统和未公开经营数据。</p>
-        </article>
+      <section class="section-panel overview-panel" id="overview" aria-labelledby="overview-title">
+        <div class="section-heading">
+          <h2 id="overview-title">项目概览</h2>
+        </div>
+
+        <div class="overview-grid">
+          <article>
+            <span>角色</span>
+            <strong>数据产品经理实习生</strong>
+          </article>
+          <article>
+            <span>负责内容</span>
+            <strong>参与需求拆解、标签体系设计、提示词调整、真实数据验证、分析逻辑设计及看板方案。</strong>
+          </article>
+          <article>
+            <span>分析框架</span>
+            <strong>4 个一级维度、32 个二级标签、7 类使用场景、5 档情绪。</strong>
+          </article>
+          <article>
+            <span>主要产出</span>
+            <strong>标签体系与识别逻辑、真实数据验证、用户反馈分析看板及分析路径设计。</strong>
+          </article>
+        </div>
+
+      </section>
+
+      <section class="section-panel problem-panel" aria-labelledby="problem-title">
+        <div class="section-heading compact-heading">
+          <h2 id="problem-title">业务问题</h2>
+        </div>
+
+        <div class="problem-grid">
+          <article>
+            <h3>社媒声量不等于有效反馈</h3>
+            <p>品牌相关内容中混有大量门店广告、竞品蹭词、配件推广等非真实消费者反馈，直接统计会放大噪音，影响后续产品判断。</p>
+          </article>
+          <article>
+            <h3>同一问题在不同场景下意义不同</h3>
+            <p>例如续航问题，在日常通勤、外卖配送和周末出行中的使用强度、容忍度和影响程度不同，单纯按问题标签汇总难以解释真实需求。</p>
+          </article>
+          <article>
+            <h3>汇总图表需要保留证据来源</h3>
+            <p>仅看图表和总结无法判断问题成因，因此需要保留“维度—标签—场景—原帖”的下钻路径，让分析结果可验证。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-panel" id="pipeline" aria-labelledby="pipeline-title">
+        <div class="section-heading">
+          <h2 id="pipeline-title">数据处理流程</h2>
+        </div>
+
+        <div class="pipeline" aria-label="数据处理流程">
+          <article>
+            <span>01</span>
+            <h3>原始内容接入</h3>
+            <p>接入品牌相关社媒内容，保留平台、发布时间、正文、互动量等原始字段。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>有效反馈筛选</h3>
+            <p>识别真实消费者反馈，排除门店广告、竞品蹭词、配件营销等无效内容。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>多维标签识别</h3>
+            <p>识别产品、骑行体验、智能功能、售后服务等问题标签，并判断用户情绪。</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>使用场景识别</h3>
+            <p>识别通勤上下班、短途代步、外卖配送、周末郊游、接送孩子、雨天骑行等实际使用场景。</p>
+          </article>
+          <article>
+            <span>05</span>
+            <h3>多标签拆分</h3>
+            <p>一条内容可命中多个问题标签或使用场景，因此拆分成多条标准化分析记录。</p>
+          </article>
+          <article>
+            <span>06</span>
+            <h3>聚合与证据下钻</h3>
+            <p>按品牌、车型、维度、标签、场景等字段聚合，同时保留原帖作为分析证据。</p>
+          </article>
+        </div>
+
+      </section>
+
+      <section class="section-panel label-system-panel" id="label-system" aria-labelledby="label-system-title">
+        <div class="section-heading compact-heading">
+          <h2 id="label-system-title">标签体系与打标逻辑</h2>
+          <p>将非结构化社媒内容转化为可聚合、可交叉、可回溯的消费者反馈结构。</p>
+        </div>
+
+        <div class="label-info-block structure-block" aria-label="结构化流程图">
+          <div class="structure-flow">
+            <article>
+              <span>01</span>
+              <h3>原始社媒内容</h3>
+              <p>保留平台、发布时间、正文、互动量等原始字段。</p>
+            </article>
+            <article>
+              <span>02</span>
+              <h3>有效 VOC 识别</h3>
+              <p>识别真实消费者反馈，排除门店广告、竞品蹭词、配件推广等非目标内容。</p>
+            </article>
+            <article>
+              <span>03</span>
+              <h3>问题标签拆解</h3>
+              <p>将有效反馈归入一级维度，并进一步识别具体二级问题标签。</p>
+            </article>
+            <article>
+              <span>04</span>
+              <h3>场景与情绪补充</h3>
+              <p>补充实际使用场景和情绪等级，形成多维分析口径。</p>
+            </article>
+            <article>
+              <span>05</span>
+              <h3>长表拆分</h3>
+              <p>将单条内容中的多个问题标签与使用场景拆分为标准化分析明细，保留原帖 ID 及对应关系。</p>
+            </article>
+            <article>
+              <span>06</span>
+              <h3>聚合分析与原帖回溯</h3>
+              <p>按品牌、车型、维度、标签和场景聚合，并支持分析结果回溯至具体原帖。</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="label-info-block dimension-block" aria-label="标签体系框架图">
+          <div class="block-heading">
+            <h3>分析维度设计</h3>
+            <p>围绕产品问题、使用体验、智能能力和售后服务建立一级维度，并补充场景与情绪信息。</p>
+          </div>
+
+          <div class="dimension-map">
+            <div class="dimension-center">消费者反馈</div>
+            <article class="dimension-branch branch-product">
+              <h4>产品</h4>
+              <p>关注车辆硬件、性能和可靠性问题。</p>
+              <small>代表标签：续航、电池、外观设计、刹车、质量稳定性、充电、动力、防水等。</small>
+            </article>
+            <article class="dimension-branch branch-ride">
+              <h4>骑行体验</h4>
+              <p>关注用户在实际骑行过程中的使用感受。</p>
+              <small>代表标签：舒适性、操控、噪音、通勤便利、载人体验、储物空间、提速体验等。</small>
+            </article>
+            <article class="dimension-branch branch-smart">
+              <h4>智能功能</h4>
+              <p>关注车辆智能化能力及连接稳定性。</p>
+              <small>代表标签：APP连接、智能解锁、蓝牙/NFC、定位功能、防盗功能、OTA升级、仪表系统。</small>
+            </article>
+            <article class="dimension-branch branch-service">
+              <h4>售后服务</h4>
+              <p>关注购后服务、维修与门店支持体验。</p>
+              <small>代表标签：维修效率、门店服务、保修服务、客服态度、配件价格、维修透明度、售后响应。</small>
+            </article>
+          </div>
+
+          <div class="aux-dimensions" aria-label="辅助维度">
+            <article>
+              <strong>使用场景</strong>
+              <p>通勤上下班 / 短途代步 / 外卖配送 / 周末郊游 / 接送孩子 / 雨天骑行 / 未提及场景</p>
+            </article>
+            <article>
+              <strong>情绪等级</strong>
+              <p>极度满意 / 满意 / 中性 / 不满 / 强烈不满</p>
+            </article>
+          </div>
+          <p class="dimension-note">通过一级维度、二级标签、使用场景与情绪等级的组合，形成可用于车型、场景与问题交叉分析的多维数据结构。</p>
+        </div>
+
+        <div class="label-info-block case-breakdown" aria-label="单条内容结构化案例">
+          <div class="block-heading">
+            <h3>单条内容结构化示例</h3>
+            <p>以下示例展示一条真实社媒内容如何经过有效反馈识别、问题拆解和场景补充，最终形成标准化分析明细。</p>
+          </div>
+
+          <div class="case-step">
+            <h4>原帖</h4>
+            <blockquote>
+              两个人日常通勤 10.5km 左右，单程耗电 15%-16%，满电续航大概在 65-70km，和官方标称有一定差距。才骑 10 天就遇到边撑开机失灵的问题。
+            </blockquote>
+          </div>
+
+          <div class="case-step recognition-step">
+            <h4>识别结果</h4>
+            <p><strong>识别结果：</strong>该内容属于有效 VOC，主要涉及产品维度。其中，“实际续航与官方标称存在差距”识别为续航问题，“新车短期内出现开机失灵”识别为质量稳定性问题；内容明确提及日常通勤，补充通勤上下班场景，整体情绪判断为不满。</p>
+            <dl class="summary-strip">
+              <div><dt>有效 VOC</dt><dd>是</dd></div>
+              <div><dt>一级维度</dt><dd>产品</dd></div>
+              <div><dt>二级标签</dt><dd>续航 / 质量稳定性</dd></div>
+              <div><dt>使用场景</dt><dd>通勤上下班</dd></div>
+              <div><dt>情绪</dt><dd>不满</dd></div>
+            </dl>
+          </div>
+
+          <div class="case-step table-step">
+            <h4>标准化分析明细</h4>
+            <table>
+              <thead>
+                <tr><th>原帖ID</th><th>使用场景</th><th>一级维度</th><th>二级标签</th><th>情绪</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>A001</td><td>通勤上下班</td><td>产品</td><td>续航</td><td>不满</td></tr>
+                <tr><td>A001</td><td>通勤上下班</td><td>产品</td><td>质量稳定性</td><td>不满</td></tr>
+              </tbody>
+            </table>
+            <p>通过拆分为多条标准化分析记录，可保留原帖与标签之间的对应关系，并为后续场景交叉、车型比较和原帖回溯提供数据基础。</p>
+          </div>
+        </div>
+
+        <div class="label-info-block usage-close" aria-label="结构化标签的分析用途">
+          <h3>结构化标签的分析用途</h3>
+          <div>
+            <article>
+              <strong>车型问题定位</strong>
+              <p>识别不同车型集中出现的产品和服务问题。</p>
+            </article>
+            <article>
+              <strong>场景交叉分析</strong>
+              <p>比较同一问题在不同使用场景中的表现差异。</p>
+            </article>
+            <article>
+              <strong>原帖证据回溯</strong>
+              <p>从聚合结果和 AI 总结下钻至真实用户内容，验证问题原因。</p>
+            </article>
+          </div>
+          <p>通过结构化标签体系，将分散的消费者表达转化为可比较、可交叉、可验证的分析数据。</p>
+        </div>
+      </section>
+
+      <section class="section-panel validation-panel" aria-labelledby="validation-title">
+        <div class="section-heading compact-heading">
+          <h2 id="validation-title">样本验证</h2>
+          <p>
+            全量处理前，先用 1,000 条真实社媒内容试跑，验证标签、提示词和分析结构能否支撑后续看板。
+          </p>
+        </div>
+
+        <div class="validation-layout">
+          <div class="validation-numbers" aria-label="样本验证数字">
+            <article>
+              <strong>1,000</strong>
+              <span>首轮测试样本</span>
+            </article>
+            <article>
+              <strong>278</strong>
+              <span>有效反馈</span>
+            </article>
+            <article>
+              <strong>722</strong>
+              <span>噪音内容</span>
+            </article>
+          </div>
+          <div class="validation-copy">
+            <h3>验证重点</h3>
+            <ul>
+              <li>广告、竞品蹭词、配件推广是否被识别为无效内容。</li>
+              <li>续航、电池、刹车、维修效率等标签边界是否清晰。</li>
+              <li>数据结构是否能支撑多维打标、场景交叉和看板下钻。</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="validation-explain">
+          首轮真实数据试跑发现，门店广告、竞品蹭词、配件推广等内容容易被误识别为有效反馈，因此基于误判样本调整识别规则和判断边界，再进入全量数据处理。
+        </p>
+
+        <div class="validation-adjustments" aria-label="样本验证带来的调整">
+          <article>
+            <h3>识别边界调整</h3>
+            <p>明确广告、蹭词、配件推广等无效内容排除规则。</p>
+          </article>
+          <article>
+            <h3>标签逻辑修正</h3>
+            <p>根据真实表达补充问题边界，避免理想化样例掩盖误判。</p>
+          </article>
+          <article>
+            <h3>分析结构确认</h3>
+            <p>验证“标签 × 场景 × 情绪”的交叉分析是否能支撑真实业务问题。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-panel prototype-panel" id="prototype" aria-labelledby="prototype-title">
+        <div class="section-heading">
+          <h2 id="prototype-title">看板原型</h2>
+          <p>下方只展示从真实原型中拆出的关键截面，重点说明每个页面回答的业务问题。</p>
+        </div>
+
+        <div class="prototype-tabs" aria-label="原型截面切换">
+          <button type="button" data-proto-toggle="overall" aria-expanded="false">
+            <span>01</span>
+            <strong>品牌整体表现</strong>
+            <p>回答品牌当前整体声量、情绪表现及高风险问题是什么。</p>
+          </button>
+          <button type="button" data-proto-toggle="deep" aria-expanded="false">
+            <span>02</span>
+            <strong>维度与场景分析</strong>
+            <p>回答高频问题集中在哪些维度，以及在哪些使用场景下被放大。</p>
+          </button>
+          <button type="button" data-proto-toggle="product" aria-expanded="false">
+            <span>03</span>
+            <strong>车型与问题下钻</strong>
+            <p>回答具体车型在社媒和工单中暴露了哪些产品、体验和服务问题。</p>
+          </button>
+          <button type="button" data-proto-toggle="full" aria-expanded="false">
+            <span>04</span>
+            <strong>结论证据验证</strong>
+            <p>从维度、标签和场景继续下钻到原帖，验证图表结论。</p>
+          </button>
+        </div>
+
+        <div class="prototype-excerpts" id="prototype-detail" aria-label="真实原型关键截面" hidden>
+          <article class="proto-module" data-proto-panel="overall" hidden>
+            <div class="proto-screen proto-overall" aria-label="整体表现原型截面">
+              <div class="proto-filterbar" aria-label="原型筛选器">
+                <label>品牌<select><option>雅迪</option></select></label>
+                <label>平台<select><option>全部平台</option><option>抖音</option><option>小红书</option><option>微博</option></select></label>
+                <label>开始日期<input type="date" value="2026-01-01" /></label>
+                <label>结束日期<input type="date" value="2026-01-31" /></label>
+                <button type="button" data-overall-refresh>查询</button>
+                <button type="button" class="ghost">重置筛选</button>
+              </div>
+              <div class="proto-section-title"><span></span><b>整体表现</b><em>指标概览 / 声量互动趋势 / 站点分布</em></div>
+              <div class="proto-metrics">
+                <button class="proto-metric metric-blue active" type="button" data-metric-focus="volume">
+                  <small>总声量</small>
+                  <strong>213,529</strong>
+                  <div><i>同比 -20.91%</i><i>环比 -13.84%</i></div>
+                </button>
+                <button class="proto-metric metric-indigo" type="button" data-metric-focus="negative">
+                  <small>负面声量</small>
+                  <strong>6,594</strong>
+                  <div><i>同比 +5.98%</i><i>环比 -78.87%</i></div>
+                </button>
+                <button class="proto-metric metric-rose" type="button" data-metric-focus="engagement">
+                  <small>互动量</small>
+                  <strong>7,544,362</strong>
+                  <div><i>同比 +5.29%</i><i>环比 -6.63%</i></div>
+                </button>
+                <button class="proto-metric metric-emerald" type="button" data-metric-focus="nsr">
+                  <small>净情感推荐度</small>
+                  <strong>74.11%</strong>
+                  <div><i>同比 -13.19%</i><i>环比 +44.32%</i></div>
+                </button>
+              </div>
+              <div class="proto-chart-grid">
+                <div class="proto-panel">
+                  <div class="proto-panel-head">
+                    <h4>声量 / 互动量趋势</h4>
+                    <span id="protoTrendHint">点击指标卡可高亮对应趋势</span>
+                  </div>
+                  <div class="proto-chart" id="protoTrendChart" role="img" aria-label="声量、互动量、负面声量趋势图"></div>
+                </div>
+                <div class="proto-panel">
+                  <div class="proto-panel-head">
+                    <h4>各站点分布</h4>
+                    <span>按声量占比</span>
+                  </div>
+                  <div class="proto-chart proto-chart-small" id="protoPlatformChart" role="img" aria-label="各站点声量分布图"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="proto-module" data-proto-panel="deep" hidden>
+            <div class="proto-screen" aria-label="维度剖析与场景交叉原型截面">
+              <div class="proto-section-title"><span></span><b>深度剖析</b><em>维度 / 二级标签 / 场景交叉 / 原文证据</em></div>
+              <div class="proto-drill-layout">
+                <div class="proto-panel">
+                  <div class="proto-panel-head">
+                    <h4>维度剖析</h4>
+                    <span>负向标签排行</span>
+                  </div>
+                  <div class="proto-dim-buttons">
+                    <button class="active" type="button" data-proto-dim="产品">产品</button>
+                    <button type="button" data-proto-dim="骑行体验">骑行体验</button>
+                    <button type="button" data-proto-dim="智能功能">智能功能</button>
+                    <button type="button" data-proto-dim="售后服务">售后服务</button>
+                  </div>
+                  <div class="proto-path"><span>整体负面</span><i></i><span id="protoDimPath">产品维度</span><i></i><span id="protoTagPath">续航</span></div>
+                  <div class="proto-chart proto-chart-mid" id="protoDimensionChart" role="img" aria-label="二级标签负向排行图"></div>
+                </div>
+
+                <div class="proto-panel">
+                  <div class="proto-panel-head">
+                    <h4>场景 × 二级标签交叉分析</h4>
+                    <span>负向声量占比</span>
+                  </div>
+                  <div class="proto-heat-wrap">
+                    <table class="proto-heat-table">
+                      <thead>
+                        <tr><th>场景</th><th>续航</th><th>电池</th><th>应用连接</th><th>维修效率</th><th>噪音</th><th>刹车</th></tr>
+                      </thead>
+                      <tbody id="protoHeatBody"></tbody>
+                    </table>
+                  </div>
+                  <div class="proto-insight" id="protoSceneInsight">
+                    <b id="protoSceneTitle">「雨天骑行 × 刹车」场景分析</b>
+                    <ul id="protoSceneList"></ul>
+                    <div class="proto-evidence-grid" id="protoSceneExamples"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="proto-module" data-proto-panel="product" hidden>
+            <div class="proto-screen" aria-label="产品剖析原型截面">
+              <div class="proto-section-title"><span></span><b>产品剖析</b><em>车型贡献 / 当前车型指标 / 社媒与工单</em></div>
+              <div class="proto-product-grid">
+                <div class="proto-panel">
+                  <div class="proto-panel-head">
+                    <h4>品牌下车型贡献排行</h4>
+                    <span>点击柱体切换车型</span>
+                  </div>
+                  <div class="proto-chart proto-chart-mid" id="protoModelRankChart" role="img" aria-label="车型贡献排行图"></div>
+                </div>
+
+                <div class="proto-panel">
+                  <div class="proto-panel-head">
+                    <h4>当前选中车型指标概览</h4>
+                    <span id="protoModelName">车型甲</span>
+                  </div>
+                  <div class="proto-model-metrics" id="protoModelMetrics"></div>
+                  <div class="proto-ai-summary" id="protoModelSummary"></div>
+                </div>
+
+                <div class="proto-panel">
+                  <div class="proto-panel-head">
+                    <h4>投诉类型评价维度</h4>
+                    <span>工单结构</span>
+                  </div>
+                  <div class="proto-chart proto-chart-mid" id="protoTicketChart" role="img" aria-label="投诉类型评价维度图"></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="proto-module" data-proto-panel="full" hidden>
+            <div class="proto-screen" aria-label="完整页面展示截面">
+              <div class="proto-section-title"><span></span><b>完整页面展示</b><em>整体表现 / 深度剖析 / 产品剖析</em></div>
+              <div class="proto-full-page">
+                <section class="proto-full-section">
+                  <div class="proto-panel-head">
+                    <h4>整体表现</h4>
+                    <span>指标概览 / 趋势 / 站点分布</span>
+                  </div>
+                  <div class="proto-metrics proto-metrics-compact">
+                    <div class="proto-metric metric-blue"><small>总声量</small><strong>213,529</strong></div>
+                    <div class="proto-metric metric-indigo"><small>负面声量</small><strong>6,594</strong></div>
+                    <div class="proto-metric metric-rose"><small>互动量</small><strong>7,544,362</strong></div>
+                    <div class="proto-metric metric-emerald"><small>净情感推荐度</small><strong>74.11%</strong></div>
+                  </div>
+                  <div class="proto-full-grid">
+                    <div class="proto-panel"><div class="proto-chart proto-chart-mid" id="protoFullTrendChart" role="img" aria-label="完整页面声量趋势图"></div></div>
+                    <div class="proto-panel"><div class="proto-chart proto-chart-mid" id="protoFullPlatformChart" role="img" aria-label="完整页面站点分布图"></div></div>
+                  </div>
+                </section>
+
+                <section class="proto-full-section">
+                  <div class="proto-panel-head">
+                    <h4>深度剖析</h4>
+                    <span>维度排行 / 场景交叉</span>
+                  </div>
+                  <div class="proto-full-grid">
+                    <div class="proto-panel"><div class="proto-chart proto-chart-mid" id="protoFullDimensionChart" role="img" aria-label="完整页面维度排行图"></div></div>
+                    <div class="proto-panel">
+                      <div class="proto-full-heat">
+                        <span>通勤 × 续航 37.01%</span>
+                        <span>短途 × 电池 53.97%</span>
+                        <span>周末 × 电池 61.76%</span>
+                        <span>雨天 × 刹车 36.62%</span>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <section class="proto-full-section">
+                  <div class="proto-panel-head">
+                    <h4>产品剖析</h4>
+                    <span>车型贡献 / 工单结构</span>
+                  </div>
+                  <div class="proto-full-grid">
+                    <div class="proto-panel"><div class="proto-chart proto-chart-mid" id="protoFullModelChart" role="img" aria-label="完整页面车型排行图"></div></div>
+                    <div class="proto-panel"><div class="proto-chart proto-chart-mid" id="protoFullTicketChart" role="img" aria-label="完整页面工单结构图"></div></div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-panel" id="analysis" aria-labelledby="analysis-title">
+        <div class="section-heading">
+          <h2 id="analysis-title">分析路径</h2>
+          <p>数据处理解决“数据怎么来”，分析路径解决“业务人员怎么看”。</p>
+        </div>
+
+        <div class="analysis-flow">
+          <article>
+            <span>01</span>
+            <h3>看整体表现</h3>
+            <p>判断品牌声量、互动、情绪和主要风险是否发生异常。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>定位高频问题</h3>
+            <p>从一级维度继续下钻到二级标签，确认问题集中在哪一类产品或体验环节。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>找场景交叉高风险点</h3>
+            <p>通过“场景 × 二级标签”识别问题在什么使用条件下更容易被放大。</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>下钻原文证据</h3>
+            <p>回到真实用户表达，确认问题原因和具体使用情境。</p>
+          </article>
+          <article>
+            <span>05</span>
+            <h3>形成动作建议</h3>
+            <p>将问题进一步转成产品优化、售后改善或营销沟通建议。</p>
+          </article>
+        </div>
+
+        <div class="scenario-examples" aria-label="场景与标签分析示例">
+          <article>
+            <h3>通勤上下班 × 续航</h3>
+            <p>看高频通勤是否放大续航焦虑。</p>
+          </article>
+          <article>
+            <h3>雨天骑行 × 刹车</h3>
+            <p>判断安全问题是否集中在湿滑环境。</p>
+          </article>
+          <article>
+            <h3>接送孩子 × 维修效率</h3>
+            <p>判断售后问题是否影响高敏感家庭场景。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-panel decision-panel" aria-labelledby="decision-title">
+        <div class="section-heading">
+          <h2 id="decision-title">关键产品判断</h2>
+        </div>
+
+        <div class="decision-grid">
+          <article>
+            <h3>真实数据优先于模拟数据</h3>
+            <p>先用 1,000 条真实内容验证标签、提示词和分析逻辑，再扩展到全量数据，避免基于理想化样例设计产品。</p>
+          </article>
+          <article>
+            <h3>场景是核心分析维度</h3>
+            <p>同一问题在不同使用场景下影响程度不同，因此将场景直接纳入标签交叉，用来判断问题发生的具体条件。</p>
+          </article>
+          <article>
+            <h3>汇总结论必须可回溯</h3>
+            <p>图表、总结和问题判断均保留到真实原帖的下钻路径，避免分析结论脱离证据。</p>
+          </article>
+          <article>
+            <h3>分析不能停留在发现问题</h3>
+            <p>将高风险标签进一步关联到产品、售后和营销动作，让消费者反馈从描述情绪转向支持业务判断。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="result-section" aria-labelledby="result-title">
+        <h2 id="result-title">项目结果</h2>
+        <p>
+          完成真实社媒数据的标签识别和分析看板验证，并形成从有效反馈筛选、标签识别、场景交叉到原帖下钻的完整分析方案。
+        </p>
+        <div class="result-metrics" aria-label="项目结果数据">
+          <article><strong>7.4 万+</strong><span>全量社媒内容</span></article>
+          <article><strong>2.4 万+</strong><span>有效反馈</span></article>
+          <article><strong>5.3 万+</strong><span>场景—维度—标签明细</span></article>
+        </div>
+        <p>同时完成品牌总览、深度剖析、产品剖析 3 个核心页面原型，为后续看板开发提供页面结构和字段依据。</p>
       </section>
     </main>
 
     <footer class="site-footer">
       <p>© 2026 ZBX Lab</p>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script>
+      const trendDates = Array.from({ length: 31 }, (_, index) => `1-${String(index + 1).padStart(2, "0")}`);
+      const trendSeries = {
+        engagement: [323248, 123363, 119286, 152611, 131379, 202661, 152341, 127196, 163427, 160431, 157109, 153788, 158541, 162788, 226719, 142240, 189912, 144051, 1410523, 192419, 190335, 149436, 210929, 265379, 169471, 148161, 221489, 776123, 379797, 279703, 159506],
+        volume: [6792, 4842, 4758, 4922, 4920, 5330, 5451, 5779, 5825, 5287, 5499, 6071, 6527, 7637, 8531, 7966, 7566, 6600, 7328, 7122, 6674, 7130, 8341, 7493, 7460, 7908, 8045, 11100, 9005, 8008, 7612],
+        negative: [194, 242, 187, 192, 193, 275, 221, 246, 218, 206, 224, 205, 270, 307, 200, 181, 211, 178, 204, 228, 258, 238, 265, 164, 172, 178, 195, 173, 190, 190, 189]
+      };
+      let trendChart;
+      let platformChart;
+      let dimensionChart;
+      let modelRankChart;
+      let ticketChart;
+      let fullTrendChart;
+      let fullPlatformChart;
+      let fullDimensionChart;
+      let fullModelChart;
+      let fullTicketChart;
+      let activeMetric = "volume";
+      let activeDimension = "产品";
+      let activeModel = "车型甲";
+
+      const dimensionTags = {
+        "产品": [["续航", 680], ["电池", 520], ["质量稳定性", 420], ["刹车", 390], ["充电", 310], ["防水", 300]],
+        "骑行体验": [["噪音", 360], ["车身重量", 330], ["载人体验", 260], ["舒适性", 210], ["操控", 180], ["储物空间", 140]],
+        "智能功能": [["应用连接", 460], ["蓝牙/近场解锁", 260], ["在线升级", 210], ["定位功能", 190], ["智能解锁", 160], ["仪表系统", 150]],
+        "售后服务": [["维修效率", 620], ["保修服务", 430], ["门店服务", 380], ["客服态度", 310], ["售后响应", 260], ["维修透明度", 220]]
+      };
+
+      const heatScenes = ["通勤上下班", "短途代步", "外卖配送", "周末郊游", "接送孩子", "雨天骑行"];
+      const heatTags = ["续航", "电池", "应用连接", "维修效率", "噪音", "刹车"];
+      const heatValues = {
+        "通勤上下班": {"续航": 37.01, "电池": 44.16, "应用连接": 0.65, "维修效率": 0.65, "噪音": 2.6, "刹车": 14.29},
+        "短途代步": {"续航": 53.17, "电池": 53.97, "应用连接": 0, "维修效率": 3.17, "噪音": 0, "刹车": 8.73},
+        "外卖配送": {"续航": 28.13, "电池": 40.63, "应用连接": 0, "维修效率": 0, "噪音": 0, "刹车": 28.13},
+        "周末郊游": {"续航": 50, "电池": 61.76, "应用连接": 0, "维修效率": 0, "噪音": 0, "刹车": 5.88},
+        "接送孩子": {"续航": 40, "电池": 40, "应用连接": 0, "维修效率": 6.25, "噪音": 2.5, "刹车": 11.25},
+        "雨天骑行": {"续航": 18.31, "电池": 26.76, "应用连接": 0, "维修效率": 0, "噪音": 1.41, "刹车": 36.62}
+      };
+      const sceneInsights = {
+        "雨天骑行|刹车": ["雨天场景下，刹车距离和打滑感是安全焦虑的主要来源。", "带人或接送孩子时，用户对刹车稳定性的容忍度明显更低。", "建议在门店交付或保养节点强化雨天刹车检查和使用提醒。"],
+        "通勤上下班|续航": ["通勤场景最关注续航稳定性，用户更在意一周内需要充几次电。", "低温续航折损会影响上班准点和充电安排。", "可在产品页和门店话术中补充不同温度下的预估续航。"],
+        "周末郊游|电池": ["该场景下电池讨论主要围绕真实续航、容量配置和短途出行适配。", "用户会用实际行驶里程判断电池是否够用。"],
+        "接送孩子|维修效率": ["接送孩子场景下，维修效率会直接影响车辆可用性判断。", "用户关注门店能否给出明确检测结论、处理时效和保修边界。"],
+        "default": ["该组合下的负向反馈来自具体使用阻断。", "用户希望获得更明确的原因解释、处理时效和后续保障。"]
+      };
+      const sceneExamples = {
+        "雨天骑行|刹车": ["雨天骑行时对制动稳定性更敏感，用户会把刹车距离变化理解为安全风险。", "带人或接送场景中，刹车异响和打滑感更容易触发强负面表达。"],
+        "通勤上下班|续航": ["日常通勤 10.5km 左右，用户会持续对比单程耗电和满电可用里程。", "停车监控、低温和电量显示不准会放大续航预期差。"],
+        "default": ["点击矩阵单元后，可回到脱敏原帖确认用户表达和标签判断依据。", "原文示例只保留问题片段，不展示账号、链接和个人信息。"]
+      };
+      const modelRows = [
+        {name: "车型甲", risk: "低风险", volume: 10389, negative: 75, engagement: 529204, nsr: "90.91%", repairRate: "3.8%", summary: "当前车型社媒声量较高，负向声量较低，正向反馈集中在外观设计、通勤便利和智能解锁。"},
+        {name: "车型乙", risk: "稳定", volume: 2610, negative: 360, engagement: 21400, nsr: "64.10%", repairRate: "2.6%", summary: "当前车型互动效率较高，主要风险来自充电器发热、车身偏重和配件等待。"},
+        {name: "车型丙", risk: "高风险", volume: 1840, negative: 450, engagement: 13200, nsr: "43.50%", repairRate: "4.9%", summary: "当前车型负面扩散较快，需要优先复核续航、电池、制动和质量稳定性问题。"}
+      ];
+      const ticketRows = [["电池/续航", 760], ["制动与安全", 520], ["电子与智能交互", 460], ["车身与外观工艺", 380], ["服务与交付", 300]];
+
+      function seriesOpacity(metric) {
+        return activeMetric === metric || activeMetric === "nsr" ? 1 : 0.22;
+      }
+
+      function renderOverallCharts() {
+        if (!window.echarts) return;
+        const trendEl = document.getElementById("protoTrendChart");
+        const platformEl = document.getElementById("protoPlatformChart");
+        if (!trendEl || !platformEl) return;
+
+        trendChart = echarts.getInstanceByDom(trendEl) || echarts.init(trendEl);
+        trendChart.setOption({
+          tooltip: { trigger: "axis", axisPointer: { type: "cross" } },
+          legend: { bottom: 0, data: ["互动量", "声量", "负面声量"] },
+          grid: { left: 46, right: 52, top: 26, bottom: 52 },
+          xAxis: { type: "category", data: trendDates, axisTick: { alignWithLabel: true } },
+          yAxis: [
+            { type: "value", name: "声量", splitLine: { lineStyle: { color: "#edf2f8" } } },
+            { type: "value", name: "互动量", splitLine: { show: false } }
+          ],
+          series: [
+            {
+              name: "互动量",
+              type: "bar",
+              yAxisIndex: 1,
+              barWidth: 16,
+              data: trendSeries.engagement,
+              itemStyle: { opacity: seriesOpacity("engagement"), borderRadius: [6, 6, 0, 0], color: "#9cc8f1" }
+            },
+            {
+              name: "声量",
+              type: "line",
+              smooth: true,
+              symbolSize: 7,
+              data: trendSeries.volume,
+              lineStyle: { width: activeMetric === "volume" || activeMetric === "nsr" ? 3 : 2, color: "#0787ff", opacity: seriesOpacity("volume") },
+              itemStyle: { color: "#0787ff", opacity: seriesOpacity("volume") }
+            },
+            {
+              name: "负面声量",
+              type: "line",
+              smooth: true,
+              symbol: "circle",
+              symbolSize: 7,
+              data: trendSeries.negative,
+              lineStyle: { width: activeMetric === "negative" ? 3 : 2, type: "dashed", color: "#ff321c", opacity: seriesOpacity("negative") },
+              itemStyle: { color: "#ff321c", opacity: seriesOpacity("negative") }
+            }
+          ]
+        });
+
+        platformChart = echarts.getInstanceByDom(platformEl) || echarts.init(platformEl);
+        platformChart.setOption({
+          tooltip: { trigger: "item" },
+          legend: { bottom: 0 },
+          series: [{
+            type: "pie",
+            radius: ["46%", "76%"],
+            center: ["50%", "43%"],
+            data: [
+              { name: "小红书", value: 31 },
+              { name: "抖音", value: 27 },
+              { name: "微博", value: 18 },
+              { name: "知乎", value: 13 },
+              { name: "论坛", value: 11 }
+            ],
+            label: { formatter: "{b}\n{d}%", fontWeight: 900 },
+            itemStyle: { borderColor: "#fff", borderWidth: 3 }
+          }],
+          color: ["#0787ff", "#6d7cff", "#35d3a8", "#f59e0b", "#ef4444"]
+        });
+      }
+
+      function renderDimensionModule() {
+        if (!window.echarts) return;
+        const el = document.getElementById("protoDimensionChart");
+        if (!el) return;
+        const rows = dimensionTags[activeDimension];
+        document.getElementById("protoDimPath").textContent = `${activeDimension}维度`;
+        document.getElementById("protoTagPath").textContent = rows[0][0];
+        dimensionChart = echarts.getInstanceByDom(el) || echarts.init(el);
+        dimensionChart.setOption({
+          tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
+          grid: { left: 84, right: 28, top: 16, bottom: 26 },
+          xAxis: { type: "value", splitLine: { lineStyle: { color: "#edf2f8" } } },
+          yAxis: { type: "category", inverse: true, data: rows.map((item) => item[0]), axisLabel: { color: "#526174", fontWeight: 900 } },
+          series: [{
+            type: "bar",
+            data: rows.map((item, index) => ({ value: item[1], itemStyle: { color: index === 0 ? "#ef4444" : "#ff9c90", borderRadius: [0, 8, 8, 0] } })),
+            barWidth: 22,
+            label: { show: true, position: "right", fontWeight: 900 }
+          }]
+        });
+      }
+
+      function heatClass(value) {
+        if (value > 60) return "proto-lv-red";
+        if (value > 40) return "proto-lv-purple";
+        if (value > 20) return "proto-lv-blue";
+        return "proto-lv-green";
+      }
+
+      function renderHeatTable() {
+        const body = document.getElementById("protoHeatBody");
+        if (!body) return;
+        body.innerHTML = heatScenes.map((scene) => `
+          <tr>
+            <td>${scene}</td>
+            ${heatTags.map((tag) => {
+              const value = heatValues[scene][tag];
+              const active = scene === "雨天骑行" && tag === "刹车" ? " active" : "";
+              return `<td><button class="proto-heat-cell ${heatClass(value)}${active}" type="button" data-scene="${scene}" data-tag="${tag}">${value.toFixed(2)}%</button></td>`;
+            }).join("")}
+          </tr>
+        `).join("");
+        document.querySelectorAll(".proto-heat-cell").forEach((button) => {
+          button.addEventListener("click", () => {
+            document.querySelectorAll(".proto-heat-cell").forEach((item) => item.classList.toggle("active", item === button));
+            renderSceneInsight(button.dataset.scene, button.dataset.tag);
+          });
+        });
+        renderSceneInsight("雨天骑行", "刹车");
+      }
+
+      function renderSceneInsight(scene, tag) {
+        const key = `${scene}|${tag}`;
+        const insights = sceneInsights[key] || sceneInsights.default;
+        const examples = sceneExamples[key] || sceneExamples.default;
+        document.getElementById("protoSceneTitle").textContent = `「${scene} × ${tag}」场景分析`;
+        document.getElementById("protoSceneList").innerHTML = insights.map((item) => `<li>${item}</li>`).join("");
+        document.getElementById("protoSceneExamples").innerHTML = examples.map((item, index) => `<article><strong>原文示例 ${index + 1}</strong>${item}</article>`).join("");
+      }
+
+      function renderProductModule() {
+        if (!window.echarts) return;
+        const rankEl = document.getElementById("protoModelRankChart");
+        const ticketEl = document.getElementById("protoTicketChart");
+        if (!rankEl || !ticketEl) return;
+        modelRankChart = echarts.getInstanceByDom(rankEl) || echarts.init(rankEl);
+        modelRankChart.setOption({
+          tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
+          grid: { left: 72, right: 28, top: 16, bottom: 28 },
+          xAxis: { type: "value", splitLine: { lineStyle: { color: "#edf2f8" } } },
+          yAxis: { type: "category", inverse: true, data: modelRows.map((item) => item.name), axisLabel: { color: "#526174", fontWeight: 900 } },
+          series: [{
+            type: "bar",
+            data: modelRows.map((item) => ({ value: item.volume, itemStyle: { color: item.name === activeModel ? "#0787ff" : "#9cc8f1", borderRadius: [0, 8, 8, 0] } })),
+            barWidth: 24,
+            label: { show: true, position: "right", fontWeight: 900 }
+          }]
+        });
+        modelRankChart.off("click");
+        modelRankChart.on("click", (params) => {
+          activeModel = modelRows[params.dataIndex].name;
+          renderProductModule();
+        });
+
+        const model = modelRows.find((item) => item.name === activeModel) || modelRows[0];
+        document.getElementById("protoModelName").textContent = model.name;
+        document.getElementById("protoModelMetrics").innerHTML = `
+          <div><small>风险状态</small><strong>${model.risk}</strong></div>
+          <div><small>声量</small><strong>${model.volume.toLocaleString()}</strong></div>
+          <div><small>负面声量</small><strong>${model.negative}</strong></div>
+          <div><small>互动量</small><strong>${model.engagement.toLocaleString()}</strong></div>
+          <div><small>净情感推荐度</small><strong>${model.nsr}</strong></div>
+          <div><small>维修率</small><strong>${model.repairRate}</strong></div>
+        `;
+        document.getElementById("protoModelSummary").textContent = model.summary;
+
+        ticketChart = echarts.getInstanceByDom(ticketEl) || echarts.init(ticketEl);
+        ticketChart.setOption({
+          tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
+          grid: { left: 116, right: 28, top: 16, bottom: 26 },
+          xAxis: { type: "value", splitLine: { lineStyle: { color: "#edf2f8" } } },
+          yAxis: { type: "category", inverse: true, data: ticketRows.map((item) => item[0]), axisLabel: { color: "#526174", fontWeight: 900 } },
+          series: [{
+            type: "bar",
+            data: ticketRows.map((item, index) => ({ value: item[1], itemStyle: { color: ["#0787ff", "#ef4444", "#6d7cff", "#f59e0b", "#22c55e"][index], borderRadius: [0, 8, 8, 0] } })),
+            barWidth: 22,
+            label: { show: true, position: "right", fontWeight: 900 }
+          }]
+        });
+      }
+
+      function renderFullPage() {
+        if (!window.echarts) return;
+        const trendEl = document.getElementById("protoFullTrendChart");
+        const platformEl = document.getElementById("protoFullPlatformChart");
+        const dimensionEl = document.getElementById("protoFullDimensionChart");
+        const modelEl = document.getElementById("protoFullModelChart");
+        const ticketEl = document.getElementById("protoFullTicketChart");
+        if (!trendEl || !platformEl || !dimensionEl || !modelEl || !ticketEl) return;
+
+        fullTrendChart = echarts.getInstanceByDom(trendEl) || echarts.init(trendEl);
+        fullTrendChart.setOption({
+          tooltip: { trigger: "axis", axisPointer: { type: "cross" } },
+          legend: { bottom: 0, data: ["互动量", "声量", "负面声量"] },
+          grid: { left: 46, right: 52, top: 26, bottom: 52 },
+          xAxis: { type: "category", data: trendDates, axisTick: { alignWithLabel: true } },
+          yAxis: [
+            { type: "value", name: "声量", splitLine: { lineStyle: { color: "#edf2f8" } } },
+            { type: "value", name: "互动量", splitLine: { show: false } }
+          ],
+          series: [
+            {
+              name: "互动量",
+              type: "bar",
+              yAxisIndex: 1,
+              barWidth: 14,
+              data: trendSeries.engagement,
+              itemStyle: { opacity: 0.82, borderRadius: [6, 6, 0, 0], color: "#9cc8f1" }
+            },
+            {
+              name: "声量",
+              type: "line",
+              smooth: true,
+              symbolSize: 6,
+              data: trendSeries.volume,
+              lineStyle: { width: 3, color: "#0787ff" },
+              itemStyle: { color: "#0787ff" }
+            },
+            {
+              name: "负面声量",
+              type: "line",
+              smooth: true,
+              symbol: "circle",
+              symbolSize: 6,
+              data: trendSeries.negative,
+              lineStyle: { width: 2, type: "dashed", color: "#ff321c" },
+              itemStyle: { color: "#ff321c" }
+            }
+          ]
+        });
+
+        fullPlatformChart = echarts.getInstanceByDom(platformEl) || echarts.init(platformEl);
+        fullPlatformChart.setOption({
+          tooltip: { trigger: "item" },
+          legend: { bottom: 0 },
+          series: [{
+            type: "pie",
+            radius: ["46%", "76%"],
+            center: ["50%", "43%"],
+            data: [
+              { name: "小红书", value: 31 },
+              { name: "抖音", value: 27 },
+              { name: "微博", value: 18 },
+              { name: "知乎", value: 13 },
+              { name: "论坛", value: 11 }
+            ],
+            label: { formatter: "{b}\n{d}%", fontWeight: 900 },
+            itemStyle: { borderColor: "#fff", borderWidth: 3 }
+          }],
+          color: ["#0787ff", "#6d7cff", "#35d3a8", "#f59e0b", "#ef4444"]
+        });
+
+        const dimRows = dimensionTags["产品"];
+        fullDimensionChart = echarts.getInstanceByDom(dimensionEl) || echarts.init(dimensionEl);
+        fullDimensionChart.setOption({
+          tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
+          grid: { left: 84, right: 28, top: 16, bottom: 26 },
+          xAxis: { type: "value", splitLine: { lineStyle: { color: "#edf2f8" } } },
+          yAxis: { type: "category", inverse: true, data: dimRows.map((item) => item[0]), axisLabel: { color: "#526174", fontWeight: 900 } },
+          series: [{
+            type: "bar",
+            data: dimRows.map((item, index) => ({ value: item[1], itemStyle: { color: index === 0 ? "#ef4444" : "#ff9c90", borderRadius: [0, 8, 8, 0] } })),
+            barWidth: 22,
+            label: { show: true, position: "right", fontWeight: 900 }
+          }]
+        });
+
+        fullModelChart = echarts.getInstanceByDom(modelEl) || echarts.init(modelEl);
+        fullModelChart.setOption({
+          tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
+          grid: { left: 72, right: 28, top: 16, bottom: 28 },
+          xAxis: { type: "value", splitLine: { lineStyle: { color: "#edf2f8" } } },
+          yAxis: { type: "category", inverse: true, data: modelRows.map((item) => item.name), axisLabel: { color: "#526174", fontWeight: 900 } },
+          series: [{
+            type: "bar",
+            data: modelRows.map((item, index) => ({ value: item.volume, itemStyle: { color: index === 0 ? "#0787ff" : "#9cc8f1", borderRadius: [0, 8, 8, 0] } })),
+            barWidth: 24,
+            label: { show: true, position: "right", fontWeight: 900 }
+          }]
+        });
+
+        fullTicketChart = echarts.getInstanceByDom(ticketEl) || echarts.init(ticketEl);
+        fullTicketChart.setOption({
+          tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
+          grid: { left: 116, right: 28, top: 16, bottom: 26 },
+          xAxis: { type: "value", splitLine: { lineStyle: { color: "#edf2f8" } } },
+          yAxis: { type: "category", inverse: true, data: ticketRows.map((item) => item[0]), axisLabel: { color: "#526174", fontWeight: 900 } },
+          series: [{
+            type: "bar",
+            data: ticketRows.map((item, index) => ({ value: item[1], itemStyle: { color: ["#0787ff", "#ef4444", "#6d7cff", "#f59e0b", "#22c55e"][index], borderRadius: [0, 8, 8, 0] } })),
+            barWidth: 22,
+            label: { show: true, position: "right", fontWeight: 900 }
+          }]
+        });
+      }
+
+      document.querySelectorAll("[data-metric-focus]").forEach((button) => {
+        button.addEventListener("click", () => {
+          activeMetric = button.dataset.metricFocus;
+          document.querySelectorAll("[data-metric-focus]").forEach((item) => item.classList.toggle("active", item === button));
+          renderOverallCharts();
+        });
+      });
+
+      document.querySelector("[data-overall-refresh]")?.addEventListener("click", () => {
+        renderOverallCharts();
+      });
+
+      document.querySelectorAll("[data-proto-dim]").forEach((button) => {
+        button.addEventListener("click", () => {
+          activeDimension = button.dataset.protoDim;
+          document.querySelectorAll("[data-proto-dim]").forEach((item) => item.classList.toggle("active", item === button));
+          renderDimensionModule();
+          dimensionChart?.resize();
+        });
+      });
+
+      function resizeOverallCharts() {
+        requestAnimationFrame(() => {
+          trendChart?.resize();
+          platformChart?.resize();
+          dimensionChart?.resize();
+          modelRankChart?.resize();
+          ticketChart?.resize();
+          fullTrendChart?.resize();
+          fullPlatformChart?.resize();
+          fullDimensionChart?.resize();
+          fullModelChart?.resize();
+          fullTicketChart?.resize();
+        });
+        setTimeout(() => {
+          trendChart?.resize();
+          platformChart?.resize();
+          dimensionChart?.resize();
+          modelRankChart?.resize();
+          ticketChart?.resize();
+          fullTrendChart?.resize();
+          fullPlatformChart?.resize();
+          fullDimensionChart?.resize();
+          fullModelChart?.resize();
+          fullTicketChart?.resize();
+        }, 300);
+      }
+
+      let openProtoPanel = null;
+      const prototypeDetail = document.getElementById("prototype-detail");
+      document.querySelectorAll("[data-proto-toggle]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const target = button.dataset.protoToggle;
+          const shouldClose = openProtoPanel === target;
+          openProtoPanel = shouldClose ? null : target;
+
+          document.querySelectorAll("[data-proto-toggle]").forEach((item) => {
+            const active = item.dataset.protoToggle === openProtoPanel;
+            item.classList.toggle("active", active);
+            item.setAttribute("aria-expanded", active ? "true" : "false");
+          });
+
+          prototypeDetail.hidden = !openProtoPanel;
+          document.querySelectorAll("[data-proto-panel]").forEach((panel) => {
+            panel.hidden = panel.dataset.protoPanel !== openProtoPanel;
+          });
+
+          if (openProtoPanel === "overall") {
+            renderOverallCharts();
+            resizeOverallCharts();
+          } else if (openProtoPanel === "deep") {
+            renderDimensionModule();
+            renderHeatTable();
+            resizeOverallCharts();
+          } else if (openProtoPanel === "product") {
+            renderProductModule();
+            resizeOverallCharts();
+          } else if (openProtoPanel === "full") {
+            renderFullPage();
+            resizeOverallCharts();
+          }
+        });
+      });
+
+      window.addEventListener("resize", () => {
+        trendChart?.resize();
+        platformChart?.resize();
+        dimensionChart?.resize();
+        modelRankChart?.resize();
+        ticketChart?.resize();
+        fullTrendChart?.resize();
+        fullPlatformChart?.resize();
+        fullDimensionChart?.resize();
+        fullModelChart?.resize();
+        fullTicketChart?.resize();
+      });
+    </script>
   </body>
 </html>
